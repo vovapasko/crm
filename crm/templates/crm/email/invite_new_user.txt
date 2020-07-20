@@ -1,0 +1,7 @@
+Hello, my dear!
+
+I want to invite you to your company program!
+
+Click the link bellow and finish your registration,we are waiting you :)
+
+{{ link }}

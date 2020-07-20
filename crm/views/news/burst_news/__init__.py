@@ -1,0 +1,1 @@
+from .burst_news_view import BurstNewsView

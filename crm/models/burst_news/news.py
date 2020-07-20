@@ -1,0 +1,14 @@
+from django.db import models
+
+from .. import Contractor
+from ..news_email import NewsEmail
+from ..abstract_base_model import AbstractBaseModel
+
+
+class News(AbstractBaseModel):
+    title_max_length = 30
+
+    email = models.ForeignKey(NewsEmail, on_delete=models.PROTECT)
+    title = models.CharField(max_length=title_max_length)
+    content = models.TextField()
+    contractors = models.ManyToManyField(Contractor)

@@ -1,0 +1,1 @@
+from .news_file_upload_view import NewsFileUploadView

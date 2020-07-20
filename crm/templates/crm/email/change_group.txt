@@ -1,0 +1,3 @@
+Hi
+
+Your group was changed from {{ old_group_name }} to {{ new_group_name }}

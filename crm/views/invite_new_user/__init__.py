@@ -1,0 +1,1 @@
+from .invite_new_user_view import InviteNewUserView

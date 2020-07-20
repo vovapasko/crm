@@ -1,0 +1,1 @@
+from .news_project_list_view import NewsProjectListView

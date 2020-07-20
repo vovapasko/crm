@@ -1,0 +1,1 @@
+from .user_register_test_case import UserRegisterTestCase

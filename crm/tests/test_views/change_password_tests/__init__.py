@@ -1,0 +1,1 @@
+from .change_password_test_case import ChangePasswordTestCase

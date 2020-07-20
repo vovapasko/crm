@@ -1,0 +1,1 @@
+from .news_email_list_view import NewsEmailListView

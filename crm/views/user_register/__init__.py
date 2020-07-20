@@ -1,0 +1,2 @@
+from .user_register_view import UserRegisterView
+from .generate_link import GenerateLinkView
