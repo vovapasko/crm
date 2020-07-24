@@ -2,7 +2,7 @@ name: Django CI
 
 on:
   push:
-    branches: [ develop ]
+    branches: [ master, develop ]
   pull_request:
     branches: [ master ]
 
@@ -26,5 +26,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
     - name: Run Tests
+      env:
+        DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
+        DMC_DB_NAME: ${{ secrets.DMC_DB_NAME }}
+        DMC_DB_USER: ${{ secrets.DMC_DB_USER }}
+        DMC_DB_PASSWORD: ${{ secrets.DMC_DB_PASSWORD }}
+        DMC_DB_HOST: ${{ secrets.DMC_DB_HOST }}
+        DMC_DB_PORT: ${{ secrets.DMC_DB_PORT }}
       run: |
         pytest
