@@ -16,13 +16,15 @@ jobs:
         python-version: [3.6, 3.7, 3.8]
 
     services:
-      postgres:
-        image: postgres:12
-        env:
+      postgres: # we need a postgres docker image to be booted a side car service to run the tests that needs a db
+        image: postgres
+        env: # the environment variable must match with app/settings.py if block of DATBASES variable otherwise test will fail due to connectivity issue.
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
-        ports: ['5432:5432']
+          POSTGRES_DB: github-actions
+        ports:
+          - 5432:5432 # exposing 5432 port for application to use
+        # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
@@ -35,11 +37,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+      - name: Run Migrations # run migrations to create table in side car db container
+          env:
+            DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
+          run: python manage.py migrate
       - name: Run Tests
         env:
           DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
-          POSTGRES_HOST: postgres
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-          DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
-          pytest
+          python manage.py test

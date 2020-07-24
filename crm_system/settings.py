@@ -85,16 +85,28 @@ WSGI_APPLICATION = 'crm_system.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DMC_DB_NAME'),
-        'USER': os.environ.get('DMC_DB_USER'),
-        'PASSWORD': os.environ.get('DMC_DB_PASSWORD'),
-        'HOST': os.environ.get('DMC_DB_HOST'),
-        'PORT': os.environ.get('DMC_DB_PORT'),
+if os.getenv('GITHUB_WORKFLOW'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'github-actions',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': 'localhost',
+            'PORT': '5432'
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('DMC_DB_NAME'),
+            'USER': os.environ.get('DMC_DB_USER'),
+            'PASSWORD': os.environ.get('DMC_DB_PASSWORD'),
+            'HOST': os.environ.get('DMC_DB_HOST'),
+            'PORT': os.environ.get('DMC_DB_PORT'),
+        }
+    }
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
 
@@ -156,7 +168,6 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
-
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
