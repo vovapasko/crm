@@ -38,9 +38,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run Migrations # run migrations to create table in side car db container
-          env:
-            DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
-          run: python manage.py migrate
+        env:
+          DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
+        run: |
+          python manage.py migrate
       - name: Run Tests
         env:
           DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
