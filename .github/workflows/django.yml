@@ -38,6 +38,8 @@ jobs:
       - name: Run Tests
         env:
           DMC_DJANGO_SECRET_KEY: ${{ secrets.DMC_DJANGO_SECRET_KEY }}
+          POSTGRES_HOST: postgres
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
           pytest
