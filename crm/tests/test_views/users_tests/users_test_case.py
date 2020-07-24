@@ -1,4 +1,4 @@
-from main_app.models import User
+from crm.models import User
 from rest_framework import status
 
 from ..base_test_case import BaseTestCase

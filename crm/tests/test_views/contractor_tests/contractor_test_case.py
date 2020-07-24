@@ -1,4 +1,4 @@
-from main_app.models import User, Contractor
+from crm.models import User, Contractor
 from rest_framework.test import APIClient
 from rest_framework import status
 

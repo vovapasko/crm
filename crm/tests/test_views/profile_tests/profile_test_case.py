@@ -3,7 +3,7 @@ from PIL import Image
 from django.core.files.base import ContentFile
 from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
-from main_app.models import User
+from crm.models import User
 from ....views.profile.can_change_permission import CanChangePermission
 from ...test_views.base_test_case import BaseTestCase
 from .test_data.test_data import *
