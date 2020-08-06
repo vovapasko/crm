@@ -13,8 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='newsemail',
             name='codeword',
-            field=models.CharField(default='default codeword', help_text='Additional information about holder of email', max_length=50),
-            preserve_default=False,
+            field=models.CharField(help_text='Additional information about holder of email', max_length=50),
         ),
         migrations.AlterField(
             model_name='newsattachment',

@@ -1,7 +1,6 @@
 from rest_framework import status
 
-from ....serializers import UserSerializer
-from ..base_test_case import BaseTestCase
+from crm.tests.base_test_case import BaseTestCase
 from .test_data import *
 
 
@@ -25,7 +24,7 @@ class LoginTestCase(BaseTestCase):
             data=correct_login_data
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.check_response_data_keys(
+        self.check_keys_in_dict(
             data=self.get_json_content_from_response(response),
             keys_to_check=self.keys_to_check
         )
@@ -47,9 +46,9 @@ class LoginTestCase(BaseTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         for element_key in element_key_list:
-            self.check_key_in_dict(
-                key=element_key,
-                dict_to_check=self.get_errors_dict_from_response(response)
+            self.assertIn(
+                member=element_key,
+                container=self.get_errors_dict_from_response(response)
             )
 
     def test_non_existing_user_login(self) -> None:
@@ -59,9 +58,9 @@ class LoginTestCase(BaseTestCase):
             data=non_existing_user
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.check_key_in_dict(
-            key="email",
-            dict_to_check=self.get_errors_dict_from_response(response)
+        self.assertIn(
+            member="email",
+            container=self.get_errors_dict_from_response(response)
         )
 
     def test_incorrect_password_login(self) -> None:
@@ -71,7 +70,7 @@ class LoginTestCase(BaseTestCase):
             data=incorrect_password_data
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.check_key_in_dict(
-            key="password",
-            dict_to_check=self.get_errors_dict_from_response(response)
+        self.assertIn(
+            member="password",
+            container=self.get_errors_dict_from_response(response)
         )

@@ -67,10 +67,10 @@ class BaseTestCase(APITestCase):
         Checks if compare_to dict contains keys from compare_what dict and if their values are same
         """
         for key in compare_what.keys():
-            self.check_key_in_dict(key, compare_to)
+            self.assertIn(member=key, container=compare_to)
             self.check_values(compare_what, compare_to, key)
 
-    def check_response_data_keys(self, data: dict, keys_to_check: list) -> None:
+    def check_keys_in_dict(self, data: dict, keys_to_check: list) -> None:
         """
         Checks if dictionary in data dict contains keys from keys_to_check list
         :param data: dict which should be checked
@@ -78,9 +78,6 @@ class BaseTestCase(APITestCase):
         """
         for key in keys_to_check:
             self.assertIn(key, data)
-
-    def check_key_in_dict(self, key: str, dict_to_check: dict) -> None:
-        self.assertIn(key, dict_to_check)
 
     def check_values(self, initial_data: dict, response_data: dict, key: str) -> None:
         """

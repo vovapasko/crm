@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 from crm.models import User
 from ....views.profile.can_change_permission import CanChangePermission
-from ...test_views.base_test_case import BaseTestCase
+from crm.tests.base_test_case import BaseTestCase
 from .test_data.test_data import *
 
 
@@ -54,7 +54,7 @@ class ProfileTestCase(BaseTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         json_content = self.get_json_content_from_response(response)
-        self.check_response_data_keys(json_content, self.permission_error_message_dict.keys())
+        self.check_keys_in_dict(json_content, self.permission_error_message_dict.keys())
         self.check_values(self.permission_error_message_dict, json_content, self.permission_error_message_dict_key)
 
     # todo think how to delete mock avatar from S3 after test executing
@@ -93,9 +93,9 @@ class ProfileTestCase(BaseTestCase):
             format='json'
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.check_key_in_dict(
-            key="avatar",
-            dict_to_check=self.get_json_content_from_response(response)
+        self.assertIn(
+            member="avatar",
+            container=self.get_json_content_from_response(response)
         )
 
     def test_put_profile_unauthorised(self) -> None:
@@ -106,4 +106,7 @@ class ProfileTestCase(BaseTestCase):
             format='json'
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.check_key_in_dict(self.unauthorised_error_key, self.get_json_content_from_response(response))
+        self.assertIn(
+            member=self.unauthorised_error_key,
+            container=self.get_json_content_from_response(response)
+        )

@@ -1,7 +1,7 @@
 from crm.models import User
 from rest_framework import status
 
-from ..base_test_case import BaseTestCase
+from crm.tests.base_test_case import BaseTestCase
 
 
 class UsersTestCase(BaseTestCase):
@@ -57,9 +57,9 @@ class UsersTestCase(BaseTestCase):
             path=self.generate_url(self.url, self.superuser.id)
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.check_key_in_dict(
-            key="errors",
-            dict_to_check=self.get_json_content_from_response(response)
+        self.assertIn(
+            member="errors",
+            container=self.get_json_content_from_response(response)
         )
 
     def test_delete_admin_by_superuser(self) -> None:
@@ -77,7 +77,7 @@ class UsersTestCase(BaseTestCase):
             path=self.generate_url(self.url, user_to_delete.id)
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.check_key_in_dict(
-            key='message',
-            dict_to_check=self.get_json_content_from_response(response)
+        self.assertIn(
+            member='message',
+            container=self.get_json_content_from_response(response)
         )
