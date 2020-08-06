@@ -1,8 +1,8 @@
 from rest_framework import status
 
-from ....library.constants import SIGNATURE
+from crm.library.constants import SIGNATURE
 from crm.tests.base_test_case import BaseTestCase
-from ....models import User
+from crm.models import User
 from .test_data import *
 
 

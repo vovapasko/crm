@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from ..base_view import BaseView
 from ...library.constants import *
 from ...library.helpers import decode_singing_dict
-from .change_password_serializer import ChangePasswordSerializer
+from crm.serializers import ChangePasswordSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 from ...models import User

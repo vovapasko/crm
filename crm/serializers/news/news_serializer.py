@@ -2,8 +2,8 @@ from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from .news_attachment_serializer import NewsAttachmentSerializer
 from .news_email_serializer import NewsEmailSerializer
-from ... import ContractorSerializer
-from ....models import News, NewsAttachment
+from crm.serializers import ContractorSerializer
+from crm.models import News, NewsAttachment
 
 
 class NewsSerializer(WritableNestedModelSerializer):

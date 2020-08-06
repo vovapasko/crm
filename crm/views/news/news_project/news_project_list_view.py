@@ -2,11 +2,10 @@ from rest_framework import permissions, status
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ..serializers import NewsProjectSerializer
-from ....models import NewsProject, User
-from ....paginations import StandardResultsSetPagination
-from ....serializers import UserSerializer
-from ....views import BaseView
+from crm.serializers import NewsProjectSerializer
+from crm.models import NewsProject, User
+from crm.paginations import StandardResultsSetPagination
+from crm.views.base_view import BaseView
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, UpdateAPIView
 
 

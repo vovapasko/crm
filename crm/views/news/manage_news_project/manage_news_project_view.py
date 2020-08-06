@@ -3,10 +3,10 @@ from rest_framework.generics import UpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ....library.constants import MESSAGE_JSON_KEY
-from ....models import NewsWave
-from ..serializers import *
-from ...base_view import BaseView
+from crm.library.constants import MESSAGE_JSON_KEY
+from crm.models import NewsWave
+from crm.serializers import *
+from crm.views.base_view import BaseView
 
 
 class ManageNewsProjectView(BaseView, UpdateAPIView):

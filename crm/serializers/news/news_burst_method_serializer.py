@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from ....models import NewsBurstMethod
+from crm.models import NewsBurstMethod
 
 
 class NewsBurstMethodSerializer(serializers.ModelSerializer):

@@ -1,10 +1,10 @@
 from rest_framework.generics import UpdateAPIView
 from .can_change_permission import CanChangePermission
-from .profile_serializer import ProfileSerializer
+from crm.serializers import ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
-from ..base_view import BaseView
-from ...models import User
-from ...serializers import UserSerializer
+from crm.views.base_view import BaseView
+from crm.models import User
+from crm.serializers import UserSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 

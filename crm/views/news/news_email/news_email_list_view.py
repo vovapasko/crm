@@ -1,10 +1,10 @@
 from rest_framework import permissions
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView
 
-from ..serializers.news_email_serializer import NewsEmailSerializer
-from ....models import NewsEmail
-from ....paginations import StandardResultsSetPagination
-from ....views import BaseView
+from crm.serializers.news.news_email_serializer import NewsEmailSerializer
+from crm.models import NewsEmail
+from crm.paginations import StandardResultsSetPagination
+from crm.views.base_view import BaseView
 
 
 class NewsEmailListView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):

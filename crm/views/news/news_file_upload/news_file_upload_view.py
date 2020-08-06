@@ -4,9 +4,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ... import BaseView
-from ....models import NewsAttachment
-from ..serializers import NewsAttachmentSerializer, NewsAttachmentPutSerializer
+from crm.views.base_view import BaseView
+from crm.models import NewsAttachment
+from crm.serializers import NewsAttachmentSerializer, NewsAttachmentPutSerializer
 
 
 class NewsFileUploadView(BaseView, DestroyAPIView, ListAPIView):

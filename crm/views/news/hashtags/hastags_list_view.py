@@ -1,13 +1,12 @@
-from crm.views import BaseView
+from crm.views.base_view import BaseView
 from rest_framework import generics, permissions
 from crm.models import Hashtag
-from crm.views.news.serializers import HashtagSerializer
+from crm.serializers import HashtagSerializer
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-
-from ....library.constants import MESSAGE_JSON_KEY
-from ....paginations import StandardResultsSetPagination
+from crm.library.constants import MESSAGE_JSON_KEY
+from crm.paginations import StandardResultsSetPagination
 
 
 class HashtagsListView(BaseView, generics.ListCreateAPIView):
@@ -15,7 +14,6 @@ class HashtagsListView(BaseView, generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = HashtagSerializer
     pagination_class = StandardResultsSetPagination
-
 
     def post(self, request: Request, *args, **kwargs) -> Response:
         """

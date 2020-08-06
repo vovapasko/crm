@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ....models import NewsAttachment, News
+from crm.models import NewsAttachment, News
 
 
 class NewsAttachmentSerializer(serializers.ModelSerializer):
