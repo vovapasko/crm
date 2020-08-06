@@ -6,3 +6,4 @@ from .login_tests import LoginTestCase
 from .change_password_tests import ChangePasswordTestCase
 from .profile_tests import ProfileTestCase
 from .hashtag_tests import HashtagTestCase
+from .news_tests import *

@@ -1,12 +1,12 @@
 from rest_framework import status
-
-from ....models import Hashtag
+from rest_framework.reverse import reverse
+from crm.models import Hashtag
 from crm.tests.base_test_case import BaseTestCase
 from .test_data import *
 
 
 class HashtagTestCase(BaseTestCase):
-    url = '/hashtags/'
+    url = reverse('crm:hashtags')
     keys_to_check_correct_response = ['success', 'message', 'hashtag']
     keys_to_check_incorrect_response = ['success', 'message', 'errors']
 
