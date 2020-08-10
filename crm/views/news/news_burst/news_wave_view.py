@@ -4,11 +4,11 @@ from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
 
-from ..serializers import NewsWaveSerializer
-from ....models import NewsWave
-from ....views import BaseView
+from crm.serializers import NewsWaveSerializer
+from crm.models import NewsWave
+from crm.views.base_view import BaseView
 from rest_framework import generics
-from ....paginations import StandardResultsSetPagination
+from crm.paginations import StandardResultsSetPagination
 
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):

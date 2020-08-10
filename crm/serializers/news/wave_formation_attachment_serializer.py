@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ....models import WaveFormationAttachment, WaveFormation
+from crm.models import WaveFormationAttachment, WaveFormation
 
 
 class WaveFormationAttachmentSerializer(serializers.ModelSerializer):

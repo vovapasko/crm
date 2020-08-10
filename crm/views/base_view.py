@@ -7,10 +7,10 @@ from rest_framework_simplejwt.authentication import JWTAuthentication as jwt_aut
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework_simplejwt.exceptions import InvalidToken
-from ..library.constants import *
-from ..library.exceptions import ViewPermissionDenied
-from ..library.helpers import get_name_from_permission
-from ..models import User
+from crm.library.constants import *
+from crm.library.exceptions import ViewPermissionDenied
+from crm.library.helpers import get_name_from_permission
+from crm.models import User
 from rest_framework.request import Request
 from typing import Type
 

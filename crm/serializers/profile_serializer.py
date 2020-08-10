@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from ...models import User
+from crm.models import User
 
 
 class ProfileSerializer(serializers.ModelSerializer):

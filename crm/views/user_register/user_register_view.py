@@ -1,11 +1,11 @@
 from rest_framework import status
-from ...library.helpers import decode_singing_dict, generate_token_dict
-from ..base_view import BaseView
-from .user_register_serializer import UserRegisterSerializer
-from ...serializers import UserSerializer
+from crm.library.helpers import generate_token_dict
+from crm.views.base_view import BaseView
+from crm.serializers.user_register_serializer import UserRegisterSerializer
+from crm.serializers import UserSerializer
 from django.core.exceptions import ObjectDoesNotExist
-from ...library.helpers import get_id_or_exception
-from ...library.constants import MESSAGE_JSON_KEY
+from crm.library.helpers import get_id_or_exception
+from crm.library.constants import MESSAGE_JSON_KEY
 from rest_framework.response import Response
 from rest_framework.request import Request
 

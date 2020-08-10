@@ -54,16 +54,19 @@ MOCK_EMAILS = [
     {
         "email": "mail1@mail.com",
         "template": "My template 1",
-        "signature": "My signature 1"
+        "signature": "My signature 1",
+        "codeword": "Publisher 1"
     },
     {
         "email": "mail2@mail.com",
         "template": "My template 2",
-        "signature": "My signature 2"
+        "signature": "My signature 2",
+        "codeword": "Publisher 2"
     },
     {
         "email": "mail3@mail.com",
         "template": "My template 3",
-        "signature": "My signature 3"
+        "signature": "My signature 3",
+        "codeword": "Publisher 3"
     }
 ]

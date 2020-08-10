@@ -1,8 +1,8 @@
 from drf_writable_nested import UniqueFieldsMixin
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
-from ..library.helpers import groups_cascade_down as get_groups_cascade_down
-from ..models import User
+from crm.library.helpers import groups_cascade_down as get_groups_cascade_down
+from crm.models import User
 
 
 class UserSerializer(UniqueFieldsMixin,serializers.ModelSerializer):

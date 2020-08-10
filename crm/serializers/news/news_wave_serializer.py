@@ -1,18 +1,15 @@
 from django.db import models
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from drf_writable_nested.serializers import WritableNestedModelSerializer
-from . import *
 from .news_project_serializer import NewsProjectSerializer
 from .news_serializer import NewsSerializer
 from .wave_formation_serializer import WaveFormationSerializer
-from ... import ContractorSerializer
-from ....models import NewsWave, Contractor, Hashtag, NewsCharacter, NewsBurstMethod
+from crm.models import NewsWave, Contractor, Hashtag, NewsCharacter, NewsBurstMethod
 from typing import Type, List
-
-from ....serializers import UserSerializer
+from crm.serializers.news import NewsCharacterSerializer, NewsBurstMethodSerializer, HashtagSerializer
+from crm.serializers import UserSerializer, ContractorSerializer
 
 
 class NewsWaveSerializer(WritableNestedModelSerializer):

@@ -3,9 +3,9 @@ from rest_framework.generics import ListAPIView, DestroyAPIView
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.request import Request
 from rest_framework.response import Response
-from ....views import BaseView
-from ....models import WaveFormationAttachment
-from ..serializers import WaveFormationAttachmentPutSerializer, WaveFormationAttachmentSerializer
+from crm.views.base_view import BaseView
+from crm.models import WaveFormationAttachment
+from crm.serializers import WaveFormationAttachmentPutSerializer, WaveFormationAttachmentSerializer
 
 
 class WaveFormationUploadView(BaseView, DestroyAPIView, ListAPIView):

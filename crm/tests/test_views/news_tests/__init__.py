@@ -1,0 +1,1 @@
+from .news_emails_test_case import NewsEmailTestCase

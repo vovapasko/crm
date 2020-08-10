@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from ...library.constants import MESSAGE_JSON_KEY
 from ...paginations import StandardResultsSetPagination
-from .contractor_serializer import ContractorSerializer
+from crm.serializers import ContractorSerializer
 from rest_framework import generics, permissions, status
 from ...models import Contractor
 from ..base_view import BaseView

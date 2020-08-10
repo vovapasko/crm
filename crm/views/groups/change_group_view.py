@@ -1,14 +1,14 @@
 from django.contrib.auth.models import Group
 from rest_framework import permissions
 
-from .group_serializer import GroupSerializer
-from ...library.constants import CHANGE_GROUP_EMAIL
-from ...views import BaseView
+from crm.serializers import GroupSerializer
+from crm.library.constants import CHANGE_GROUP_EMAIL
+from crm.views.base_view import BaseView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from ...models import User
-from ...serializers import UserSerializer
-from ...library.helpers import send_dmc_email
+from crm.models import User
+from crm.serializers import UserSerializer
+from crm.library.helpers import send_dmc_email
 
 
 class ChangeGroupView(BaseView):
