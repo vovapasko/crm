@@ -11,7 +11,8 @@ class PostFormatList(AbstractBaseModel):
 
     post_format = models.CharField(
         max_length=max_post_format_length,
-        help_text='type of post for the news'
+        help_text='type of post for the news',
+        default=None
     )
     news_amount = models.PositiveIntegerField(
         _("news_amount"),
