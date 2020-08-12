@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class PostFormatList(AbstractBaseModel):
-    max_post_format_length = 20
+    max_post_format_length = 50
     default_value = 0
 
     contractor = models.ForeignKey('Contractor', on_delete=models.CASCADE)
