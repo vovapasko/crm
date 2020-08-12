@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='newswave',
             name='post_format',
-            field=models.CharField(default='', help_text='type of post for the news wave', max_length=20),
+            field=models.CharField(help_text='type of post for the news wave', max_length=20),
             preserve_default=False,
         ),
     ]

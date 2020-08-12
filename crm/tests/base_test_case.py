@@ -1,10 +1,8 @@
-import json
-
+import json, string, random
 from django.core import signing
 from django.core.management import call_command
 from django.db.models import Model
 from rest_framework.test import APITestCase, APIClient
-
 from crm.models import User
 
 
@@ -113,3 +111,6 @@ class BaseTestCase(APITestCase):
     def generate_encoded_link(self, url: str, user: User) -> str:
         data = signing.dumps(dict(id=user.id))
         return f'{url}{data}'
+
+    def generate_random_string(chars=string.ascii_uppercase + string.digits, length=10):
+        return ''.join(random.choice(chars) for _ in range(length))
