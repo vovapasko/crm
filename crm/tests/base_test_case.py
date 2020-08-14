@@ -114,3 +114,7 @@ class BaseTestCase(APITestCase):
 
     def generate_random_string(chars=string.ascii_uppercase + string.digits, length=10):
         return ''.join(random.choice(chars) for _ in range(length))
+
+    def check_with_exception(self, *, exception, function):
+        with self.assertRaises(exception):
+            function()

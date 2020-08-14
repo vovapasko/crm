@@ -2,7 +2,7 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db.models import Model
 
-from ...models import User, Contractor, Hashtag, NewsCharacter, NewsBurstMethod, NewsEmail
+from ...models import User, Contractor, Hashtag, NewsCharacter, NewsBurstMethod, NewsEmail, Client
 from ...library.constants.mock_data import *
 
 
@@ -17,6 +17,7 @@ class Command(BaseCommand):
         self.__create_news_characters()
         self.__create_burst_methods()
         self.__create_emails()
+        self.__create_clients()
 
     def __create_users(self):
         User.objects.create_superuser(
@@ -65,6 +66,9 @@ class Command(BaseCommand):
 
     def __create_emails(self):
         self.__bulk_create_model(NewsEmail, MOCK_EMAILS)
+
+    def __create_clients(self):
+        self.__bulk_create_model(Client, MOCK_CLIENTS)
 
     def __bulk_create_model(self, model_name: Model, mock_data: dict):
         model_name.objects.bulk_create([model_name(**element) for element in mock_data])
