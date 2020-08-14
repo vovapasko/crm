@@ -9,45 +9,49 @@ def generate_str(*, length):
 
 
 class ClientTestCase(BaseTestCase):
+    name_max_length = Client.name_max_length
+    number_max_length = Client.number_max_length
+    emails_max_length = Client.emails_max_length
+
     VALID_CLIENT_DATA = {
-        "name": generate_str(length=Client.name_max_length),
-        "numbers": generate_str(length=Client.number_max_length),
-        "emails": generate_str(length=Client.emails_max_length),
+        "name": generate_str(length=name_max_length),
+        "numbers": generate_str(length=number_max_length),
+        "emails": generate_str(length=emails_max_length),
         "price": 1,
         "amount_publications": 2,
     }
     INVALID_CLIENT_DATA_NAME = {
-        "name": generate_str(length=Client.name_max_length + 1),
-        "numbers": generate_str(length=Client.number_max_length),
-        "emails": generate_str(length=Client.emails_max_length),
+        "name": generate_str(length=name_max_length + 1),
+        "numbers": generate_str(length=number_max_length),
+        "emails": generate_str(length=emails_max_length),
         "price": 1,
         "amount_publications": 2,
     }
     INVALID_CLIENT_DATA_NUMBERS = {
-        "name": generate_str(length=Client.name_max_length),
-        "numbers": generate_str(length=Client.number_max_length + 1),
-        "emails": generate_str(length=Client.emails_max_length),
+        "name": generate_str(length=name_max_length),
+        "numbers": generate_str(length=number_max_length + 1),
+        "emails": generate_str(length=emails_max_length),
         "price": 1,
         "amount_publications": 2,
     }
     INVALID_CLIENT_DATA_EMAILS = {
-        "name": generate_str(length=Client.name_max_length),
-        "numbers": generate_str(length=Client.number_max_length),
-        "emails": generate_str(length=Client.emails_max_length + 1),
+        "name": generate_str(length=name_max_length),
+        "numbers": generate_str(length=number_max_length),
+        "emails": generate_str(length=emails_max_length + 1),
         "price": 1,
         "amount_publications": 2,
     }
     INVALID_CLIENT_DATA_PRICE = {
-        "name": generate_str(length=Client.name_max_length),
-        "numbers": generate_str(length=Client.number_max_length),
-        "emails": generate_str(length=Client.emails_max_length),
+        "name": generate_str(length=name_max_length),
+        "numbers": generate_str(length=number_max_length),
+        "emails": generate_str(length=emails_max_length),
         "price": "daw",
         "amount_publications": 2,
     }
     INVALID_CLIENT_DATA_PUBLICATIONS = {
-        "name": generate_str(length=Client.name_max_length),
-        "numbers": generate_str(length=Client.number_max_length),
-        "emails": generate_str(length=Client.emails_max_length),
+        "name": generate_str(length=name_max_length),
+        "numbers": generate_str(length=number_max_length),
+        "emails": generate_str(length=emails_max_length),
         "price": 1,
         "amount_publications": "dawd",
     }
