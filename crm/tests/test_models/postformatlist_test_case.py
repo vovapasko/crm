@@ -52,4 +52,3 @@ class PostFormatListTestCase(BaseTestCase):
             contractor=self.test_contractor
         )
         self.check_with_exception(exception=DataError, function=pf.save)
-

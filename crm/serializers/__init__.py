@@ -8,3 +8,4 @@ from .login_serializer import LoginSerializer
 from .profile_serializer import ProfileSerializer
 from .user_register_serializer import UserRegisterSerializer
 from .news import *
+from .client_serializer import ClientSerializer
