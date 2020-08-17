@@ -1,7 +1,6 @@
 from drf_writable_nested import WritableNestedModelSerializer
-from crm.views.contractors.postformats.post_format_list_serializer import PostFormatListSerializer
-from ...models import Contractor, PostFormatList
-from ...library.validators import check_positive_numbers
+from crm.serializers.post_format_list_serializer import PostFormatListSerializer
+from crm.models import Contractor
 
 
 class ContractorSerializer(WritableNestedModelSerializer):

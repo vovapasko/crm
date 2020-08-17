@@ -2,7 +2,7 @@ from django.core import signing
 from rest_framework import status
 
 from ....models import User
-from ...test_views.base_test_case import BaseTestCase
+from crm.tests.base_test_case import BaseTestCase
 from .test_data import *
 
 
@@ -39,7 +39,7 @@ class UserRegisterTestCase(BaseTestCase):
             data=correct_register_data
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.check_response_data_keys(
+        self.check_keys_in_dict(
             data=self.get_json_content_from_response(response),
             keys_to_check=self.keys_to_check_in_correct_response
         )

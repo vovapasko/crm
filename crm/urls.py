@@ -32,5 +32,8 @@ urlpatterns = [
     path('news-fileupload/', NewsFileUploadView.as_view(), name='upload-news-file'),
     path('news-fileupload/<int:pk>', NewsFileUploadView.as_view(), name='upload-news-file'),
     path('wave-formation-fileupload/', WaveFormationUploadView.as_view(), name='wave-formation-upload-files'),
-    path('wave-formation-fileupload/<int:pk>', WaveFormationUploadView.as_view(), name='wave-formation-upload-files')
+    path('wave-formation-fileupload/<int:pk>', WaveFormationUploadView.as_view(), name='wave-formation-upload-files'),
+    path('clients/', ClientView.as_view(), name='clients'),
+    path('clients/<int:pk>', ClientView.as_view(), name='update-clients')
+
 ]

@@ -1,12 +1,9 @@
-from django.core import signing
 from rest_framework import status
 
-from ....library.constants import CHANGE_PASSWORD_LINK, SIGNATURE
-from ....library.helpers.views import format_link
-from ..base_test_case import BaseTestCase
-from ....models import User
+from crm.library.constants import SIGNATURE
+from crm.tests.base_test_case import BaseTestCase
+from crm.models import User
 from .test_data import *
-from django.contrib.auth.hashers import make_password
 
 
 class ChangePasswordTestCase(BaseTestCase):
@@ -34,9 +31,9 @@ class ChangePasswordTestCase(BaseTestCase):
             data=new_user_correct_password
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.check_key_in_dict(
-            key='detail',
-            dict_to_check=self.get_json_content_from_response(response)
+        self.assertIn(
+            member='detail',
+            container=self.get_json_content_from_response(response)
         )
 
     def test_change_password_incorrect_link(self):
@@ -48,9 +45,9 @@ class ChangePasswordTestCase(BaseTestCase):
             data=new_user_correct_password
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.check_key_in_dict(
-            key=SIGNATURE,
-            dict_to_check=self.get_errors_dict_from_response(response)
+        self.assertIn(
+            member=SIGNATURE,
+            container=self.get_errors_dict_from_response(response)
         )
 
     def test_correct_password(self):

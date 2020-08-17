@@ -1,10 +1,8 @@
-import json
-
+import json, string, random
 from django.core import signing
 from django.core.management import call_command
 from django.db.models import Model
 from rest_framework.test import APITestCase, APIClient
-
 from crm.models import User
 
 
@@ -67,10 +65,10 @@ class BaseTestCase(APITestCase):
         Checks if compare_to dict contains keys from compare_what dict and if their values are same
         """
         for key in compare_what.keys():
-            self.check_key_in_dict(key, compare_to)
+            self.assertIn(member=key, container=compare_to)
             self.check_values(compare_what, compare_to, key)
 
-    def check_response_data_keys(self, data: dict, keys_to_check: list) -> None:
+    def check_keys_in_dict(self, data: dict, keys_to_check: list) -> None:
         """
         Checks if dictionary in data dict contains keys from keys_to_check list
         :param data: dict which should be checked
@@ -78,9 +76,6 @@ class BaseTestCase(APITestCase):
         """
         for key in keys_to_check:
             self.assertIn(key, data)
-
-    def check_key_in_dict(self, key: str, dict_to_check: dict) -> None:
-        self.assertIn(key, dict_to_check)
 
     def check_values(self, initial_data: dict, response_data: dict, key: str) -> None:
         """
@@ -116,3 +111,10 @@ class BaseTestCase(APITestCase):
     def generate_encoded_link(self, url: str, user: User) -> str:
         data = signing.dumps(dict(id=user.id))
         return f'{url}{data}'
+
+    def generate_random_string(chars=string.ascii_uppercase + string.digits, length=10):
+        return ''.join(random.choice(chars) for _ in range(length))
+
+    def check_with_exception(self, *, exception, function):
+        with self.assertRaises(exception):
+            function()

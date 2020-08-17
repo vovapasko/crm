@@ -1,12 +1,12 @@
 from rest_framework import status
-
-from ....models import Hashtag
-from ...test_views.base_test_case import BaseTestCase
+from rest_framework.reverse import reverse
+from crm.models import Hashtag
+from crm.tests.base_test_case import BaseTestCase
 from .test_data import *
 
 
 class HashtagTestCase(BaseTestCase):
-    url = '/hashtags/'
+    url = reverse('crm:hashtags')
     keys_to_check_correct_response = ['success', 'message', 'hashtag']
     keys_to_check_incorrect_response = ['success', 'message', 'errors']
 
@@ -50,7 +50,7 @@ class HashtagTestCase(BaseTestCase):
             data=correct_new_hashtag
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.check_response_data_keys(
+        self.check_keys_in_dict(
             data=self.get_json_content_from_response(response),
             keys_to_check=self.keys_to_check_correct_response
         )
@@ -75,7 +75,7 @@ class HashtagTestCase(BaseTestCase):
             data=post_data
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.check_response_data_keys(
+        self.check_keys_in_dict(
             data=self.get_json_content_from_response(response),
             keys_to_check=self.keys_to_check_incorrect_response
         )

@@ -2,13 +2,13 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status
 from rest_framework.generics import UpdateAPIView, ListCreateAPIView
-from crm.views import BaseView
+from crm.views.base_view import BaseView
 from crm.paginations import StandardResultsSetPagination
 from crm.models import PostFormatList
 from rest_framework.request import Request
 from rest_framework.response import Response
 from crm.library.constants import MESSAGE_JSON_KEY
-from .post_format_list_serializer import PostFormatListSerializer
+from crm.serializers import PostFormatListSerializer
 
 
 class PostFormatListView(BaseView, ListCreateAPIView, UpdateAPIView):

@@ -1,7 +1,7 @@
 from django.contrib.auth.models import Group
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from ...library.constants import SUPERUSER, ADMIN
+from crm.library.constants import SUPERUSER, ADMIN
 
 
 class GroupSerializer(serializers.Serializer):

@@ -1,7 +1,6 @@
 from .login import *
 from .change_password import *
 from .users import *
-from .base_view import BaseView
 from .change_password_link import *
 from .invite_new_user import *
 from .profile import *
@@ -10,3 +9,5 @@ from .contractors import *
 from .email import *
 from .groups import *
 from .news import *
+from .base_view import BaseView
+from .clients import *

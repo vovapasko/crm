@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from .wave_formation_attachment_serializer import WaveFormationAttachmentSerializer
 from .news_email_serializer import NewsEmailSerializer
-from ....models import WaveFormation, WaveFormationAttachment
+from crm.models import WaveFormation, WaveFormationAttachment
 from drf_writable_nested import WritableNestedModelSerializer
 
 

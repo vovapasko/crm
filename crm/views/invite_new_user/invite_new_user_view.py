@@ -8,12 +8,12 @@ from ...library.constants import *
 from ...library.helpers import send_dmc_email, is_user_allowed_cascade_down
 from ...library.helpers.views import format_link
 from ...models import User
-from .invite_new_user_serializer import InviteNewUserSerializer
+from crm.serializers import InviteNewUserSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 from typing import Dict
 
-from ...serializers import UserSerializer
+from crm.serializers import UserSerializer
 
 
 class InviteNewUserView(BaseView):

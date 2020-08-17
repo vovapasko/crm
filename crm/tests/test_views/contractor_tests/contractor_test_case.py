@@ -1,9 +1,9 @@
-from crm.models import User, Contractor
+from crm.models import Contractor
 from rest_framework.test import APIClient
 from rest_framework import status
 
 from .test_data import *
-from ..base_test_case import BaseTestCase
+from crm.tests.base_test_case import BaseTestCase
 
 
 class ContractorTestCase(BaseTestCase):
@@ -24,7 +24,7 @@ class ContractorTestCase(BaseTestCase):
         client = self.get_api_client(user=self.user)
         response = client.get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.check_response_data_keys(response.data, keys_to_check)
+        self.check_keys_in_dict(response.data, keys_to_check)
         # next line compares amount of entities in request and in database
         self.assertEqual(response.data.get('count'), self.contractors.count())
 
@@ -89,4 +89,4 @@ class ContractorTestCase(BaseTestCase):
             format='json'
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.check_key_in_dict(self.error_check_key, self.get_json_content_from_response(response))
+        self.assertIn(member=self.error_check_key, container=self.get_json_content_from_response(response))

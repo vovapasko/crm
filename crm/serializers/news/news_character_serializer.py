@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from typing import Dict
-from ....models import NewsCharacter
+from crm.models import NewsCharacter
 
 
 class NewsCharacterSerializer(serializers.ModelSerializer):

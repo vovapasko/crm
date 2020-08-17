@@ -1,7 +1,7 @@
 from drf_writable_nested import UniqueFieldsMixin
 from rest_framework import serializers
 
-from ....models import NewsEmail
+from crm.models import NewsEmail
 
 
 class NewsEmailSerializer(UniqueFieldsMixin, serializers.ModelSerializer):

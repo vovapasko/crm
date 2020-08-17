@@ -5,11 +5,11 @@ from rest_framework import permissions
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-from ... import ContractorSerializer
-from ....library.constants import MESSAGE_JSON_KEY
-from ....views import BaseView
-from ....models import Contractor, Hashtag, NewsCharacter, NewsBurstMethod, PostFormatList
-from ..serializers import *
+from crm.serializers import ContractorSerializer
+from crm.library.constants import MESSAGE_JSON_KEY
+from crm.views.base_view import BaseView
+from crm.models import Contractor, Hashtag, NewsCharacter, NewsBurstMethod, PostFormatList
+from crm.serializers import HashtagSerializer, NewsBurstMethodSerializer, NewsCharacterSerializer
 from typing import List
 
 

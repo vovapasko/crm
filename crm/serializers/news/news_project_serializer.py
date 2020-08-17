@@ -4,9 +4,9 @@ from rest_framework.exceptions import ValidationError
 
 from .hashtag_serializer import HashtagSerializer
 from .news_email_serializer import NewsEmailSerializer
-from ... import ContractorSerializer
-from ....models import NewsProject, User
-from ....serializers import UserSerializer
+from crm.serializers import ContractorSerializer
+from crm.models import NewsProject, User
+from crm.serializers import UserSerializer
 from rest_framework import serializers
 from drf_writable_nested import WritableNestedModelSerializer
 

@@ -1,2 +1,1 @@
-from .post_format_list_serializer import PostFormatListSerializer
 from .post_formats_list_view import PostFormatListView

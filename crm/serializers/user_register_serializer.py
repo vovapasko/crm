@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from ...library.validators import validate_password
-from ...library.constants import FIRST_NAME, LAST_NAME, PASSWORD, PASSWORD_CONFIRM
+from crm.library.validators import validate_password
+from crm.library.constants import FIRST_NAME, LAST_NAME, PASSWORD, PASSWORD_CONFIRM
 from django.db.models import Model
 from typing import Dict
 

@@ -1,9 +1,9 @@
 from django.contrib.auth import authenticate
-from ..base_view import BaseView
+from crm.views.base_view import BaseView
 from ...library.constants import *
 from ...library.helpers import generate_token_dict
-from ...serializers import UserSerializer
-from .login_serializer import LoginSerializer
+from crm.serializers import UserSerializer
+from crm.serializers import LoginSerializer
 from rest_framework.response import Response
 from rest_framework.request import Request
 
