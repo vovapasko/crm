@@ -70,3 +70,27 @@ MOCK_EMAILS = [
         "codeword": "Publisher 3"
     }
 ]
+
+MOCK_CLIENTS = [
+    {
+        "name": "John",
+        "numbers": "+380501112233",
+        "emails": "john@client.com",
+        "price": 8400,
+        "amount_publications": 150
+    },
+    {
+        "name": "Peter",
+        "numbers": "+380501112233",
+        "emails": "peter@client.com",
+        "price": 9400,
+        "amount_publications": 250
+    },
+    {
+        "name": "Vasya",
+        "numbers": "+380501112233",
+        "emails": "vasya@client.com",
+        "price": 7400,
+        "amount_publications": 50
+    }
+]

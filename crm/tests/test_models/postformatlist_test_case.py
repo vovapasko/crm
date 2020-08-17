@@ -6,6 +6,7 @@ from django.db.utils import IntegrityError, DataError
 
 class PostFormatListTestCase(BaseTestCase):
     good_post_format = "format"
+    _50_symbols_post_format = BaseTestCase.generate_random_string(length=PostFormatList.max_post_format_length)
     # more than 50 symbols
     too_long_post_format = BaseTestCase.generate_random_string(length=PostFormatList.max_post_format_length + 1)
     keys_to_check = ['contractor', 'post_format', 'news_amount', 'arranged_news', 'one_post_price']
@@ -19,10 +20,16 @@ class PostFormatListTestCase(BaseTestCase):
     def tearDownClass(cls) -> None:
         super().tearDownClass()
 
-    def test_good_postformat_create(self):
+    def test_less_50_symbols_postformat_create(self):
+        self.__test_good_postformat_create(self.good_post_format)
+
+    def test_50_symbols_postformat(self):
+        self.__test_good_postformat_create(self._50_symbols_post_format)
+
+    def __test_good_postformat_create(self, format: str):
         pf = PostFormatList(
             contractor=self.test_contractor,
-            post_format=self.good_post_format
+            post_format=format
         )
         pf.save()
         self.check_keys_in_dict(data=model_to_dict(pf), keys_to_check=self.keys_to_check)
@@ -31,21 +38,17 @@ class PostFormatListTestCase(BaseTestCase):
         pf = PostFormatList(
             post_format=self.good_post_format
         )
-        self.__test_exception(IntegrityError, pf.save)
+        self.check_with_exception(exception=IntegrityError, function=pf.save)
 
     def test_no_postformat_postformat_create(self):
         pf = PostFormatList(
             contractor=self.test_contractor
         )
-        self.__test_exception(IntegrityError, pf.save)
+        self.check_with_exception(exception=IntegrityError, function=pf.save)
 
     def test_too_long_postformat_postformat_create(self):
         pf = PostFormatList(
             post_format=self.too_long_post_format,
             contractor=self.test_contractor
         )
-        self.__test_exception(DataError, pf.save)
-
-    def __test_exception(self, exception, function):
-        with self.assertRaises(exception):
-            function()
+        self.check_with_exception(exception=DataError, function=pf.save)

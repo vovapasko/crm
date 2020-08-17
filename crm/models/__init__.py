@@ -7,3 +7,4 @@ from .burst_news import *
 from .post_format_list import PostFormatList
 from .news_email import NewsEmail
 from .news_project import NewsProject
+from .client import Client
