@@ -30,7 +30,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_get_clients_unauthenticated(self):
         client = self.get_api_client()
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.get,
             url=self.url,
             response_code=status.HTTP_401_UNAUTHORIZED
@@ -38,7 +38,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_post_clients_unauthenticated(self):
         client = self.get_api_client()
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.post,
             url=self.url,
             data=self.correct_post_data,
@@ -47,7 +47,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_put_clients_unauthenticated(self):
         client = self.get_api_client()
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.put,
             url=self.put_delete_url,
             data=self.put_data,
@@ -56,7 +56,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_delete_clients_unauthenticated(self):
         client = self.get_api_client()
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.delete,
             url=self.put_delete_url,
             response_code=status.HTTP_401_UNAUTHORIZED
@@ -64,7 +64,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_get_clients_authenticated(self):
         client = self.get_api_client(user=self.test_admin_user)
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.get,
             url=self.url,
             response_code=status.HTTP_200_OK
@@ -72,7 +72,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_post_no_hashtags_clients_authenticated(self):
         client = self.get_api_client(user=self.test_admin_user)
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.post,
             url=self.url,
             data=self.CORRECT_CLIENT_DATA,
@@ -81,7 +81,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_post_with_clients_authenticated(self):
         client = self.get_api_client(user=self.test_admin_user)
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.post,
             url=self.url,
             data=self.correct_post_data,
@@ -90,7 +90,7 @@ class ClientTestCase(BaseTestCase):
 
     def test_put_clients_authenticated(self):
         client = self.get_api_client(user=self.test_admin_user)
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.put,
             url=self.put_delete_url,
             response_code=status.HTTP_200_OK,
@@ -99,12 +99,8 @@ class ClientTestCase(BaseTestCase):
 
     def test_delete_clients_authenticated(self):
         client = self.get_api_client(user=self.test_admin_user)
-        self.__test_request_method_clients(
+        self._test_request_method_clients(
             method=client.delete,
             url=self.put_delete_url,
             response_code=status.HTTP_204_NO_CONTENT
         )
-
-    def __test_request_method_clients(self, *, method, url, response_code, data=None):
-        response = method(path=url, data=data)
-        self.assertEqual(response.status_code, response_code)
