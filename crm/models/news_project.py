@@ -1,4 +1,4 @@
-from . import Contractor, Hashtag
+from crm.models import Contractor, Hashtag
 from .abstract_base_model import AbstractBaseModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -19,10 +19,11 @@ class NewsProject(AbstractBaseModel):
         help_text="Budget for the project",
         default=0
     )
-    client = models.CharField(
-        _('client_name'),
-        max_length=max_client_name_len,
-        help_text="The name of the client for whom project is"
+    client = models.ForeignKey(
+        to='Client',
+        help_text="The name of the client for whom project is",
+        on_delete=models.SET_NULL,
+        null=True
     )
     manager = models.ForeignKey(
         User,
