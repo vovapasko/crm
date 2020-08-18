@@ -7,7 +7,6 @@ from .user import User
 
 class NewsProject(AbstractBaseModel):
     max_project_name_len = 50
-    max_client_name_len = 50
 
     name = models.CharField(
         _('project_name'),
