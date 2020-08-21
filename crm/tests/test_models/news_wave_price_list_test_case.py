@@ -1,6 +1,6 @@
 from crm.tests.base_test_case import BaseTestCase
 from crm.models import Contractor
-from crm.models import NewsWavePriceList, NewsWave, NewsCharacter, NewsBurstMethod
+from crm.models import NewsWavePriceList, NewsWave
 from django.forms.models import model_to_dict
 from django.db.utils import DataError, IntegrityError
 
@@ -12,12 +12,13 @@ class NewsWavePriceListTestCase(BaseTestCase):
     upper_bound_price = 2147483647
     too_high_price = upper_bound_price + 1
 
-    fields_to_check = ['contractor', 'price']
+    fields_to_check = ['news_wave', 'contractor', 'price']
 
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
         cls.test_contractor = Contractor.objects.first()
+        cls.test_wave = NewsWave.objects.first()
 
     @classmethod
     def tearDownClass(cls):
@@ -59,6 +60,7 @@ class NewsWavePriceListTestCase(BaseTestCase):
 
     def __test_successful_create(self, price):
         pl = NewsWavePriceList(
+            news_wave=self.test_wave,
             contractor=self.test_contractor,
             price=price
         )
