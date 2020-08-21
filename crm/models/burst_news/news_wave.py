@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from .news_character import NewsCharacter
 from .news_burst_method import NewsBurstMethod
 from .wave_formation import WaveFormation
-from .. import Contractor, Hashtag, User
+from crm.models import Contractor, Hashtag, User
 from .news import News
 from ..abstract_base_model import AbstractBaseModel
 from ..news_project import NewsProject
