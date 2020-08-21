@@ -3,3 +3,4 @@ from .news_email_test_case import NewsEmailTestCase
 from .postformatlist_test_case import PostFormatListTestCase
 from .client_test_case import ClientTestCase
 from .news_project_test_case import NewsProjectTestCase
+from .news_wave_price_list_test_case import NewsWavePriceListTestCase

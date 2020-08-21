@@ -10,3 +10,4 @@ from .news_wave_serializer import NewsWaveSerializer
 from .wave_formation_attachment_serializer import WaveFormationAttachmentSerializer
 from .wave_formation_attachment_put_serializer import WaveFormationAttachmentPutSerializer
 from .wave_formation_serializer import WaveFormationSerializer
+from .news_wave_price_list_serializer import NewsWavePriceListSerializer
