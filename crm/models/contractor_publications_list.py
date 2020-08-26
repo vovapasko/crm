@@ -11,12 +11,14 @@ class ContractorPublicationsList(AbstractBaseModel):
     publish = models.CharField(
         _('publish'),
         help_text="Name of topic or edition which contractor publishes",
-        max_length=max_char_length
+        max_length=max_char_length,
+        blank=True,
     )
     not_publish = models.CharField(
         _('not_publish'),
         help_text="Name of topic or edition which contractor doesn't publish",
-        max_length=max_char_length
+        max_length=max_char_length,
+        blank=True
     )
     comments = models.ForeignKey(ContractorCommentList, on_delete=models.CASCADE)
 
