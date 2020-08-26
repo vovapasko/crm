@@ -9,3 +9,5 @@ from .profile_serializer import ProfileSerializer
 from .user_register_serializer import UserRegisterSerializer
 from .news import *
 from .client_serializer import ClientSerializer
+from .contractor_publications_list_serializer import ContractorPublicationsListSerializer
+from .contractor_comment_list_serializer import ContractorCommentListSerializer
