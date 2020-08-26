@@ -31,6 +31,10 @@ class NewsWaveSerializer(WritableNestedModelSerializer):
         depth = 2
         readonly = ['date_created', 'date_updated']
 
+    def validate_newswavepricelist_set(self, my_set):
+        print()
+        return my_set
+
     def validate_news_character(self, character: str) -> str:
         self.__validate_model(character, NewsCharacter)
         return character
