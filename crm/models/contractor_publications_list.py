@@ -1,7 +1,7 @@
 from .abstract_base_model import AbstractBaseModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from crm.models import ContractorCommentList
+from crm.models.contractor_comment_list import ContractorCommentList
 
 
 class ContractorPublicationsList(AbstractBaseModel):

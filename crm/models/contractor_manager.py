@@ -1,5 +1,6 @@
 from django.db import models
-from crm.models import ContractorCommentList, ContractorPublicationsList
+from crm.models.contractor_comment_list import ContractorCommentList
+from crm.models.contractor_publications_list import ContractorPublicationsList
 from .post_format_list import PostFormatList
 
 
