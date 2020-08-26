@@ -1,6 +1,7 @@
 from rest_framework.serializers import ModelSerializer
 from crm.models.contractor_publications_list import ContractorPublicationsList
-from crm.serializers import ContractorSerializer, ContractorCommentListSerializer
+from crm.serializers.contractor_serializer import ContractorSerializer
+from crm.serializers.contractor_comment_list_serializer import ContractorCommentListSerializer
 
 
 class ContractorPublicationsListSerializer(ModelSerializer):
