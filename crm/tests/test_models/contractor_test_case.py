@@ -18,7 +18,5 @@ class ContractorTestCase(BaseTestCase):
         contractor = Contractor.objects.create_contractor(
             **MOCK_CONTRACTOR
         )
-        self.check_keys_in_dict(
-            data=self.dict_from_model(contractor),
-            keys_to_check=self.keys_to_check
-        )
+        self.compare_data(compare_what=MOCK_CONTRACTOR,
+                          compare_to=self.dict_from_model(contractor))
