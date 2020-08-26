@@ -1,0 +1,1 @@
+from .news_project_view_test_case import NewsProjectViewTestCase

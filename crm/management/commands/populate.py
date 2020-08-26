@@ -2,8 +2,9 @@ from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db.models import Model
 
-from ...models import User, Contractor, Hashtag, NewsCharacter, NewsBurstMethod, NewsEmail, Client
-from ...library.constants.mock_data import *
+from ...models import User, Contractor, Hashtag, NewsCharacter, NewsBurstMethod, NewsEmail, Client, NewsProject, \
+    NewsWave
+from crm.library.fixtures.fixtures import *
 
 
 class Command(BaseCommand):
@@ -18,6 +19,8 @@ class Command(BaseCommand):
         self.__create_burst_methods()
         self.__create_emails()
         self.__create_clients()
+        self.__create_news_projects()
+        self.__create_news_waves()
 
     def __create_users(self):
         User.objects.create_superuser(
@@ -69,6 +72,34 @@ class Command(BaseCommand):
 
     def __create_clients(self):
         self.__bulk_create_model(Client, MOCK_CLIENTS)
+
+    def __create_news_projects(self):
+        for project in MOCK_NEWS_PROJECTS:
+            project.update(
+                {
+                    "client": Client.objects.first(),
+                    "manager": User.objects.first(),
+                }
+            )
+        self.__bulk_create_model(NewsProject, MOCK_NEWS_PROJECTS)
+        for entity in NewsProject.objects.all():
+            entity.hashtags.set(Hashtag.objects.all())
+            entity.contractors.set(Contractor.objects.all())
+            entity.emails.set(NewsEmail.objects.all())
+
+    def __create_news_waves(self):
+        for wave in MOCK_NEWS_WAVES:
+            wave.update(
+                {
+                    "news_character": NewsCharacter.objects.first(),
+                    "burst_method": NewsBurstMethod.objects.first(),
+                    "project": NewsProject.objects.first(),
+                    "created_by": User.objects.first(),
+                }
+            )
+        self.__bulk_create_model(NewsWave, MOCK_NEWS_WAVES)
+        for entity in NewsWave.objects.all():
+            entity.hashtags.set(Hashtag.objects.all())
 
     def __bulk_create_model(self, model_name: Model, mock_data: dict):
         model_name.objects.bulk_create([model_name(**element) for element in mock_data])

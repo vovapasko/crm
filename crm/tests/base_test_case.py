@@ -118,3 +118,7 @@ class BaseTestCase(APITestCase):
     def check_with_exception(self, *, exception, function):
         with self.assertRaises(exception):
             function()
+
+    def _test_request_method_clients(self, *, method, url, response_code, data=None):
+        response = method(path=url, data=data)
+        self.assertEqual(response.status_code, response_code)

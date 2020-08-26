@@ -1,7 +1,7 @@
 from django.test import TestCase
 from ...models import User
 from django.contrib.auth.models import Group
-from ...library.constants.mock_data import *
+from crm.library.fixtures.fixtures import *
 from ...library.constants import SUPERUSER, ADMIN, MANAGER
 from django.core.management import call_command
 
