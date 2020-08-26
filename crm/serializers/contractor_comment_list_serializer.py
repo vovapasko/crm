@@ -1,11 +1,9 @@
 from rest_framework.serializers import ModelSerializer
 from crm.models.contractor_comment_list import ContractorCommentList
-from rest_framework import serializers
+from drf_writable_nested import WritableNestedModelSerializer
 
 
-class ContractorCommentListSerializer(ModelSerializer):
-    contractor = serializers.PrimaryKeyRelatedField
-
+class ContractorCommentListSerializer(WritableNestedModelSerializer):
     class Meta:
         model = ContractorCommentList
         fields = "__all__"

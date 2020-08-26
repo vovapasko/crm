@@ -20,7 +20,6 @@ class ContractorPublicationsList(AbstractBaseModel):
         max_length=max_char_length,
         blank=True
     )
-    comments = models.ForeignKey(ContractorCommentList, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.contractor

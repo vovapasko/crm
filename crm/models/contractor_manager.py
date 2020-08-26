@@ -48,6 +48,5 @@ class ContractorManager(models.Manager):
             contractor=contractor
         )
         ContractorPublicationsList.objects.create(
-            contractor=contractor,
-            comments=comments
+            contractor=contractor
         )
