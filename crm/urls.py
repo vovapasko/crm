@@ -36,6 +36,7 @@ urlpatterns = [
     path('clients/', ClientView.as_view(), name='clients'),
     path('clients/<int:pk>', ClientView.as_view(), name='update-clients'),
     path('publications/', ContractorPublicationsView.as_view(), name='contractor-publications'),
-    path('publications/<int:pk>', ContractorPublicationsView.as_view(), name='contractor-publications')
-
+    path('publications/<int:pk>', ContractorPublicationsView.as_view(), name='contractor-publications'),
+    path('comments/', ContractorCommentsView.as_view(), name='contractor-comments'),
+    path('comments/<int:pk>', ContractorCommentsView.as_view(), name='contractor-comments'),
 ]

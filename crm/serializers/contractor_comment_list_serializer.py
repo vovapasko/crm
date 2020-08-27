@@ -11,3 +11,4 @@ class ContractorCommentListSerializer(WritableNestedModelSerializer):
             'date_created',
             'date_updated',
         ]
+        depth = 1
