@@ -1,10 +1,14 @@
 from drf_writable_nested import WritableNestedModelSerializer
 from crm.serializers.post_format_list_serializer import PostFormatListSerializer
 from crm.models import Contractor
+from crm.serializers.contractor_publications_list_serializer import ContractorPublicationsListSerializer
+from crm.serializers.contractor_comment_list_serializer import ContractorCommentListSerializer
 
 
 class ContractorSerializer(WritableNestedModelSerializer):
     postformatlist_set = PostFormatListSerializer(many=True, required=False, read_only=True)
+    contractorpublicationslist_set = ContractorPublicationsListSerializer(many=True, required=False, read_only=True)
+    contractorcommentlist_set = ContractorCommentListSerializer(many=True, required=False, read_only=True)
 
     class Meta:
         model = Contractor

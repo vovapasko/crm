@@ -22,4 +22,4 @@ class ContractorPublicationsList(AbstractBaseModel):
     )
 
     def __str__(self):
-        return self.contractor
+        return f"Publications of {self.contractor.editor_name}"
