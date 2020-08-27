@@ -10,4 +10,16 @@ class ContractorPublicationsView(BaseView, ListCreateAPIView, UpdateAPIView, Des
     permission_classes = [IsAuthenticated]
     serializer_class = ContractorPublicationsListSerializer
     pagination_class = StandardResultsSetPagination
-    queryset = ContractorPublicationsList.objects.all().order_by('id')
+
+    get_request_param = 'contractor'
+
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `contractor_id` query parameter in the URL.
+        """
+        queryset = ContractorPublicationsList.objects.all()
+        contractor_id = self.request.query_params.get(self.get_request_param, None)
+        if contractor_id is not None:
+            queryset = queryset.filter(contractor=contractor_id)
+        return queryset.order_by('id')

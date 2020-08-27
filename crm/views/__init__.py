@@ -11,4 +11,4 @@ from .groups import *
 from .news import *
 from .base_view import BaseView
 from .clients import *
-from .contractor_publications import *
+from crm.views.contractors.publications import *

@@ -18,20 +18,16 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
     pagination_class = StandardResultsSetPagination
 
     # get request param
-    get_request_wave_param = "wave"
+    get_request_param = "wave"
 
     def get(self, request: Request, *args, **kwargs) -> Response:
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet:
-        """
-        Get specified entity from queryset according to request param
-        """
-        queryset = NewsWave.objects.all()
-        wave_id = self.request.query_params.get(self.get_request_wave_param, None)
-        if wave_id is not None:
-            queryset = queryset.filter(pk=wave_id)
-        return queryset.order_by('id')
+        return super(BaseView).get_custom_queryset(
+            model=NewsWave,
+            query_param=self.get_request_param
+        )
 
     def put(self, request: Request, *args, **kwargs) -> Response:
         return super().partial_update(request)
