@@ -1,6 +1,7 @@
 from django.db import models
 from crm.models.contractor_comment_list import ContractorCommentList
 from crm.models.contractor_publications_list import ContractorPublicationsList
+from crm.models.contractor_publications_blacklist import ContractorPublicationsBlacklist
 from .post_format_list import PostFormatList
 
 
@@ -44,9 +45,6 @@ class ContractorManager(models.Manager):
 
     def __create_contractor_publications_comments_list(self, contractor):
         # by default create empty publications list and empty comment list
-        comments = ContractorCommentList.objects.create(
-            contractor=contractor
-        )
-        ContractorPublicationsList.objects.create(
-            contractor=contractor
-        )
+        ContractorCommentList.objects.create(contractor=contractor)
+        ContractorPublicationsList.objects.create(contractor=contractor)
+        ContractorPublicationsBlacklist.objects.create(contractor=contractor)

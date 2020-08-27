@@ -4,6 +4,8 @@ from crm.paginations import StandardResultsSetPagination
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.serializers.contractor_comment_list_serializer import ContractorCommentListSerializer
+from rest_framework.request import Request
+from rest_framework.response import Response
 
 
 class ContractorCommentsView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
@@ -22,3 +24,6 @@ class ContractorCommentsView(BaseView, ListCreateAPIView, UpdateAPIView, Destroy
         if contractor_id is not None:
             queryset = queryset.filter(contractor=contractor_id)
         return queryset.order_by('id')
+
+    def put(self, request: Request, *args, **kwargs) -> Response:
+        return self.partial_update(request)

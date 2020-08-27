@@ -11,3 +11,4 @@ from .news import *
 from .client_serializer import ClientSerializer
 from .contractor_publications_list_serializer import ContractorPublicationsListSerializer
 from .contractor_comment_list_serializer import ContractorCommentListSerializer
+from .contractor_publications_blacklist_serializer import ContractorPublicationsBlacklistSerializer

@@ -10,4 +10,3 @@ class ContractorPublicationsListSerializer(WritableNestedModelSerializer):
             'date_created',
             'date_updated',
         ]
-        depth = 1
