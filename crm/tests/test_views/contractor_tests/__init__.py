@@ -1,1 +1,2 @@
 from .contractor_test_case import ContractorTestCase
+from .comments_tests import ContractorCommentsTestCase

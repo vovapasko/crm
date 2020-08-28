@@ -1,0 +1,1 @@
+from .publications_list_test_case import PublicationsListTestCase
