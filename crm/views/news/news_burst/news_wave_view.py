@@ -24,7 +24,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet:
-        return super(BaseView).get_custom_queryset(
+        return self.get_custom_queryset(
             model=NewsWave,
             query_param=self.get_request_param
         )

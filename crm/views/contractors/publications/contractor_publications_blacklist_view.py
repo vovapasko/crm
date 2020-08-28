@@ -1,31 +1,27 @@
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.request import Request
 from rest_framework.response import Response
-
-from crm.paginations import StandardResultsSetPagination
-from crm.views.base_view import BaseView
-from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView
-from rest_framework.permissions import IsAuthenticated
-from crm.serializers.contractor_publications_blacklist_serializer import ContractorPublicationsBlacklistSerializer
+from drf_yasg import openapi
 from crm.models import ContractorPublicationsBlacklist
+from crm.serializers.contractor_publications_blacklist_serializer import ContractorPublicationsBlacklistSerializer
+from crm.views.contractors.contractors_attributes_base_view import ContractorAttributesBaseView
 
 
-class ContractorPublicationsBlacklistView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+class ContractorPublicationsBlacklistView(ContractorAttributesBaseView):
     serializer_class = ContractorPublicationsBlacklistSerializer
-    pagination_class = StandardResultsSetPagination
 
-    get_request_param = 'contractor'
+    test_param = openapi.Parameter(ContractorAttributesBaseView.get_request_param, openapi.IN_QUERY,
+                                   description="get publications blacklist for concrete contractor",
+                                   type=openapi.TYPE_INTEGER)
+    user_response = openapi.Response('Gives publications blacklist for this contractor',
+                                     ContractorPublicationsBlacklistSerializer)
 
     def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `contractor_id` query parameter in the URL.
-        """
-        queryset = ContractorPublicationsBlacklist.objects.all()
-        contractor_id = self.request.query_params.get(self.get_request_param, None)
-        if contractor_id is not None:
-            queryset = queryset.filter(contractor=contractor_id)
-        return queryset.order_by('id')
+        return self.get_contractor_attribute_queryset(ContractorPublicationsBlacklist)
 
     def put(self, request: Request, *args, **kwargs) -> Response:
         return self.partial_update(request)
+
+    @swagger_auto_schema(manual_parameters=[test_param], responses={200: user_response})
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
