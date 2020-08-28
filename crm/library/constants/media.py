@@ -6,7 +6,7 @@ users_avatar_dir = "users_pictures"
 media_storage = os.path.join('main_app', users_avatar_dir)
 
 default_avatar_filename = "avatar_2x.png"
-default_avatar = os.path.join('main_app', default_avatar_filename)
+default_avatar = os.path.join(media_storage, default_avatar_filename)
 
 news_attachments_dir = "news_attachments"
 news_attachments_storage = os.path.join('main_app', news_attachments_dir)

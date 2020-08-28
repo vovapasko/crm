@@ -3,7 +3,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from crm.serializers import NewsProjectSerializer
-from crm.models import NewsProject, User
+from crm.models import NewsProject
 from crm.paginations import StandardResultsSetPagination
 from crm.views.base_view import BaseView
 from rest_framework.generics import ListCreateAPIView, DestroyAPIView, UpdateAPIView

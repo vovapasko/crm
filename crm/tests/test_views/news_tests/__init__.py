@@ -1,1 +1,2 @@
 from .news_emails_test_case import NewsEmailTestCase
+from .news_project_test_case import NewsProjectViewTestCase

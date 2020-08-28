@@ -1,4 +1,4 @@
-from django.db.models import Model
+from django.db.models import Model, QuerySet
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from django.http import Http404
@@ -12,10 +12,11 @@ from crm.library.exceptions import ViewPermissionDenied
 from crm.library.helpers import get_name_from_permission
 from crm.models import User
 from rest_framework.request import Request
-from typing import Type
+from typing import Type, Union
 
 
 class BaseView(APIView):
+
     def json_response(self, response_code: int, **kwargs):
         return Response(kwargs, status=response_code)
 
@@ -138,3 +139,13 @@ class BaseView(APIView):
                 )
             )
         return entity, error_json
+
+    def get_custom_queryset(self, *, model: Type[Model], query_param: Union[str, int], order_by_param: str = 'id') -> QuerySet:
+        """
+                Get specified entity from queryset according to request param
+                """
+        queryset = model.objects.all()
+        entity = self.request.query_params.get(query_param, None)
+        if entity is not None:
+            queryset = queryset.filter(query_param=entity)
+        return queryset.order_by(order_by_param)

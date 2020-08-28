@@ -94,3 +94,33 @@ MOCK_CLIENTS = [
         "amount_publications": 50
     }
 ]
+
+MOCK_NEWS_PROJECTS = [
+    {
+        "name": "Test project 1",
+        "budget": 1234,
+    },
+    {
+        "name": "Test project 2",
+        "budget": 5678,
+    },
+    {
+        "name": "Test project 3",
+        "budget": 9012,
+    },
+]
+
+MOCK_NEWS_WAVES = [
+    {
+        "title": "Test Title 1",
+        "post_format": "test format 1"
+    },
+    {
+        "title": "Test Title 2",
+        "post_format": "test format 2"
+    },
+    {
+        "title": "Test Title 3",
+        "post_format": "test format 3"
+    }
+]

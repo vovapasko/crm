@@ -9,7 +9,8 @@ from .wave_formation_serializer import WaveFormationSerializer
 from crm.models import NewsWave, Contractor, Hashtag, NewsCharacter, NewsBurstMethod
 from typing import Type, List
 from crm.serializers.news import NewsCharacterSerializer, NewsBurstMethodSerializer, HashtagSerializer
-from crm.serializers import UserSerializer, ContractorSerializer
+from crm.serializers.news.news_wave_price_list_serializer import NewsWavePriceListSerializer
+from crm.serializers import UserSerializer
 
 
 class NewsWaveSerializer(WritableNestedModelSerializer):
@@ -18,16 +19,21 @@ class NewsWaveSerializer(WritableNestedModelSerializer):
     project = NewsProjectSerializer()
     wave_formation = WaveFormationSerializer(required=True, allow_null=True)
 
-    contractors = ContractorSerializer(many=True)
     hashtags = HashtagSerializer(many=True)
     news_in_project = NewsSerializer(many=True)
     created_by = UserSerializer(read_only=True)
+
+    newswavepricelist_set = NewsWavePriceListSerializer(many=True)
 
     class Meta:
         model = NewsWave
         fields = '__all__'
         depth = 2
         readonly = ['date_created', 'date_updated']
+
+    def validate_newswavepricelist_set(self, my_set):
+        print()
+        return my_set
 
     def validate_news_character(self, character: str) -> str:
         self.__validate_model(character, NewsCharacter)
