@@ -1,4 +1,4 @@
-from .contractor_tests import ContractorTestCase
+from .contractor_tests import *
 from .profile_tests import ProfileTestCase
 from .users_tests import UsersTestCase
 from .email_tests import EmailTestCase
