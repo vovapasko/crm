@@ -24,10 +24,11 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self) -> QuerySet:
-        return self.get_custom_queryset(
-            model=NewsWave,
-            query_param=self.get_request_param
-        )
+        queryset = NewsWave.objects.all()
+        wave_id = self.request.query_params.get(self.get_request_param, None)
+        if wave_id is not None:
+            queryset = queryset.filter(pk=wave_id)
+        return queryset.order_by('id')
 
     def put(self, request: Request, *args, **kwargs) -> Response:
         return super().partial_update(request)
