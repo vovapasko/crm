@@ -6,6 +6,8 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.core.signing import BadSignature
+
+from ..constants import PRODUCTION_SERVER
 from ...library.constants import DATA, ID, LOCAL_SERVER, DEV_SERVER
 from django.core.exceptions import ObjectDoesNotExist
 from typing import Dict, List
@@ -80,4 +82,6 @@ def format_link(link):
     server = DEV_SERVER
     if settings.DEBUG:
         server = LOCAL_SERVER
+    if settings.PRODUCTION:
+        server = PRODUCTION_SERVER
     return f"{server}/{link}"

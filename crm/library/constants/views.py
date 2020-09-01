@@ -39,6 +39,6 @@ USER_CONFIRM_API = f'{APP_NAME}:confirm-user'
 # links
 LOCAL_SERVER = "127.0.0.1:4200"
 DEV_SERVER = "https://dmc-front.herokuapp.com"
-
+PRODUCTION_SERVER = "https://dmc-crm-production-frontend.herokuapp.com"
 INVITE_NEW_USER_LINK = "account/signup"
 CHANGE_PASSWORD_LINK = "account/change-password"
