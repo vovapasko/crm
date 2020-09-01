@@ -24,7 +24,7 @@ SECRET_KEY = os.environ.get('DMC_DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = (os.environ.get('DMC_DJANGO_DEBUG_VALUE') == 'True')
 
-ALLOWED_HOSTS = ["127.0.0.1", "dmc-crm-backend.herokuapp.com", "https://dmc-crm-production-backend.herokuapp.com"]
+ALLOWED_HOSTS = ["127.0.0.1", "dmc-crm-backend.herokuapp.com", "dmc-crm-production-backend.herokuapp.com"]
 
 HASH_SALT = os.environ.get('DMC_DJANGO_HASH_SALT')
 
