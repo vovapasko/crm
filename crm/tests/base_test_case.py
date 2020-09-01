@@ -4,6 +4,8 @@ from django.core.management import call_command
 from django.db.models import Model
 from rest_framework.test import APITestCase, APIClient
 from crm.models import User
+from django.forms.models import model_to_dict
+from django.db.models import Model
 
 
 class BaseTestCase(APITestCase):
@@ -118,3 +120,10 @@ class BaseTestCase(APITestCase):
     def check_with_exception(self, *, exception, function):
         with self.assertRaises(exception):
             function()
+
+    def _test_request_method_clients(self, *, method, url, response_code, data=None):
+        response = method(path=url, data=data)
+        self.assertEqual(response.status_code, response_code)
+
+    def dict_from_model(self, model: Model) -> dict:
+        return model_to_dict(model)

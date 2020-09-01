@@ -3,10 +3,10 @@ from django.utils.translation import gettext_lazy as _
 from .news_character import NewsCharacter
 from .news_burst_method import NewsBurstMethod
 from .wave_formation import WaveFormation
-from .. import Contractor, Hashtag, User
+from crm.models import Hashtag, User
 from .news import News
-from ..abstract_base_model import AbstractBaseModel
-from ..news_project import NewsProject
+from crm.models.abstract_base_model import AbstractBaseModel
+from crm.models.news_project import NewsProject
 
 
 class NewsWave(AbstractBaseModel):
@@ -33,7 +33,6 @@ class NewsWave(AbstractBaseModel):
 
     news_in_project = models.ManyToManyField(News)
     hashtags = models.ManyToManyField(Hashtag)
-    contractors = models.ManyToManyField(Contractor)
 
     def __str__(self):
         return self.title

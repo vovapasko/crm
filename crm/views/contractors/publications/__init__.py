@@ -1,0 +1,2 @@
+from .contractor_publications_view import ContractorPublicationsView
+from .contractor_publications_blacklist_view import ContractorPublicationsBlacklistView
