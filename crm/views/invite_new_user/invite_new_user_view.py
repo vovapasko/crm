@@ -1,8 +1,9 @@
 from django.core import signing
 from django.db import IntegrityError
+from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticated
-
+from python_http_client.exceptions import HTTPError
 from ..base_view import BaseView
 from ...library.constants import *
 from ...library.helpers import send_dmc_email, is_user_allowed_cascade_down
@@ -77,8 +78,18 @@ class InviteNewUserView(BaseView):
                     EMAIL: 'Such an email is already registered'
                 }
             )
-        new_user = User.objects.filter(pk=user_id).first()
-        self.__send_email(request, data[EMAIL], user_id)
+        new_user = self.objects.filter(pk=user_id).first()
+        try:
+            self.__send_email(request, data[EMAIL], user_id)
+        except HTTPError as e:
+            new_user.delete()
+            return self.json_failed_response(
+                response_code=status.HTTP_502_BAD_GATEWAY,
+                errors={
+                    MESSAGE_JSON_KEY: "Error happened while sending email",
+                    "exception": str(e)
+                }
+            )
 
         return self.json_success_response(
             message={

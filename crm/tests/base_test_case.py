@@ -43,7 +43,7 @@ class BaseTestCase(APITestCase):
         return cls.get_user_by_param(email='manager@manager.com')
 
     @classmethod
-    def get_client_user(cls) -> User:
+    def get_guest_user(cls) -> User:
         return cls.get_user_by_param(email='client@client.com')
 
     @classmethod

@@ -16,7 +16,7 @@ class ChangePasswordTestCase(BaseTestCase):
     def setUpTestData(cls):
         super().setUpTestData()
         cls.user = User.objects.create_admin_user(**init_user_data)
-        cls.other_user = super().get_client_user()
+        cls.other_user = super().get_guest_user()
         cls.correct_link = cls.generate_encoded_link(cls, cls.url, cls.user)
         cls.users = User.objects.all()
 

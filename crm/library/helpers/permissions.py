@@ -1,19 +1,24 @@
+from typing import Union, Tuple, Any, List
+
 from ..constants.permissions import GROUPS_FOR_CASCADE
 from django.contrib.auth.models import Group
 from ...models import User
 from ..constants import SUPERUSER, MANAGER, ADMIN, GUEST
 
 
-def groups_cascade_down(group: Group) -> list:
+def groups_cascade_down(group: Group) -> List[str]:
     """
     for given group returns list of groups names which is cascade down from given group
     :param group: group name or Group from django models
     :return: list of groups name
     """
 
-    def __cascade(group_type, value) -> list:
+    def __cascade(
+            group_type: Union[type, Tuple[Union[type, Tuple[Any, ...]], ...]],
+            value: Union[str, Group]
+    ) -> list:
         if isinstance(group, group_type):
-            return GROUPS_FOR_CASCADE[GROUPS_FOR_CASCADE.index(value) + 1:]
+            return GROUPS_FOR_CASCADE[GROUPS_FOR_CASCADE.index(value):]
 
     return __cascade(str, group) or __cascade(Group, group.name) or list()
 
@@ -38,7 +43,3 @@ def get_name_from_permission(permission: str) -> str:
     """
     app_name, permission_name = permission.split('.')
     return permission_name
-
-
-def group_has_access(group_name):
-    return group_name == SUPERUSER or group_name == ADMIN
