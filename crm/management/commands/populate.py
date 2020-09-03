@@ -41,7 +41,7 @@ class Command(BaseCommand):
         )
         self.__print_user_message("Manager")
 
-        User.objects.create_client_user(
+        User.objects.create_guest_user(
             email=TEST_CLIENT_EMAIL,
             password=TEST_CLIENT_PASSWORD
         )

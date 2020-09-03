@@ -19,6 +19,6 @@ groups = {
         CAN_INVITE_NEW_USER,
         CAN_DELETE_USER,
     ],
-    CLIENT: [
+    GUEST: [
     ],
 }

@@ -1,7 +1,7 @@
 from ..constants.permissions import GROUPS_FOR_CASCADE
 from django.contrib.auth.models import Group
 from ...models import User
-from ..constants import SUPERUSER, MANAGER, ADMIN, CLIENT
+from ..constants import SUPERUSER, MANAGER, ADMIN, GUEST
 
 
 def groups_cascade_down(group: Group) -> list:

@@ -31,7 +31,7 @@ class InviteNewUserView(BaseView):
         SUPERUSER: objects.create_superuser,
         ADMIN: objects.create_admin_user,
         MANAGER: objects.create_manager_user,
-        CLIENT: objects.create_client_user
+        GUEST: objects.create_guest_user
     }
 
     def post(self, request: Request, *args, **kwargs) -> Response:
