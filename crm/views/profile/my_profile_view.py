@@ -1,5 +1,5 @@
 from rest_framework.generics import UpdateAPIView
-from .can_change_permission import CanChangePermission
+from crm.permissions.can_change_permission import CanChangePermission
 from crm.serializers import ProfileSerializer
 from rest_framework.permissions import IsAuthenticated
 from crm.views.base_view import BaseView

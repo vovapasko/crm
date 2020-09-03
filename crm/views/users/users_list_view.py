@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-from .can_delete_permission import CanDeletePermission
+from crm.permissions.can_delete_permission import CanDeletePermission
 from crm.library.constants import MESSAGE_JSON_KEY
 from crm.paginations import StandardResultsSetPagination
 from crm.serializers import UserSerializer
