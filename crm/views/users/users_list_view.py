@@ -11,11 +11,12 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.models import User
 from crm.views.base_view import BaseView
+from crm.permissions import DjangoModelNoGetPermissions
 
 
 class UsersListView(BaseView, ListCreateAPIView):
     queryset = User.objects.all().order_by('id')
-    permission_classes = [IsAuthenticated, CanDeletePermission]
+    permission_classes = [IsAuthenticated, CanDeletePermission, DjangoModelNoGetPermissions]
     serializer_class = UserSerializer
     pagination_class = StandardResultsSetPagination
 

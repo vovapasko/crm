@@ -1,11 +1,13 @@
 from typing import Type
 
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from django.db.models import Model
-from crm.library.constants import ADMIN, MANAGER
+from crm.library.constants import ADMIN, MANAGER, APP_NAME
 from crm.models import Client, Hashtag, NewsEmail, NewsProject, NewsWave, Contractor
+from crm.models import ContractorPublicationsBlacklist, ContractorCommentList, ContractorPublicationsList, \
+    PostFormatList
 
 
 class Command(BaseCommand):
@@ -15,12 +17,14 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         self.__edit_admin_group()
         self.__edit_manager_group()
+        self.stdout.write('Provided custom exceptions')
 
     def __edit_admin_group(self):
         admin_group = self.__get_group(ADMIN)
         self.__provide_permissons_for_models(
             group=admin_group,
             without_delete_permission_models_list=[
+                User,
                 Client,
                 Contractor
             ],
@@ -28,7 +32,11 @@ class Command(BaseCommand):
                 Hashtag,
                 NewsEmail,
                 NewsProject,
-                NewsWave
+                NewsWave,
+                ContractorPublicationsBlacklist,
+                ContractorCommentList,
+                ContractorPublicationsList,
+                PostFormatList
             ]
         )
 
@@ -37,12 +45,19 @@ class Command(BaseCommand):
         self.__provide_permissons_for_models(
             group=manager_group,
             without_delete_permission_models_list=[
+                User,
                 Hashtag,
                 NewsEmail,
                 NewsProject,
                 NewsWave,
                 Client,
                 Contractor
+            ],
+            all_permissions_model_list=[
+                ContractorPublicationsBlacklist,
+                ContractorCommentList,
+                ContractorPublicationsList,
+                PostFormatList
             ]
         )
 
@@ -74,7 +89,7 @@ class Command(BaseCommand):
         group.permissions.add(*permissions)
 
     @staticmethod
-    def __get_content_type_by_model(*, app_label: str = 'crm', model: Type[Model]):
+    def __get_content_type_by_model(*, app_label: str = APP_NAME, model: Type[Model]):
         return ContentType.objects.get(app_label=app_label, model=model.__name__.lower())
 
     @staticmethod

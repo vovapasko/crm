@@ -12,6 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         call_command('create_groups')
+        call_command('add_permissions')
         self.__create_users()
         self.__create_contractors()
         self.__create_hashtags()

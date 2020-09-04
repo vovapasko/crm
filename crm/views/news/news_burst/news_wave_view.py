@@ -1,6 +1,7 @@
 from django.db.models import QuerySet
 from rest_framework import permissions
 from rest_framework.generics import DestroyAPIView, UpdateAPIView
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -13,7 +14,7 @@ from crm.paginations import StandardResultsSetPagination
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
     queryset = NewsWave.objects.all().order_by('id')
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
     serializer_class = NewsWaveSerializer
     pagination_class = StandardResultsSetPagination
 

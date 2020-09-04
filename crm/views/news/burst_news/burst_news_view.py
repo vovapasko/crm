@@ -11,8 +11,10 @@ from crm.views.base_view import BaseView
 from crm.models import Contractor, Hashtag, NewsCharacter, NewsBurstMethod, PostFormatList
 from crm.serializers import HashtagSerializer, NewsBurstMethodSerializer, NewsCharacterSerializer
 from typing import List
+from crm.permissions import DjangoModelNoGetPermissions
 
 
+# todo i should come back here
 class BurstNewsView(BaseView):
     permission_classes = [permissions.IsAuthenticated]
 
