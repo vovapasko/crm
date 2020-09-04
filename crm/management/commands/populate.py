@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = "populates main_app by entities with mock data"
 
     def handle(self, *args, **kwargs):
-        call_command('upgrade_groups')
+        call_command('create_groups')
         self.__create_users()
         self.__create_contractors()
         self.__create_hashtags()

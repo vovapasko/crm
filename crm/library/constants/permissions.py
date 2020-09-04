@@ -1,7 +1,7 @@
 from .views import APP_NAME
 
 
-# permissions names
+# custom permissions names
 CAN_INVITE_NEW_USER = 'can_invite_new_user'
 CAN_DELETE_USER = 'can_delete_user'
 

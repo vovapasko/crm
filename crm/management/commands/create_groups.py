@@ -13,7 +13,7 @@ class Command(BaseCommand):
     This command upgrade Group and Permission models according to changes in
     groups.py and permissions.py files in groups model.
     """
-    help = 'implements groups in main_app in models'
+    help = 'implements groups in crm in models'
 
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)

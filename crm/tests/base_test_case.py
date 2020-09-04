@@ -13,7 +13,7 @@ class BaseTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.logging(f"Start testing {cls.__name__}. Initialising data")
-        call_command('upgrade_groups')
+        call_command('create_groups')
         call_command('populate')
 
     @classmethod
