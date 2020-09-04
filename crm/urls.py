@@ -22,6 +22,7 @@ urlpatterns = [
     path('email-registered/<str:email>', CheckEmailRegisteredView.as_view(), name='email-registered'),
     path('change-group/<int:user_id>', ChangeGroupView.as_view(), name='change-group'),
     path('hashtags/', HashtagsListView.as_view(), name='hashtags'),
+    path('hashtags/<int:pk>', HashtagsListView.as_view(), name='hashtags'),
     path('burst-news/', BurstNewsView.as_view(), name='burst-news'),
     path('news-waves/', NewsWaveView.as_view(), name="get-post-news-wave"),
     path('news-waves/<int:pk>', NewsWaveView.as_view(), name="update-delete-news-wave"),

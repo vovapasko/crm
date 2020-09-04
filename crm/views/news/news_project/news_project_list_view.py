@@ -11,7 +11,7 @@ from rest_framework.generics import ListCreateAPIView, DestroyAPIView, UpdateAPI
 
 class NewsProjectListView(BaseView, ListCreateAPIView, DestroyAPIView, UpdateAPIView):
     queryset = NewsProject.objects.all().order_by('id')
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, permissions.DjangoModelPermissions]
     serializer_class = NewsProjectSerializer
     pagination_class = StandardResultsSetPagination
 
