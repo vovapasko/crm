@@ -26,25 +26,29 @@ class Command(BaseCommand):
     def __create_users(self):
         User.objects.create_superuser(
             email=TEST_SUPERUSER_EMAIL,
-            password=TEST_SUPERUSER_PASSWORD
+            password=TEST_SUPERUSER_PASSWORD,
+            is_confirmed=True
         )
         self.__print_user_message("Superuser")
 
         User.objects.create_admin_user(
             email=TEST_ADMIN_EMAIL,
-            password=TEST_ADMIN_PASSWORD
+            password=TEST_ADMIN_PASSWORD,
+            is_confirmed=True
         )
         self.__print_user_message("Admin")
 
         User.objects.create_manager_user(
             email=TEST_MANAGER_EMAIL,
-            password=TEST_MANAGER_PASSWORD
+            password=TEST_MANAGER_PASSWORD,
+            is_confirmed=True
         )
         self.__print_user_message("Manager")
 
         User.objects.create_guest_user(
             email=TEST_CLIENT_EMAIL,
-            password=TEST_CLIENT_PASSWORD
+            password=TEST_CLIENT_PASSWORD,
+            is_confirmed=True
         )
         self.__print_user_message("Client")
 
