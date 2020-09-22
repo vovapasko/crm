@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-from .can_delete_permission import CanDeletePermission
+from crm.permissions.can_delete_permission import CanDeletePermission
 from crm.library.constants import MESSAGE_JSON_KEY
 from crm.paginations import StandardResultsSetPagination
 from crm.serializers import UserSerializer
@@ -11,11 +11,12 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.models import User
 from crm.views.base_view import BaseView
+from crm.permissions import DjangoModelNoGetPermissions
 
 
 class UsersListView(BaseView, ListCreateAPIView):
     queryset = User.objects.all().order_by('id')
-    permission_classes = [IsAuthenticated, CanDeletePermission]
+    permission_classes = [IsAuthenticated, CanDeletePermission, DjangoModelNoGetPermissions]
     serializer_class = UserSerializer
     pagination_class = StandardResultsSetPagination
 

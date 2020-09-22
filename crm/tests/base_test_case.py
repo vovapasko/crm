@@ -13,7 +13,7 @@ class BaseTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.logging(f"Start testing {cls.__name__}. Initialising data")
-        call_command('upgrade_groups')
+        call_command('create_groups')
         call_command('populate')
 
     @classmethod
@@ -43,7 +43,7 @@ class BaseTestCase(APITestCase):
         return cls.get_user_by_param(email='manager@manager.com')
 
     @classmethod
-    def get_client_user(cls) -> User:
+    def get_guest_user(cls) -> User:
         return cls.get_user_by_param(email='client@client.com')
 
     @classmethod

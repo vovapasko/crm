@@ -4,11 +4,12 @@ from django.db.models import Model
 from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.paginations import StandardResultsSetPagination
+from crm.permissions import DjangoModelNoGetPermissions
 from crm.views.base_view import BaseView
 
 
 class ContractorAttributesBaseView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     pagination_class = StandardResultsSetPagination
     get_request_param = 'contractor'
 

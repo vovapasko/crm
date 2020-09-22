@@ -5,7 +5,7 @@ from crm.serializers.user_register_serializer import UserRegisterSerializer
 from crm.serializers import UserSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from crm.library.helpers import get_id_or_exception
-from crm.library.constants import MESSAGE_JSON_KEY
+from crm.library.constants import MESSAGE_JSON_KEY, SUPERUSER
 from rest_framework.response import Response
 from rest_framework.request import Request
 
@@ -54,13 +54,23 @@ class UserRegisterView(BaseView):
             )
 
     def __register_user_send_response(self, user_id: int, serializer: UserRegisterSerializer) -> Response:
-        user = self.get_user_object(user_id)
-        serializer.update(user, serializer.data)
+        def return_register_response(message: str):
+            return self.json_success_response(
+                message={
+                    MESSAGE_JSON_KEY: message,
+                },
+                token=generate_token_dict(user),
+                user=self.user_serializer(user).data
+            )
 
-        return self.json_success_response(
-            message={
-                MESSAGE_JSON_KEY: "User registered successfully",
-            },
-            token=generate_token_dict(user),
-            user=self.user_serializer(user).data
-        )
+        user = self.get_user_object(user_id)
+        if user.groups.first().name == SUPERUSER:
+            serializer.update_superuser(user, serializer.data)
+            return return_register_response(
+                message="Superuser registered, but it needs to be confirmed by other superusers"
+            )
+        else:
+            serializer.update_user(user, serializer.data)
+            return return_register_response(
+                message="User registered successfully"
+            )

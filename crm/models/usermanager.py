@@ -1,15 +1,15 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import Group
-from ..library.constants import SUPERUSER, ADMIN, MANAGER, CLIENT
+from ..library.constants import SUPERUSER, ADMIN, MANAGER, GUEST
 
 
 class UserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_client_user(self, email: str, password: str, **extra_fields):
+    def create_guest_user(self, email: str, password: str, **extra_fields):
         extra_fields.setdefault('is_staff', False)
         extra_fields.setdefault('is_superuser', False)
-        group = Group.objects.filter(name=CLIENT).first()
+        group = Group.objects.filter(name=GUEST).first()
 
         return self.__create_user(email, password, group, **extra_fields)
 

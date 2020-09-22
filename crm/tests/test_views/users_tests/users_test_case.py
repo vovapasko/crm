@@ -17,7 +17,7 @@ class UsersTestCase(BaseTestCase):
         cls.superuser = super().get_superuser()
         cls.admin_user = super().get_admin_user()
         cls.manager_user = super().get_manager_user()
-        cls.client_user = super().get_client_user()
+        cls.client_user = super().get_guest_user()
         cls.users = User.objects.all()
 
     @classmethod

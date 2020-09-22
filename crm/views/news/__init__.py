@@ -1,5 +1,4 @@
 from .hashtags import *
-from .manage_news_project import ManageNewsProjectView
 from .burst_news import BurstNewsView
 from .news_burst import NewsWaveView
 from .news_email import NewsEmailListView
