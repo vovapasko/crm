@@ -1,3 +1,5 @@
+from typing import Union
+
 from crm.models import User
 from rest_framework import status
 
@@ -25,25 +27,38 @@ class UsersTestCase(BaseTestCase):
         super().tearDownClass()
 
     def test_admin_users_view(self) -> None:
-        self.__test_users_list_authorised(self.admin_user)
+        self.__test_users_list_authorised(self.admin_user, expected_response_list_len=4)
 
     def test_superusers_view(self) -> None:
-        self.__test_users_list_authorised(self.superuser)
+        self.__test_users_list_authorised(self.superuser, expected_response_list_len=4)
 
     def test_manager_users_view(self) -> None:
-        self.__test_users_list_authorised(self.manager_user)
+        self.__test_users_list_authorised(self.manager_user, expected_response_list_len=4)
 
     def test_client_users_view(self) -> None:
-        self.__test_users_list_authorised(self.client_user)
+        self.__test_users_list_authorised(
+            self.client_user,
+            response_code=status.HTTP_403_FORBIDDEN,
+            expected_response_list_len=None
+        )
 
-    def __test_users_list_authorised(self, login_user: User) -> None:
+    def __test_users_list_authorised(
+            self,
+            login_user: User,
+            expected_response_list_len: Union[int, None],
+            response_code: int = status.HTTP_200_OK,
+    ) -> None:
         client = self.get_api_client(user=login_user)
         response = client.get(path=self.url)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            self.get_json_content_from_response(response).get('count'),
-            self.users.count()
-        )
+        self.assertEqual(response.status_code, response_code)
+        content = self.get_json_content_from_response(response).get('count')
+        if expected_response_list_len is None:
+            self.assertIsNone(content)
+        else:
+            self.assertEqual(
+                content,
+                expected_response_list_len
+            )
 
     def test_unauthorised(self) -> None:
         client = self.get_api_client()

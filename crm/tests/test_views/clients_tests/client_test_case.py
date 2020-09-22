@@ -102,5 +102,5 @@ class ClientTestCase(BaseTestCase):
         self._test_request_method_clients(
             method=client.delete,
             url=self.put_delete_url,
-            response_code=status.HTTP_204_NO_CONTENT
+            response_code=status.HTTP_403_FORBIDDEN
         )
