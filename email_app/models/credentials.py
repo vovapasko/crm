@@ -19,3 +19,19 @@ class Credentials(AbstractBaseModel):
     client_secret = models.CharField(_('client_secret'), max_length=char_len)
 
     objects = CredentialsManager()
+
+    def get_credentials(self) -> dict:
+        return {
+            "token": self.token,
+            "refresh_token": self.refresh_token,
+            "token_uri": self.token_uri,
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "scopes": self.scopes_set.all(),
+            "user": self.user_set.first()   # because credentials can belong only to one user
+        }
+
+    def __str__(self):
+        user = self.get_credentials().get('user').first()
+        return f"{id} - {user}"
+
