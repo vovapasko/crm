@@ -1,1 +1,1 @@
-from .test_view import TestView
+from .gmail_auth_view import GmailAuthView
