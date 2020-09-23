@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'storages',
     'drf_yasg',
+    'email_app'
 ]
 
 MIDDLEWARE = [
@@ -100,18 +101,18 @@ else:
     #     }
     # }
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('DMC_DB_NAME'),
-            'USER': os.environ.get('DMC_DB_USER'),
-            'PASSWORD': os.environ.get('DMC_DB_PASSWORD'),
-            'HOST': os.environ.get('DMC_DB_HOST'),
-            'PORT': os.environ.get('DMC_DB_PORT'),
-        },
-        #     'default': {
-        #     'ENGINE': 'django.db.backends.sqlite3',
-        #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'NAME': os.environ.get('DMC_DB_NAME'),
+        #     'USER': os.environ.get('DMC_DB_USER'),
+        #     'PASSWORD': os.environ.get('DMC_DB_PASSWORD'),
+        #     'HOST': os.environ.get('DMC_DB_HOST'),
+        #     'PORT': os.environ.get('DMC_DB_PORT'),
         # },
+            'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
         'test_prod': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'test_dmc',
@@ -203,3 +204,7 @@ AWS_DEFAULT_ACL = None
 # for more information see
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# for GMAIL API
+SENDING_EMAIL_SCOPE = ['https://www.googleapis.com/auth/gmail.send']
+CLIENT_SECRETS_FILE = os.environ.get('DMC_GMAIL_CLIENT_SECRETS_FILE')
