@@ -28,10 +28,10 @@ class Credentials(AbstractBaseModel):
             "client_id": self.client_id,
             "client_secret": self.client_secret,
             "scopes": self.scopes_set.all(),
-            "user": self.user_set.first()   # because credentials can belong only to one user
+            "email": self.newsemail_set.first()   # because credentials can belong only to one email
         }
 
     def __str__(self):
-        user = self.get_credentials().get('user').first()
-        return f"{id} - {user}"
+        email = self.get_credentials().get('email').first()
+        return f"{id} - {email}"
 
