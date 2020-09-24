@@ -1,3 +1,4 @@
+from email_app.models import Credentials
 from .abstract_base_model import AbstractBaseModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -11,6 +12,10 @@ class NewsEmail(AbstractBaseModel):
     signature = models.TextField(help_text="Signature in the end of email", null=True, blank=True)
     codeword = models.CharField(help_text="Additional information about holder of email",
                                 max_length=codeword_length)
+
+    gmail_credentials = models.ForeignKey(Credentials, db_column='Credentials.id',
+                                          name='gmail_credentials',
+                                          on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.email} {self.codeword}"

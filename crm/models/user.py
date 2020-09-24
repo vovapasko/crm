@@ -3,7 +3,6 @@ from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 
-from email_app.models import Credentials
 from .usermanager import UserManager
 from ..library.constants.media import default_avatar, media_storage
 from typing import List
@@ -30,10 +29,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Designates whether the user can log into this admin site.'),
     )
     is_superuser = models.BooleanField(_('superuser'), default=False)
-
-    gmail_credentials = models.ForeignKey(Credentials, db_column='Credentials.id',
-                                          name='gmail_credentials',
-                                          on_delete=models.CASCADE, null=True)
 
     objects = UserManager()
 
