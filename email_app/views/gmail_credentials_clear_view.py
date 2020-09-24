@@ -17,12 +17,15 @@ class GmailCredentialsClearView(BaseView):
     serializer_class = GmailCredentialsSerializer
 
     # for swagger
-    email_parameter = openapi.Parameter(email_key, openapi.IN_QUERY,
-                                        description="Email credentials of which have to be deleted",
-                                        type=openapi.TYPE_STRING,
-                                        )
+    email_parameter = openapi.Parameter(
+        email_key, openapi.IN_QUERY,
+        description="Email credentials of which have to be deleted. "
+                    "It has to be in BODY. It has here in query status, because swagger"
+                    " generating library doesn't work correctly ",
+        type=openapi.TYPE_STRING,
+    )
     success_response = openapi.Response('Credentials were cleared successfully', serializer_class)
-    failed_response = openapi.Response('Ty pidor', serializer_class)
+    failed_response = openapi.Response('Some errors happened', serializer_class)
     not_found_response = openapi.Response('Requested email does not exist', serializer_class)
 
     @swagger_auto_schema(manual_parameters=[email_parameter],
