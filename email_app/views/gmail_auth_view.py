@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -10,6 +12,18 @@ class GmailAuthView(BaseView, ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     authentication_url_key = 'authentication_url'
     state_key = 'state'
+
+    authentication_url_parameter = openapi.Parameter(authentication_url_key,
+                                                     openapi.IN_QUERY,
+                                                     description="Authentication url for gmail",
+                                                     type=openapi.TYPE_STRING)
+    state_parameter = openapi.Parameter(state_key, openapi.IN_QUERY,
+                                        description="State value for gmail",
+                                        type=openapi.TYPE_STRING)
+
+    post_response = openapi.Response('Provides last step for gmail authentication. Provides credentials '
+                                     'for user to interact with gmail according to state and authentication url, which '
+                                     'are received from client')
 
     def get(self, request, *args, **kwargs):
         """Sends to client authentication url and state
@@ -31,6 +45,8 @@ class GmailAuthView(BaseView, ListCreateAPIView):
             self.state_key: mock_state
         })
 
+    @swagger_auto_schema(manual_parameters=[authentication_url_parameter, state_parameter],
+                         responses={200: post_response})
     def post(self, request: Request, *args, **kwargs) -> Response:
         auth_response = request.data['auth_response']
         state = request.data['state']
