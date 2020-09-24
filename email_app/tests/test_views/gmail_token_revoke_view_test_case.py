@@ -3,11 +3,9 @@ from rest_framework.reverse import reverse
 from email_app.apps import EmailAppConfig
 from rest_framework import status
 
-app_name = EmailAppConfig.name
-
 
 class GmailTokenRevokeViewTestCase(BaseTestCase):
-    url = reverse(f'{app_name}:gmail-token-revoke')
+    url = reverse(f'{EmailAppConfig.name}:gmail-token-revoke')
 
     @classmethod
     def setUpTestData(cls):
@@ -24,3 +22,10 @@ class GmailTokenRevokeViewTestCase(BaseTestCase):
             path=self.url
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_post_auth_unauthorised(self):
+        client = self.get_api_client()
+        response = client.post(
+            path=self.url
+        )
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
