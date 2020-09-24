@@ -1,11 +1,11 @@
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-from rest_framework.serializers import Serializer
-
+from rest_framework.generics import ListCreateAPIView
 from crm.views.base_view import BaseView
 from rest_framework.request import Request
 from rest_framework.response import Response
+from email_app.serializers import GmailCredentialsSerializer
 
 
 class GmailCredentialsClearView(BaseView):
@@ -14,14 +14,16 @@ class GmailCredentialsClearView(BaseView):
     still has access to user account. New authentication will be required.
     '''
     email_key = 'email'
+    serializer_class = GmailCredentialsSerializer
 
     # for swagger
     email_parameter = openapi.Parameter(email_key, openapi.IN_QUERY,
                                         description="Email credentials of which have to be deleted",
-                                        type=openapi.TYPE_STRING)
-    success_response = openapi.Response('Credentials were cleared successfully')
-    failed_response = openapi.Response('Ty pidor')
-    not_found_response = openapi.Response('Requested email does not exist')
+                                        type=openapi.TYPE_STRING,
+                                        )
+    success_response = openapi.Response('Credentials were cleared successfully', serializer_class)
+    failed_response = openapi.Response('Ty pidor', serializer_class)
+    not_found_response = openapi.Response('Requested email does not exist', serializer_class)
 
     @swagger_auto_schema(manual_parameters=[email_parameter],
                          responses={
