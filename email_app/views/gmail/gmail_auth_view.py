@@ -2,14 +2,10 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.request import Request
 from rest_framework.response import Response
-
-from crm.views.base_view import BaseView
-from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
+from email_app.views.gmail.gmail_token_base_view import GmailTokenBaseView
 
 
-class GmailAuthView(BaseView, ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+class GmailAuthView(GmailTokenBaseView):
     authentication_url_key = 'authentication_url'
     state_key = 'state'
 

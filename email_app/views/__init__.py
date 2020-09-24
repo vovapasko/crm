@@ -1,3 +1,1 @@
-from .gmail_auth_view import GmailAuthView
-from .gmail_credentials_clear_view import GmailCredentialsClearView
-from .gmail_token_revoke_view import GmailTokenRevokeView
+from .gmail import *
