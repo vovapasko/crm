@@ -109,7 +109,7 @@ else:
         #     'HOST': os.environ.get('DMC_DB_HOST'),
         #     'PORT': os.environ.get('DMC_DB_PORT'),
         # },
-            'default': {
+        'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         },
@@ -206,5 +206,6 @@ AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # for GMAIL API
-SENDING_EMAIL_SCOPE = ['https://www.googleapis.com/auth/gmail.send']
-CLIENT_SECRETS_FILE = os.environ.get('DMC_GMAIL_CLIENT_SECRETS_FILE')
+SENDING_EMAIL_SCOPE = ['https://www.googleapis.com/auth/gmail.modify']
+CLIENT_SECRETS_FILE = "client_secrets.json"
+GMAIL_API_REDIRECT_URI = 'http://127.0.0.1:8000/emails/gmail-auth/'

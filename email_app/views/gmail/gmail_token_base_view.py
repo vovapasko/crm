@@ -7,5 +7,5 @@ from email_app.serializers import GmailCredentialsSerializer
 class GmailTokenBaseView(BaseView):
     serializer_class = GmailCredentialsSerializer
     # todo add here custom permission which forbids access to Guest
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     email_key = 'email'
