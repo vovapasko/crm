@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class CredentialsManager(Manager):
-    def create_credentials(self, user: settings.AUTH_USER_MODEL, token: str, refresh_token: str,
+    def create_credentials(self, email: str, token: str, refresh_token: str,
                            token_uri: str, client_id: str,
                            client_secret: str, scopes: list) -> 'Credentials':
         credentials = self.create(
@@ -22,8 +22,8 @@ class CredentialsManager(Manager):
             client_secret=client_secret
         )
         self.__create_scope(credentials, scopes)
-        user.gmail_credentials = credentials
-        user.save()
+        email.gmail_credentials = credentials
+        email.save()
         return credentials
 
     def __create_scope(self, credentials: 'Credentials', scopes: list) -> List[Scopes]:

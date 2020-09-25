@@ -24,7 +24,7 @@ class CredentialsTestCase(BaseTestCase):
 
     def test_create_credentials(self):
         credentials = Credentials.objects.create_credentials(
-            user=self.admin_user,
+            email=self.admin_user,
             token=FAKE_CREDENTIALS['token'],
             refresh_token=FAKE_CREDENTIALS['refresh_token'],
             token_uri=FAKE_CREDENTIALS['token_uri'],
