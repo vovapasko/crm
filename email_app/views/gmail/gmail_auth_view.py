@@ -29,6 +29,7 @@ class GmailAuthView(GmailTokenBaseView):
                                      'are received from client')
 
     def get(self, request, *args, **kwargs):
+        '''This is for google auth redirect. Returns just 200 code if authentication was successful.'''
         # todo Make finish_authorize as async task
         authorization_response = request.build_absolute_uri()
         try:

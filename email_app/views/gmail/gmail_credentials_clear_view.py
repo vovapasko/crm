@@ -29,7 +29,7 @@ class GmailCredentialsClearView(GmailTokenBaseView):
 
     @swagger_auto_schema(manual_parameters=[email_parameter],
                          responses={
-                             status.HTTP_200_OK: success_response,
+                             status.HTTP_204_NO_CONTENT: success_response,
                              status.HTTP_400_BAD_REQUEST: failed_response,
                              status.HTTP_404_NOT_FOUND: not_found_response
                          })

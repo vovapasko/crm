@@ -1,5 +1,6 @@
 import requests
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -24,10 +25,16 @@ class GmailTokenRevokeView(GmailTokenBaseView):
                     " generating library doesn't work correctly ",
         type=openapi.TYPE_STRING,
     )
-    success_response = openapi.Response('Credentials were cleared successfully', GmailTokenBaseView.serializer_class)
-    failed_response = openapi.Response('Some errors happened', GmailTokenBaseView.serializer_class)
-    not_found_response = openapi.Response('Requested email does not exist', GmailTokenBaseView.serializer_class)
+    success_response = openapi.Response('Credentials were cleared successfully')
+    failed_response = openapi.Response('Some errors happened')
+    not_found_response = openapi.Response('Requested email does not exist')
 
+    @swagger_auto_schema(manual_parameters=[email_parameter],
+                         responses={
+                             status.HTTP_204_NO_CONTENT: success_response,
+                             status.HTTP_400_BAD_REQUEST: failed_response,
+                             status.HTTP_404_NOT_FOUND: not_found_response
+                         })
     def post(self, request: Request, *args, **kwargs) -> Response:
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
