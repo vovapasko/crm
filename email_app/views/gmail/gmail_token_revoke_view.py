@@ -39,6 +39,8 @@ class GmailTokenRevokeView(GmailTokenBaseView):
             status_code = getattr(revoke, 'status_code')
             if status_code == status.HTTP_200_OK:
                 message = 'Credentials successfully revoked'
+                credentials.is_revoked = True
+                credentials.save()
             else:
                 message = f'Error {status_code} occured'
             return self.make_response(data=message, status=status.HTTP_200_OK)
