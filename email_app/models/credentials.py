@@ -8,8 +8,6 @@ from email_app.models.credentials_manager import CredentialsManager
 
 
 class Credentials(AbstractBaseModel):
-    # todo 1. Provide decoding and encoding functions for credentials
-    # todo 2.
     char_len = 200
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -30,10 +28,9 @@ class Credentials(AbstractBaseModel):
             "client_id": self.client_id,
             "client_secret": self.client_secret,
             "scopes": self.scopes_set.all(),
-            "email": self.newsemail_set.first()   # because credentials can belong only to one email
+            "email": self.newsemail_set.first()  # because credentials can belong only to one email
         }
 
     def __str__(self):
         email = self.get_credentials().get('email').first()
         return f"{id} - {email}"
-

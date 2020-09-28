@@ -2,8 +2,6 @@ from typing import List
 
 from django.db.models import Manager
 from typing import TYPE_CHECKING
-
-
 from crm.models.news_email import NewsEmail
 from email_app.models.scopes import Scopes
 
