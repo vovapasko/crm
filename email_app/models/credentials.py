@@ -17,6 +17,7 @@ class Credentials(AbstractBaseModel):
     token_uri = models.CharField(_('token_uri'), max_length=char_len)
     client_id = models.CharField(_('client_id'), max_length=char_len)
     client_secret = models.CharField(_('client_secret'), max_length=char_len)
+    is_revoked = models.BooleanField(_('is_revoked'), default=False)
 
     objects = CredentialsManager()
 
@@ -27,6 +28,7 @@ class Credentials(AbstractBaseModel):
             "token_uri": self.token_uri,
             "client_id": self.client_id,
             "client_secret": self.client_secret,
+            "is_revoked": self.is_revoked,
             "scopes": self.scopes_set.all(),
             "email": self.newsemail_set.first()  # because credentials can belong only to one email
         }
