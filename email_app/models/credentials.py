@@ -8,6 +8,8 @@ from email_app.models.credentials_manager import CredentialsManager
 
 
 class Credentials(AbstractBaseModel):
+    # todo 1. Provide decoding and encoding functions for credentials
+    # todo 2.
     char_len = 200
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

@@ -27,7 +27,7 @@ def build_service():
         API_SERVICE_NAME, API_VERSION, credentials=credentials)
 
 
-def start_authorize():
+def start_authorize(par_state: str):
     current_dir = os.getcwd()
     path = os.path.join(current_dir, CLIENT_SECRETS_FILE)
     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
@@ -45,18 +45,16 @@ def start_authorize():
         # re-prompting the user for permission. Recommended for web server apps.
         access_type='offline',
         # Enable incremental authorization. Recommended as a best practice.
-        include_granted_scopes='true')
+        include_granted_scopes='true',
+        state=par_state
+    )
 
     # Store the state so the callback can verify the auth server response.
 
     return authorization_url, state
 
 
-def save_credentials():
-    pass
-
-
-def finish_authorize(state: str, request_url: str):
+def finish_authorize(state: str, request_url: str) -> dict:
     # Specify the state when creating the flow in the callback so that it can
     # verified in the authorization server response.
     state = state
