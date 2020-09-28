@@ -34,10 +34,11 @@ class GmailAuthView(GmailTokenBaseView):
         try:
             state = request.GET['state']
             creds = finish_authorize(
-                state=base64_decode(state),
+                state=state,
                 request_url=authorization_response
             )
-            Credentials.objects.create_credentials(email=state, **creds)
+            # we make base64_decode on state, because email is encoded in base64 and sent as a state
+            Credentials.objects.create_credentials(email=base64_decode(state), **creds)
 
             return self.make_response(data={
                 'success': True
