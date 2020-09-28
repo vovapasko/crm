@@ -32,5 +32,5 @@ class Credentials(AbstractBaseModel):
         }
 
     def __str__(self):
-        email = self.get_credentials().get('email').first()
+        email = self.get_credentials().get('email')
         return f"{id} - {email}"

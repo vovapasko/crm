@@ -14,7 +14,7 @@ class NewsEmail(AbstractBaseModel):
 
     gmail_credentials = models.ForeignKey('email_app.Credentials', db_column='Credentials.id',
                                           name='gmail_credentials',
-                                          on_delete=models.CASCADE, null=True)
+                                          on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.email} {self.codeword}"
