@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from email_app.views.gmail.gmail_token_base_view import GmailTokenBaseView
 from email_app.library.gmail_utils import start_authorize, finish_authorize
 from email_app.serializers import GmailCredentialsSerializer
+from django.http.response import HttpResponse
 
 
 class GmailAuthView(GmailTokenBaseView):
@@ -41,9 +42,8 @@ class GmailAuthView(GmailTokenBaseView):
             # we make base64_decode on state, because email is encoded in base64 and sent as a state
             Credentials.objects.create_credentials(email=base64_decode(state), **creds)
 
-            return self.make_response(data={
-                'success': True
-            })
+            return HttpResponse("<h6>You are successfully logged in. You can "
+                                "close this window now and go back to application</h6>")
         except Exception as e:
             raise e
 

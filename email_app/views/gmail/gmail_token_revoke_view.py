@@ -4,9 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
-
 from crm.models import NewsEmail
-from email_app.models import Credentials
 from email_app.views.gmail.gmail_token_base_view import GmailTokenBaseView
 from email_app.serializers.gmail_clear_credentials_serializer import GmailClearCredentialsSerializer
 
