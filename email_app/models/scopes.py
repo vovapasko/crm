@@ -13,5 +13,8 @@ class Scopes(AbstractBaseModel):
     scope = models.CharField(_("scope"), max_length=char_len)
 
     def __str__(self):
-        user = self.credentials.user_set.first()
+        user = self.credentials.newsemail_set.first()
         return f"Scope {self.scope} for {user}"
+
+    def get_scope(self) -> str:
+        return self.scope

@@ -34,3 +34,14 @@ class Credentials(AbstractBaseModel):
     def __str__(self):
         email = self.get_credentials().get('email')
         return f"{id} - {email}"
+
+    def credentials_for_service(self) -> dict:
+        prepared_scope = [scope.get_scope() for scope in self.scopes_set.all()]
+        return {
+            "token": self.token,
+            "refresh_token": self.refresh_token,
+            "token_uri": self.token_uri,
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "scopes": prepared_scope,
+        }
