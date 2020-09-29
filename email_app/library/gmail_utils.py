@@ -19,9 +19,7 @@ API_SERVICE_NAME = constants.API_SERVICE_NAME
 API_VERSION = constants.API_VERSION
 
 
-def build_service():
-    # todo replace it
-    credentials = None
+def build_service(credentials: dict) -> googleapiclient.Resource:
     credentials = google.oauth2.credentials.Credentials(credentials)
     return googleapiclient.discovery.build(
         API_SERVICE_NAME, API_VERSION, credentials=credentials)
