@@ -3,6 +3,7 @@ from django.conf import settings
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
+from googleapiclient.discovery import Resource
 from email_app.library import constants
 from email_app.library.gmail_helpers import credentials_to_dict
 import os
@@ -19,7 +20,7 @@ API_SERVICE_NAME = constants.API_SERVICE_NAME
 API_VERSION = constants.API_VERSION
 
 
-def build_service(credentials: dict) -> googleapiclient.Resource:
+def build_service(credentials: dict) -> Resource:
     credentials = google.oauth2.credentials.Credentials(credentials)
     return googleapiclient.discovery.build(
         API_SERVICE_NAME, API_VERSION, credentials=credentials)
