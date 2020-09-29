@@ -42,8 +42,8 @@ class GmailAuthView(GmailTokenBaseView):
             # we make base64_decode on state, because email is encoded in base64 and sent as a state
             Credentials.objects.create_credentials(email=base64_decode(state), **creds)
 
-            return HttpResponse("<h6>You are successfully logged in. You can "
-                                "close this window now and go back to application</h6>")
+            return HttpResponse("<p>You are successfully logged in. You can "
+                                "close this window now and go back to application</p>")
         except Exception as e:
             raise e
 
