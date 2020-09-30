@@ -1,5 +1,6 @@
 from rest_framework import permissions, status
-from rest_framework.permissions import DjangoModelPermissions, IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
+from crm.permissions import DjangoModelNoGetPermissions
 from rest_framework.request import Request
 from rest_framework.response import Response
 
@@ -12,7 +13,7 @@ from rest_framework.generics import ListCreateAPIView, DestroyAPIView, UpdateAPI
 
 class NewsProjectListView(BaseView, ListCreateAPIView, DestroyAPIView, UpdateAPIView):
     queryset = NewsProject.objects.all().order_by('id')
-    permission_classes = [IsAuthenticated, DjangoModelPermissions]
+    permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = NewsProjectSerializer
     pagination_class = StandardResultsSetPagination
 
