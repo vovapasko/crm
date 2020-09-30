@@ -17,6 +17,9 @@ from typing import Type, Union
 
 class BaseView(APIView):
 
+    def make_response(self, data, **kwargs):
+        return Response(data=data, **kwargs)
+
     def json_response(self, response_code: int, **kwargs):
         return Response(kwargs, status=response_code)
 

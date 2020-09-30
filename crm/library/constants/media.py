@@ -1,5 +1,4 @@
 # contains constants for folders where to store media files
-from .views import APP_NAME
 import os
 
 users_avatar_dir = "users_pictures"

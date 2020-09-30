@@ -12,5 +12,9 @@ class NewsEmail(AbstractBaseModel):
     codeword = models.CharField(help_text="Additional information about holder of email",
                                 max_length=codeword_length)
 
+    gmail_credentials = models.ForeignKey('email_app.Credentials', db_column='Credentials.id',
+                                          name='gmail_credentials',
+                                          on_delete=models.SET_NULL, null=True)
+
     def __str__(self):
         return f"{self.email} {self.codeword}"
