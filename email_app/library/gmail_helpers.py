@@ -9,6 +9,37 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from crm.models import NewsEmail
+
+
+def send_gmail_message(email_from: str, email_to: str, subject: str = None,
+                       message_text: str = None, attachments: list = None):
+    from email_app.library.gmail_utils import build_service
+    try:
+        test_email = NewsEmail.objects.get(email=email_from)  # this email has to exist
+        email_from = test_email.email
+        if attachments is None:
+            message = create_message(
+                sender=email_from,
+                to=email_to,
+                subject=subject,
+                message_text=message_text
+            )
+        else:
+            message = create_message_with_attachments(
+                sender=email_from,
+                to=email_to,
+                subject=subject,
+                message_text=message_text,
+                files=attachments
+            )
+        credentials = test_email.gmail_credentials
+        service = build_service(credentials=credentials.credentials_for_service())
+        res = send_message(service=service, user_id=email_from, message=message)
+        return res
+    except Exception as e:
+        raise e
+
 
 def send_message(service, user_id, message):
     try:
@@ -22,7 +53,7 @@ def send_message(service, user_id, message):
         raise e
 
 
-def create_message_with_attachment(sender, to, subject, message_text, file):
+def create_message_with_attachments(sender, to, subject, message_text, files):
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
@@ -30,34 +61,34 @@ def create_message_with_attachment(sender, to, subject, message_text, file):
 
     msg = MIMEText(message_text)
     message.attach(msg)
+    for file in files:
+        content_type, encoding = mimetypes.guess_type(file)
 
-    content_type, encoding = mimetypes.guess_type(file)
+        if content_type is None or encoding is not None:
+            content_type = 'application/octet-stream'
 
-    if content_type is None or encoding is not None:
-        content_type = 'application/octet-stream'
+        main_type, sub_type = content_type.split('/', 1)
 
-    main_type, sub_type = content_type.split('/', 1)
-
-    if main_type == 'text':
-        fp = open(file, 'rb')
-        msg = MIMEText(fp.read().decode("utf-8"), _subtype=sub_type)
-        fp.close()
-    elif main_type == 'image':
-        fp = open(file, 'rb')
-        msg = MIMEImage(fp.read(), _subtype=sub_type)
-        fp.close()
-    elif main_type == 'audio':
-        fp = open(file, 'rb')
-        msg = MIMEAudio(fp.read(), _subtype=sub_type)
-        fp.close()
-    else:
-        fp = open(file, 'rb')
-        msg = MIMEBase(main_type, sub_type)
-        msg.set_payload(fp.read())
-        fp.close()
-    filename = os.path.basename(file)
-    msg.add_header('Content-Disposition', 'attachment', filename=filename)
-    message.attach(msg)
+        if main_type == 'text':
+            fp = open(file, 'rb')
+            msg = MIMEText(fp.read().decode("utf-8"), _subtype=sub_type)
+            fp.close()
+        elif main_type == 'image':
+            fp = open(file, 'rb')
+            msg = MIMEImage(fp.read(), _subtype=sub_type)
+            fp.close()
+        elif main_type == 'audio':
+            fp = open(file, 'rb')
+            msg = MIMEAudio(fp.read(), _subtype=sub_type)
+            fp.close()
+        else:
+            fp = open(file, 'rb')
+            msg = MIMEBase(main_type, sub_type)
+            msg.set_payload(fp.read())
+            fp.close()
+        filename = os.path.basename(file)
+        msg.add_header('Content-Disposition', 'attachment', filename=filename)
+        message.attach(msg)
 
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {'raw': raw_message.decode("utf-8")}

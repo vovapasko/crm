@@ -1,20 +1,20 @@
 from django.core.management.base import BaseCommand
-from crm.models.news_email import NewsEmail
-from email_app.library.gmail_helpers import create_message, send_message
-from email_app.library.gmail_utils import build_service
+from email_app.library.gmail_helpers import send_gmail_message
+from pathlib import Path
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        test_email = NewsEmail.objects.last()  # this email has to be real
-        email = test_email.email
-        message = create_message(
-            sender=email,
-            to='writeyourmail@gmail.com',
-            subject='Test message from Django',
-            message_text='Hello, I am crm from Django'
+        file1 = Path('README.md')
+        file2 = Path('requirements.txt')
+        text = 'Hello from Django with attachments'
+        subject = 'Test Django'
+        mail_from = 'mailfrom@gmail.com'
+        mail_to = 'mailto@gmail.com'
+        send_gmail_message(
+            email_from=mail_from,
+            email_to=mail_to,
+            subject=subject,
+            message_text=text,
+            attachments=[file1, file2]
         )
-        credentials = test_email.gmail_credentials
-        service = build_service(credentials=credentials.credentials_for_service())
-        res = send_message(service=service, user_id=email, message=message)
-        print(res)
