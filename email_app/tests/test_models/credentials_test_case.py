@@ -1,6 +1,7 @@
 from crm.tests.base_test_case import BaseTestCase
 from email_app.models import Credentials
 from email_app.library.fixtures import FAKE_CREDENTIALS
+from crm.models.news_email import NewsEmail
 
 
 class CredentialsTestCase(BaseTestCase):
@@ -16,7 +17,7 @@ class CredentialsTestCase(BaseTestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        cls.admin_user = cls.get_admin_user()
+        cls.test_email = NewsEmail.objects.first()
 
     @classmethod
     def tearDownClass(cls):
@@ -24,7 +25,7 @@ class CredentialsTestCase(BaseTestCase):
 
     def test_create_credentials(self):
         credentials = Credentials.objects.create_credentials(
-            email=self.admin_user,
+            email=self.test_email.email,
             token=FAKE_CREDENTIALS['token'],
             refresh_token=FAKE_CREDENTIALS['refresh_token'],
             token_uri=FAKE_CREDENTIALS['token_uri'],
