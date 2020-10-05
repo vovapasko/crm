@@ -109,7 +109,14 @@ def get_messages(service, user_id):
     try:
         return service.users().messages().list(userId=user_id).execute()
     except Exception as error:
-        print('An error occurred: %s' % error)
+        raise error
+
+
+def get_labels(service, user_id):
+    try:
+        return service.users().labels().list(userId=user_id).execute()
+    except Exception as e:
+        raise e
 
 
 def get_message(service, user_id, msg_id):

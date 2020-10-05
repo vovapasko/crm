@@ -4,8 +4,9 @@ import google.oauth2.credentials
 import google_auth_oauthlib.flow
 import googleapiclient.discovery
 from googleapiclient.discovery import Resource
+from crm.models import NewsEmail
 from email_app.library import constants
-from email_app.library.gmail_helpers import credentials_to_dict
+from email_app.library.gmail_helpers import credentials_to_dict, get_messages, get_labels
 import os
 
 if settings.DEBUG:
@@ -69,34 +70,13 @@ def finish_authorize(state: str, request_url: str) -> dict:
     return credentials_to_dict(credentials)
 
 
-def has_credentials(user_id: str):
-    pass
+def get_gmail_messages(email: NewsEmail) -> dict:
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    return get_messages(service=service, user_id=email.email)
 
 
-def get_credentials(user_id: str):
-    pass
-
-
-def revoke(user_id: str):
-    '''user_id is normally an email'''
-    if not has_credentials(user_id):
-        return ('You need to <a href="/authorize">authorize</a> before ' +
-                'testing the code to revoke credentials.')
-
-    credentials = google.oauth2.credentials.Credentials(
-        get_credentials(user_id))
-
-    revoke = requests.post('https://oauth2.googleapis.com/revoke',
-                           params={'token': credentials.token},
-                           headers={'content-type': 'application/x-www-form-urlencoded'})
-
-    status_code = getattr(revoke, 'status_code')
-    if status_code == 200:
-        return 'Credentials successfully revoked.'
-    else:
-        return 'An error occurred.'
-
-
-def clear_credentials():
-    # todo provide erasing credentials from DB
-    pass
+def get_gmail_labels(email: NewsEmail) -> dict:
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    return get_labels(service=service, user_id=email.email)
