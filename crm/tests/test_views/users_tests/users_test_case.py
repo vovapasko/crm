@@ -73,7 +73,7 @@ class UsersTestCase(BaseTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn(
-            member="errors",
+            member="error",
             container=self.get_json_content_from_response(response)
         )
 

@@ -105,7 +105,7 @@ class BaseTestCase(APITestCase):
         return url + f"{key}"
 
     def get_errors_dict_from_response(self, response) -> dict:
-        return self.get_json_content_from_response(response).get('errors')
+        return self.get_json_content_from_response(response)
 
     def get_json_content_from_response(self, response) -> dict:
         return json.loads(response.content)
