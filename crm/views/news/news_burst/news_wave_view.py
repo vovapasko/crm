@@ -16,7 +16,7 @@ from crm.paginations import StandardResultsSetPagination
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
     queryset = NewsWave.objects.all().order_by('id')
-    permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
+    # permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
     serializer_class = NewsWaveSerializer
     pagination_class = StandardResultsSetPagination
 
@@ -51,3 +51,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
 
     def put(self, request: Request, *args, **kwargs) -> Response:
         return super().partial_update(request)
+
+    def post(self, request, *args, **kwargs) -> Response:
+        serializer = self.serializer_class(data=request.data)
+        return super().post(request, *args, **kwargs)
