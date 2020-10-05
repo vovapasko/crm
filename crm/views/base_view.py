@@ -34,11 +34,9 @@ class BaseView(APIView):
 
     def json_failed_response(self, response_code: int = status.HTTP_400_BAD_REQUEST, errors: dict = None,
                              **kwargs) -> Response:
-        return self.json_response(
-            response_code=response_code,
-            success=False,
-            errors=errors,
-            **kwargs
+        return self.make_response(
+            data=errors,
+            status=response_code
         )
 
     def json_forbidden_response(self, response_code: int = status.HTTP_403_FORBIDDEN, errors: dict = None,
