@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'storages',
     'drf_yasg',
-    'email_app'
+    'email_app',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -209,3 +210,9 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 SENDING_EMAIL_SCOPE = ['https://www.googleapis.com/auth/gmail.modify']
 CLIENT_SECRETS_FILE = "client_secrets.json"
 GMAIL_API_REDIRECT_URI = 'http://127.0.0.1:8000/emails/gmail-auth/'
+
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
