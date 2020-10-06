@@ -105,7 +105,7 @@ def create_message(sender, to, subject, message_text):
     }
 
 
-def get_messages(service, user_id):
+def get_messages(service, user_id) -> dict:
     try:
         return service.users().messages().list(userId=user_id).execute()
     except Exception as error:
@@ -121,9 +121,9 @@ def get_labels(service, user_id):
 
 def get_message(service, user_id, msg_id):
     try:
-        return service.users().messages().get(userId=user_id, id=msg_id, format='metadata').execute()
+        return service.users().messages().get(userId=user_id, id=msg_id, format='full').execute()
     except Exception as error:
-        print('An error occurred: %s' % error)
+        raise error
 
 
 def get_mime_message(service, user_id, msg_id):
