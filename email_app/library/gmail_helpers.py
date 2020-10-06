@@ -107,7 +107,7 @@ def create_message(sender, to, subject, message_text):
 
 def get_messages(service, user_id) -> dict:
     try:
-        return service.users().messages().list(userId=user_id).execute()
+        return service.users().messages().list(userId=user_id, maxResults=10).execute()
     except Exception as error:
         raise error
 
@@ -121,7 +121,7 @@ def get_labels(service, user_id):
 
 def get_message(service, user_id, msg_id):
     try:
-        return service.users().messages().get(userId=user_id, id=msg_id, format='full').execute()
+        return service.users().messages().get(userId=user_id, id=msg_id, format='metadata').execute()
     except Exception as error:
         raise error
 

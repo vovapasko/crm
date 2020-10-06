@@ -25,6 +25,6 @@ class EmailInboxView(BaseView):
             news_email = NewsEmail.objects.get(email=email)
             messages = get_gmail_messages(email=news_email)
             labels = get_gmail_labels(email=news_email)
-            response = {"messages": messages, 'labels': labels}
+            response = {"messages": messages, **labels}
             return self.make_response(data=response)
         return self.json_failed_response(errors=serializer.errors)
