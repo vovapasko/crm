@@ -1,4 +1,7 @@
 from django.db.models import QuerySet
+from drf_yasg import openapi
+from drf_yasg.openapi import Schema
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.request import Request
 
 from crm.models import NewsEmail
@@ -6,12 +9,10 @@ from crm.views.base_view import BaseView
 from crm.paginations import SmallResultsSetPagination
 from email_app.serializers.inbox_email_serializer import InboxEmailSerializer
 from email_app.library.gmail_utils import get_gmail_messages, get_gmail_labels, get_gmail_profile
+from email_app.library.fixtures import example_email_inbox_response
 
 
 class EmailInboxView(BaseView):
-    '''
-    Returns labels and first messages of
-    '''
     pagination_class = SmallResultsSetPagination
     serializer_class = InboxEmailSerializer
 
@@ -19,6 +20,22 @@ class EmailInboxView(BaseView):
     pagination_param = 'pagination'
     next_page_token_param = 'nextPageToken'
 
+    email_parameter = openapi.Parameter(email_param,
+                                        openapi.IN_QUERY,
+                                        description="Email for inbox",
+                                        type=openapi.TYPE_STRING)
+    pagination_parameter = openapi.Parameter(pagination_param, openapi.IN_QUERY,
+                                             description="Amount of messages, which you want to get",
+                                             type=openapi.TYPE_STRING)
+    next_page_token_parameter = openapi.Parameter(next_page_token_param, openapi.IN_QUERY,
+                                                  description="Token parameter to get the next messages",
+                                                  type=openapi.TYPE_STRING,
+                                                  required=False)
+
+    response = openapi.Response('Gives dictionary of messages, profile and labels for this email')
+
+    @swagger_auto_schema(manual_parameters=[email_parameter, pagination_parameter, next_page_token_parameter],
+                         responses={200: response})
     def get(self, request: Request, *args, **kwargs):
         serializer = self.serializer_class(data=request.GET)
         if serializer.is_valid():
