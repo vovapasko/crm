@@ -1,3 +1,4 @@
 from .gmail_credentials_serializer import GmailCredentialsSerializer
 from .gmail_clear_credentials_serializer import GmailClearCredentialsSerializer
 from .email_serializer import EmailSerialiser
+from .inbox_email_serializer import InboxEmailSerializer

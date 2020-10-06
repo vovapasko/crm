@@ -105,11 +105,22 @@ def create_message(sender, to, subject, message_text):
     }
 
 
-def get_messages(service, user_id) -> dict:
+def get_messages(service, user_id: str, pagination_param: int, page_token: str = None) -> dict:
     try:
-        return service.users().messages().list(userId=user_id, maxResults=10).execute()
+        if page_token:
+            return service.users().messages().list(userId=user_id, maxResults=pagination_param,
+                                                   pageToken=page_token).execute()
+        else:
+            return service.users().messages().list(userId=user_id, maxResults=pagination_param).execute()
     except Exception as error:
         raise error
+
+
+def get_profile(service, user_id):
+    try:
+        return service.users().getProfile(userId=user_id).execute()
+    except Exception as e:
+        raise e
 
 
 def get_labels(service, user_id):

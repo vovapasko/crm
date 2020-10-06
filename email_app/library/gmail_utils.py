@@ -6,7 +6,7 @@ import googleapiclient.discovery
 from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
 from email_app.library import constants
-from email_app.library.gmail_helpers import credentials_to_dict, get_messages, get_labels, get_message
+from email_app.library.gmail_helpers import credentials_to_dict, get_messages, get_labels, get_message, get_profile
 import os
 
 if settings.DEBUG:
@@ -70,14 +70,15 @@ def finish_authorize(state: str, request_url: str) -> dict:
     return credentials_to_dict(credentials)
 
 
-def get_gmail_messages(email: NewsEmail) -> list:
+def get_gmail_messages(email: NewsEmail, pagination: int, next_page_token: str = None) -> dict:
     creds = email.gmail_credentials.credentials_for_service()
     service = build_service(credentials=creds)
-    messages_id = get_messages(service=service, user_id=email.email)
-    messages = []
-    for _ in messages_id.get('messages'):
+    messages = get_messages(service=service, user_id=email.email, pagination_param=pagination,
+                            page_token=next_page_token)
+    lst = messages.get('messages')
+    for _, i in zip(lst, range(len(lst))):
         message = get_message(service, email.email, _.get('id'))
-        messages.append(message)
+        messages.get('messages')[i] = message
     return messages
 
 
@@ -85,3 +86,10 @@ def get_gmail_labels(email: NewsEmail) -> dict:
     creds = email.gmail_credentials.credentials_for_service()
     service = build_service(credentials=creds)
     return get_labels(service=service, user_id=email.email)
+
+
+def get_gmail_profile(email: NewsEmail) -> dict:
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    profile = get_profile(service=service, user_id=email.email)
+    return profile
