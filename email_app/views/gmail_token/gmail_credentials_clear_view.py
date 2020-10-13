@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 from crm.models import NewsEmail
 from email_app.serializers import GmailClearCredentialsSerializer
-from email_app.views.gmail.gmail_token_base_view import GmailTokenBaseView
+from email_app.views.gmail_token.gmail_token_base_view import GmailTokenBaseView
 
 
 class GmailCredentialsClearView(GmailTokenBaseView):

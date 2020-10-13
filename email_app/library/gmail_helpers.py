@@ -105,18 +105,36 @@ def create_message(sender, to, subject, message_text):
     }
 
 
-def get_messages(service, user_id):
+def get_messages(service, user_id: str, pagination_param: int, page_token: str = None) -> dict:
     try:
-        return service.users().messages().list(userId=user_id).execute()
+        if page_token:
+            return service.users().messages().list(userId=user_id, maxResults=pagination_param,
+                                                   pageToken=page_token).execute()
+        else:
+            return service.users().messages().list(userId=user_id, maxResults=pagination_param).execute()
     except Exception as error:
-        print('An error occurred: %s' % error)
+        raise error
+
+
+def get_profile(service, user_id):
+    try:
+        return service.users().getProfile(userId=user_id).execute()
+    except Exception as e:
+        raise e
+
+
+def get_labels(service, user_id):
+    try:
+        return service.users().labels().list(userId=user_id).execute()
+    except Exception as e:
+        raise e
 
 
 def get_message(service, user_id, msg_id):
     try:
         return service.users().messages().get(userId=user_id, id=msg_id, format='metadata').execute()
     except Exception as error:
-        print('An error occurred: %s' % error)
+        raise error
 
 
 def get_mime_message(service, user_id, msg_id):
