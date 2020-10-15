@@ -10,10 +10,9 @@ class NewsAttachmentPutSerializer(serializers.ModelSerializer):
     Because of incorrect serialization of ListField in file, you should
     use this serializer only in creating attachments. For other purposes use NewsAttachmentSerializer
     """
-    file = serializers.ListField(
+    attachments = serializers.ListField(
         child=serializers.FileField(use_url=True)
     )
-    news_id = serializers.IntegerField()
 
     class Meta:
         model = NewsAttachment
@@ -28,9 +27,8 @@ class NewsAttachmentPutSerializer(serializers.ModelSerializer):
         return news_id
 
     def create(self, validated_data: dict) -> NewsAttachment:
-        news = News.objects.get(pk=self.data.get('news_id'))
-        files = validated_data.pop('file')
+        files = validated_data.pop('attachments')
         attachments = []
         for file in files:
-            attachments.append(NewsAttachment(file=file, news=news, **validated_data))
+            attachments.append(NewsAttachment(file=file, **validated_data))
         return NewsAttachment.objects.bulk_create(attachments)

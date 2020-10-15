@@ -6,7 +6,7 @@ from crm.models import WaveFormationAttachment, WaveFormation
 
 
 class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
-    file = serializers.ListField(
+    attachments = serializers.ListField(
         child=serializers.FileField(use_url=True)
     )
     wave_formation_id = serializers.IntegerField()
@@ -25,7 +25,7 @@ class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data: dict) -> WaveFormationAttachment:
         wave_formation = WaveFormation.objects.get(pk=self.data.get('wave_formation_id'))
-        files = validated_data.pop('file')
+        files = validated_data.pop('attachments')
         attachments = []
         for file in files:
             attachments.append(WaveFormationAttachment(file=file, wave_formation=wave_formation,

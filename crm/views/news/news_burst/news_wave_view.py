@@ -1,7 +1,7 @@
 from django.db.models import QuerySet
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import permissions
+from rest_framework import permissions, status
 from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.request import Request
@@ -54,4 +54,10 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
 
     def post(self, request, *args, **kwargs) -> Response:
         serializer = self.serializer_class(data=request.data)
-        return super().post(request, *args, **kwargs)
+        if serializer.is_valid():
+            serializer.save()
+            return self.json_success_response(response_code=status.HTTP_201_CREATED,
+                                              data=serializer.data)
+        return self.json_failed_response()
+
+        # return super().post(request, *args, **kwargs)
