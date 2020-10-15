@@ -1,0 +1,6 @@
+from .wave_formation_serializer import WaveFormationSerializer
+from .wave_formation_attachment_put_serializer import WaveFormationAttachmentPutSerializer
+
+
+class WaveFormationCreateSerializer(WaveFormationSerializer):
+    attachments = WaveFormationAttachmentPutSerializer()

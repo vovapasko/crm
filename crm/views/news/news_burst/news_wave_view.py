@@ -6,10 +6,10 @@ from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.request import Request
 from rest_framework.response import Response
-
 from crm.serializers import NewsWaveSerializer
 from crm.models import NewsWave
 from crm.views.base_view import BaseView
+from crm.serializers import NewsWaveCreateSerializer
 from rest_framework import generics
 from crm.paginations import StandardResultsSetPagination
 
@@ -19,7 +19,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
     # permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
     serializer_class = NewsWaveSerializer
     pagination_class = StandardResultsSetPagination
-
+    create_serializer_class = NewsWaveCreateSerializer
     # get request params
     wave_id_get_request_param = "wave"
     project_id_get_request_param = "project"
@@ -53,11 +53,11 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         return super().partial_update(request)
 
     def post(self, request, *args, **kwargs) -> Response:
-        serializer = self.serializer_class(data=request.data)
+        serializer = self.create_serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return self.json_success_response(response_code=status.HTTP_201_CREATED,
                                               data=serializer.data)
-        return self.json_failed_response()
+        return self.json_failed_response(data=serializer.errors)
 
         # return super().post(request, *args, **kwargs)

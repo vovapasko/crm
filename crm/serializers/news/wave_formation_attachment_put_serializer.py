@@ -9,7 +9,6 @@ class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
     attachments = serializers.ListField(
         child=serializers.FileField(use_url=True)
     )
-    wave_formation_id = serializers.IntegerField()
 
     class Meta:
         model = WaveFormationAttachment
@@ -24,10 +23,9 @@ class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
         return wave_formation_id
 
     def create(self, validated_data: dict) -> WaveFormationAttachment:
-        wave_formation = WaveFormation.objects.get(pk=self.data.get('wave_formation_id'))
         files = validated_data.pop('attachments')
         attachments = []
         for file in files:
-            attachments.append(WaveFormationAttachment(file=file, wave_formation=wave_formation,
+            attachments.append(WaveFormationAttachment(file=file,
                                                        **validated_data))
         return WaveFormationAttachment.objects.bulk_create(attachments)
