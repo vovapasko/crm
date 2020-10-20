@@ -1,0 +1,1 @@
+from .news_attachment_serializer import NewsAttachmentSerializer
