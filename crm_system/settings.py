@@ -209,8 +209,11 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # for GMAIL API
 SENDING_EMAIL_SCOPE = ['https://www.googleapis.com/auth/gmail.modify']
 CLIENT_SECRETS_FILE = "client_secrets.json"
-GMAIL_API_REDIRECT_URI = 'http://127.0.0.1:8000/emails/gmail-auth/'
-
+uri = "emails/gmail-auth/"
+local_gmail_redirect_uri = "http://127.0.0.1:8000/"
+dev_gmail_redirect_uri = "https://dmc-crm-backend.herokuapp.com/"
+GMAIL_API_REDIRECT_URI = f'{local_gmail_redirect_uri}emails/gmail-auth/' if DEBUG \
+    else f'{dev_gmail_redirect_uri}emails/gmail-auth/'
 
 GRAPH_MODELS = {
     'all_applications': True,
