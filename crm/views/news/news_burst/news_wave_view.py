@@ -53,11 +53,11 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         return super().partial_update(request)
 
     def post(self, request, *args, **kwargs) -> Response:
-        serializer = self.create_serializer_class(data=request.data)
+        serializer = self.create_serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return self.json_success_response(response_code=status.HTTP_201_CREATED,
-                                              data=serializer.data)
+                                              message={'message': 'success'})
         return self.json_failed_response(data=serializer.errors)
 
         # return super().post(request, *args, **kwargs)

@@ -11,3 +11,6 @@ class WaveFormationAttachment(AbstractBaseModel):
     def delete(self, using=None, keep_parents=False):
         self.file.delete()  # delete file instance on S3 Bucket
         super().delete(using=None, keep_parents=False)
+
+    def __str__(self):
+        return self.file.name

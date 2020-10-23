@@ -18,3 +18,6 @@ class WaveFormationSerializer(WritableNestedModelSerializer):
 
     def get_attachments(self, instance: WaveFormationAttachment) -> str:
         return WaveFormationAttachmentSerializer(instance.waveformationattachment_set.all(), many=True).data
+
+    def create(self, validated_data):
+        return super().create(validated_data)

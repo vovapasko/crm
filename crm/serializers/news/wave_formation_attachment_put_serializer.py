@@ -3,11 +3,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from crm.models import WaveFormationAttachment, WaveFormation
+from crm.serializers.news.attachments.base64_attachment_serializer import Base64AttachmentSerializer
 
 
 class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
     attachments = serializers.ListField(
-        child=serializers.FileField(use_url=True)
+        child=Base64AttachmentSerializer()
     )
 
     class Meta:

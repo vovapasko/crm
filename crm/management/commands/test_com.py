@@ -19,7 +19,6 @@ class Command(BaseCommand):
         from django.core.files.base import ContentFile
         import base64
         import six
-        import uuid
 
         # Check if this is a base64 string
         if isinstance(data, six.string_types):
