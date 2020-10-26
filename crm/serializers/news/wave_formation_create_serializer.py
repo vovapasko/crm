@@ -10,14 +10,6 @@ class WaveFormationCreateSerializer(WaveFormationSerializer):
         child=Base64AttachmentSerializer()
     )
 
-    def to_representation(self, instance):
-        return super().to_representation(instance)
-
-    def get_attachments(self, instance: WaveFormationAttachment) -> str:
-        from .. import WaveFormationAttachmentSerializer
-
-        return WaveFormationAttachmentSerializer(instance.waveformationattachment_set.all(), many=True).data
-
     def create(self, validated_data: dict) -> WaveFormationAttachment:
         files = validated_data.pop('attachments')
         attachments = []

@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from .attachments import Base64AttachmentSerializer
 from .news_serializer import NewsSerializer
 from .news_attachment_put_serializer import NewsAttachmentPutSerializer
 from ...models import NewsAttachment
@@ -6,7 +8,7 @@ from ...models import NewsAttachment
 
 class NewsCreateSerializer(NewsSerializer):
     attachments = serializers.ListField(
-        child=serializers.FileField(use_url=True)
+        child=Base64AttachmentSerializer()
     )
 
     def validate(self, data):
@@ -17,5 +19,7 @@ class NewsCreateSerializer(NewsSerializer):
         files = validated_data.pop('attachments')
         attachments = []
         for file in files:
-            attachments.append(NewsAttachment(file=file, **validated_data))
-        return NewsAttachment.objects.bulk_create(attachments)
+            attachments.append(NewsAttachment(file=file))
+        validated_data['attachments'] = attachments
+
+        return super().create(validated_data)
