@@ -55,9 +55,14 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
     def post(self, request, *args, **kwargs) -> Response:
         serializer = self.create_serializer_class(data=request.data, context={'request': request})
         if serializer.is_valid():
-            serializer.save()
-            return self.json_success_response(response_code=status.HTTP_201_CREATED,
-                                              message={'message': 'success'})
+            news_wave = serializer.save()
+            try:
+                self.__send_waves_via_email(news_wave)
+            except Exception as e:
+                print(e)
+                return self.json_success_response(response_code=status.HTTP_201_CREATED,
+                                                  message={'error': 'error while sending email'})
         return self.json_failed_response(data=serializer.errors)
 
-        # return super().post(request, *args, **kwargs)
+    def __send_waves_via_email(self, news_project: NewsWave):
+        pass
