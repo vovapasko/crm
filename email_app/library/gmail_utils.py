@@ -62,11 +62,15 @@ def finish_authorize(state: str, request_url: str) -> dict:
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(
         CLIENT_SECRETS_FILE, scopes=SCOPES, state=state)
     flow.redirect_uri = settings.GMAIL_API_REDIRECT_URI
+    print(f"Redirect uri {flow.redirect_uri}")
     # Use the authorization server's response to fetch the OAuth 2.0 tokens.
     authorization_response = request_url
+    print(f"Authorization response {authorization_response}")
     flow.fetch_token(authorization_response=authorization_response)
 
     credentials = flow.credentials
+    print('----------')
+    print(credentials)
     return credentials_to_dict(credentials)
 
 
