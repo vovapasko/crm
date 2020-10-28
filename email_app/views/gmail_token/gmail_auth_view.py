@@ -45,6 +45,8 @@ class GmailAuthView(GmailTokenBaseView):
             return HttpResponse("<p>You are successfully logged in. You can "
                                 "close this window now and go back to application</p>")
         except Exception as e:
+            print('------------------------------')
+            print(e)
             raise e
 
     @swagger_auto_schema(manual_parameters=[authentication_url_parameter, state_parameter],
