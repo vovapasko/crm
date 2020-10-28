@@ -13,7 +13,7 @@ class Credentials(AbstractBaseModel):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     token = models.CharField(_('token'), max_length=char_len)
-    refresh_token = models.CharField(_('refresh_token'), max_length=char_len)
+    refresh_token = models.CharField(_('refresh_token'), max_length=char_len, null=True)
     token_uri = models.CharField(_('token_uri'), max_length=char_len)
     client_id = models.CharField(_('client_id'), max_length=char_len)
     client_secret = models.CharField(_('client_secret'), max_length=char_len)
