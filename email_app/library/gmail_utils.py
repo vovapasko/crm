@@ -70,7 +70,7 @@ def finish_authorize(state: str, request_url: str) -> dict:
 
     credentials = flow.credentials
     print('----------')
-    print(credentials)
+    print(credentials.__dict__)
     return credentials_to_dict(credentials)
 
 
