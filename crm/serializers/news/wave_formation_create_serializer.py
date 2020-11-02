@@ -7,14 +7,14 @@ from ...models import WaveFormationAttachment
 
 class WaveFormationCreateSerializer(WaveFormationSerializer):
     attachments = serializers.ListField(
-        child=Base64AttachmentSerializer()
+        child=WaveFormationAttachment()
     )
 
     def create(self, validated_data: dict) -> WaveFormationAttachment:
-        files = validated_data.pop('attachments')
-        attachments = []
-        for file in files:
-            attachments.append(WaveFormationAttachment(file=file))
-        # WaveFormationAttachment.objects.bulk_create(attachments)
-        validated_data['attachments'] = attachments
+        # files = validated_data.pop('attachments')
+        # attachments = []
+        # for file in files:
+        #     attachments.append(WaveFormationAttachment(file=file))
+        # # WaveFormationAttachment.objects.bulk_create(attachments)
+        # validated_data['attachments'] = attachments
         return super().create(validated_data)
