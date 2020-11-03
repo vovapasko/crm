@@ -3,16 +3,17 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions, status
 from rest_framework.generics import DestroyAPIView, UpdateAPIView
-from rest_framework.permissions import DjangoModelPermissions
+from crm.library.helpers.converters import from_base64_to_content_file
 from rest_framework.request import Request
 from rest_framework.response import Response
 from crm.serializers import NewsWaveSerializer
-from crm.models import NewsWave, News, WaveFormation, NewsEmail
+from crm.models import NewsWave, News, WaveFormation, NewsEmail, Contractor
 from crm.views.base_view import BaseView
 from crm.serializers import NewsWaveCreateSerializer
 from rest_framework import generics
 from crm.paginations import StandardResultsSetPagination
 from typing import List
+from email_app.library.gmail_helpers import send_gmail_message
 
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
@@ -75,8 +76,8 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         news_in_project = news_wave.news_in_project
         if wave_formation is None:
             self.__send_news(news_in_project.all())
-        if news_in_project is None:
-            self.__send_wave(wave_formation.all())
+        if len(news_in_project.all()) == 0:
+            self.__send_wave(wave_formation, news_wave.contractors)
         else:
             raise Exception("Wave formation and News in Project are empty")
 
@@ -93,8 +94,26 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             attachments = news.newsattachment_set.all()
             print()
 
-    def __send_wave(self, wave_formation: WaveFormation):
-        pass
+    def __send_wave(self, wave_formation: WaveFormation, contractors: List[Contractor]):
+        to_emails = contractors.values_list('email', flat=True)
+        content = wave_formation.content
+        email = wave_formation.email
+        attachments = wave_formation.waveformationattachment_set.all()
+        try:
+            self.__check_credentials(email)
+        except Exception as e:
+            raise e
+        if attachments is not None:
+            converted_attachments = []
+            for attachment in attachments:
+                converted = from_base64_to_content_file(attachment.base64, attachment.name)
+                converted_attachments.append(converted)
+        for to_email in to_emails:
+            send_gmail_message(email_from=email.email,
+                               email_to=to_email,
+                               subject='test',
+                               message_text=content)
+            # attachments=converted_attachments)
 
     def __check_credentials(self, email: NewsEmail):
         if email.gmail_credentials is None:

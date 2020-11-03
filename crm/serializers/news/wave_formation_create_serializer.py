@@ -7,14 +7,18 @@ from ...models import WaveFormationAttachment
 
 class WaveFormationCreateSerializer(WaveFormationSerializer):
     attachments = serializers.ListField(
-        child=WaveFormationAttachmentSerializer()
+        child=WaveFormationAttachmentSerializer(), required=False
     )
 
     def create(self, validated_data: dict) -> WaveFormationAttachment:
-        files = validated_data.pop('attachments')
-        attachments = []
-        for file in files:
-            attachments.append(WaveFormationAttachment(**file))
-        # WaveFormationAttachment.objects.bulk_create(attachments)
-        validated_data['attachments'] = attachments
-        return super().create(validated_data)
+        try:
+            files = validated_data.pop('attachments')
+            attachments = []
+            for file in files:
+                attachments.append(WaveFormationAttachment(**file))
+            # WaveFormationAttachment.objects.bulk_create(attachments)
+            validated_data['attachments'] = attachments
+        except Exception:
+            print("no attachments")
+        finally:
+            return super().create(validated_data)
