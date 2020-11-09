@@ -59,7 +59,7 @@ def create_message_with_attachments(sender, to, subject, message_text, files):
     message['from'] = sender
     message['subject'] = subject
 
-    msg = MIMEText(message_text)
+    msg = MIMEText(message_text, 'html')
     message.attach(msg)
     for file in files:
         content_type, encoding = mimetypes.guess_type(file)
@@ -95,7 +95,7 @@ def create_message_with_attachments(sender, to, subject, message_text, files):
 
 
 def create_message(sender, to, subject, message_text):
-    message = MIMEText(message_text)
+    message = MIMEText(message_text, 'html')
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
