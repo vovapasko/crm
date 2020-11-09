@@ -12,7 +12,7 @@ from crm.views.base_view import BaseView
 from crm.serializers import NewsWaveCreateSerializer
 from rest_framework import generics
 from crm.paginations import StandardResultsSetPagination
-from typing import List
+from typing import List, Union
 from email_app.library.gmail_helpers import send_gmail_message
 
 
@@ -59,25 +59,24 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         if serializer.is_valid():
             news_wave = serializer.save()
             try:
-                self.__send_waves_via_email(news_wave)
+                sending_email_response = self.__send_waves_via_email(news_wave)
+                message = {'status': 'wave is saved'}
             except Exception as e:
-                print(e)
-                return self.json_success_response(response_code=status.HTTP_201_CREATED,
-                                                  message={'error': 'error while sending email'})
-            finally:
-                return self.json_success_response(response_code=status.HTTP_201_CREATED,
-                                                  message={'status': 'wave is saved'})
-            # return self.json_success_response(response_code=status.HTTP_201_CREATED,
-            #                                   message={'status': 'wave is saved'})
+                sending_email_response = str(e)
+                message = {'error': 'error while sending email'}
+            return self.json_success_response(response_code=status.HTTP_201_CREATED,
+                                              message=message,
+                                              details=sending_email_response)
+
         return self.json_failed_response(data=serializer.errors)
 
     def __send_waves_via_email(self, news_wave: NewsWave):
         wave_formation = news_wave.wave_formation
         news_in_project = news_wave.news_in_project
         if wave_formation is None:
-            self.__send_news(news_in_project.all())
+            return self.__send_news(news_in_project.all())
         if len(news_in_project.all()) == 0:
-            self.__send_wave(wave_formation, news_wave.contractors)
+            return self.__send_wave(news_wave)
         else:
             raise Exception("Wave formation and News in Project are empty")
 
@@ -91,29 +90,52 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             content = news.content
             contractors = news.contractors.values_list('email', flat=True)
             title = news.title
-            attachments = news.newsattachment_set.all()
+            # attachments = news.newsattachment_set.all()
             print()
 
-    def __send_wave(self, wave_formation: WaveFormation, contractors: List[Contractor]):
-        to_emails = contractors.values_list('email', flat=True)
-        content = wave_formation.content
-        email = wave_formation.email
-        attachments = wave_formation.waveformationattachment_set.all()
+    def __send_wave(self, news_wave):
+        to_emails = news_wave.contractors.values_list('email', flat=True)
+        content = news_wave.wave_formation.content
+        email = news_wave.wave_formation.email
+        attachments = news_wave.wave_formation.waveformationattachment_set.all()
         try:
             self.__check_credentials(email)
         except Exception as e:
             raise e
+        converted_attachments = None
         if attachments is not None:
             converted_attachments = []
             for attachment in attachments:
-                converted = from_base64_to_content_file(attachment.base64, attachment.name)
+                converted = from_base64_to_content_file(attachment.base_64, attachment.name)
                 converted_attachments.append(converted)
+        sending_results = self.__send_emails(
+            to_emails=to_emails,
+            email=email,
+            subject=news_wave.title,
+            content=content,
+            converted_attachments=None
+        )
+        return sending_results
+
+    def __send_emails(self,
+                      to_emails: list,
+                      email: NewsEmail,
+                      subject: str,
+                      content: str,
+                      converted_attachments: Union[list, None]):
+        results = {}
         for to_email in to_emails:
-            send_gmail_message(email_from=email.email,
-                               email_to=to_email,
-                               subject='test',
-                               message_text=content)
-            # attachments=converted_attachments)
+            email_from = email.email
+            try:
+                res = send_gmail_message(email_from=email_from,
+                                         email_to=to_email,
+                                         subject=subject,
+                                         message_text=content,
+                                         attachments=None)
+            except Exception as e:
+                res = str(e)
+            results.update({to_email: res})
+        return results
 
     def __check_credentials(self, email: NewsEmail):
         if email.gmail_credentials is None:

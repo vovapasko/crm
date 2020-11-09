@@ -1,9 +1,10 @@
 import six
 from django.core.files.base import ContentFile
+import base64
 
 
-def from_base64_to_content_file(base64: str, filename: str):
-    data = base64
+def from_base64_to_content_file(base64_str: str, filename: str):
+    data = base64_str
     # Check if this is a base64 string
     if isinstance(data, six.string_types):
         # Check if the base64 string is in the "data:" format
