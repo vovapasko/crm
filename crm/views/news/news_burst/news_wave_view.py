@@ -110,18 +110,12 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             self.__check_credentials(email)
         except Exception as e:
             raise e
-        converted_attachments = None
-        if attachments is not None:
-            converted_attachments = []
-            for attachment in attachments:
-                converted = from_base64_to_content_file(attachment.base_64, attachment.name)
-                converted_attachments.append(converted)
         sending_results = self.__send_emails(
             to_emails=to_emails,
             email=email,
             subject=news_wave.title,
             content=content,
-            converted_attachments=None
+            converted_attachments=attachments
         )
         return sending_results
 
@@ -139,7 +133,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
                                          email_to=to_email,
                                          subject=subject,
                                          message_text=content,
-                                         attachments=None)
+                                         attachments=converted_attachments)
             except Exception as e:
                 res = str(e)
             results.update({to_email: res})
