@@ -1,7 +1,5 @@
 from django.db import models
 
-from ...library.constants.media import news_attachments_storage
-
 from ...models.abstract_base_model import AbstractBaseModel
 
 

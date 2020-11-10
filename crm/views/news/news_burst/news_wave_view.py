@@ -91,12 +91,13 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             content = news.content
             contractors_emails = news.contractors.values_list('email', flat=True)
             title = news.title
+            attachments = news.newsattachment_set.all()
             current_news_sending_results = self.__send_emails(
                 to_emails=contractors_emails,
                 email=email,
                 subject=title,
                 content=content,
-                converted_attachments=None
+                converted_attachments=attachments
             )
             all_news_sending_results.update({news.title: current_news_sending_results})
         return all_news_sending_results

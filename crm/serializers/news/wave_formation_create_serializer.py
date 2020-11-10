@@ -16,7 +16,6 @@ class WaveFormationCreateSerializer(WaveFormationSerializer):
             attachments = []
             for file in files:
                 attachments.append(WaveFormationAttachment(**file))
-            # WaveFormationAttachment.objects.bulk_create(attachments)
             validated_data['attachments'] = attachments
         except Exception:
             print("no attachments")
