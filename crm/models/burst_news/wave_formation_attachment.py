@@ -12,11 +12,6 @@ class WaveFormationAttachment(AbstractBaseModel):
     base_64 = models.TextField()
     type = models.CharField(max_length=max_char_field_length)
 
-    # file = models.FileField(upload_to=wave_formation_attachments_storage)
-    #
-    # def delete(self, using=None, keep_parents=False):
-    #     self.file.delete()  # delete file instance on S3 Bucket
-    #     super().delete(using=None, keep_parents=False)
 
     def __str__(self):
         return self.name
