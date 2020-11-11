@@ -129,6 +129,7 @@ def get_attachments(service, user_id, msg_id, store_dir):
         print('An error occurred: %s' % error)
 
 
+
 def credentials_to_dict(credentials):
     return {'token': credentials.token,
             'refresh_token': credentials.refresh_token,
