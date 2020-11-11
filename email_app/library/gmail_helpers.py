@@ -1,16 +1,15 @@
-import mimetypes
-import os
 import base64
 import email
-import os.path
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from typing import Union
 
 from crm.library.helpers import from_base64_to_content_file
 from crm.models import NewsEmail
+from email_app.library.gmail_api import send_message
 
 
 def send_gmail_message(email_from: str, email_to: str, subject: str = None,
@@ -19,21 +18,9 @@ def send_gmail_message(email_from: str, email_to: str, subject: str = None,
     try:
         test_email = NewsEmail.objects.get(email=email_from)  # this email has to exist
         email_from = test_email.email
-        if attachments is None:
-            message = create_message(
-                sender=email_from,
-                to=email_to,
-                subject=subject,
-                message_text=message_text
-            )
-        else:
-            message = create_message_with_attachments(
-                sender=email_from,
-                to=email_to,
-                subject=subject,
-                message_text=message_text,
-                files=attachments
-            )
+        message = build_message(email_from=email_from, email_to=email_to, subject=subject,
+                                message_text=message_text,
+                                attachments=attachments)
         credentials = test_email.gmail_credentials
         service = build_service(credentials=credentials.credentials_for_service())
         res = send_message(service=service, user_id=email_from, message=message)
@@ -42,16 +29,24 @@ def send_gmail_message(email_from: str, email_to: str, subject: str = None,
         raise e
 
 
-def send_message(service, user_id, message):
-    try:
-        message = service.users().messages().send(userId=user_id, body=message).execute()
-
-        print('Message Id: %s' % message['id'])
-
-        return message
-    except Exception as e:
-        print('An error occurred: %s' % e)
-        raise e
+def build_message(email_from: str, email_to: str, subject: str,
+                  message_text: str, attachments: Union[list, None]) -> Union[MIMEBase, dict]:
+    if attachments is None:
+        message = create_message(
+            sender=email_from,
+            to=email_to,
+            subject=subject,
+            message_text=message_text
+        )
+    else:
+        message = create_message_with_attachments(
+            sender=email_from,
+            to=email_to,
+            subject=subject,
+            message_text=message_text,
+            files=attachments
+        )
+    return message
 
 
 def create_message_with_attachments(sender, to, subject, message_text, files):
@@ -102,38 +97,6 @@ def create_message(sender, to, subject, message_text):
     }
 
 
-def get_messages(service, user_id: str, pagination_param: int, page_token: str = None) -> dict:
-    try:
-        if page_token:
-            return service.users().messages().list(userId=user_id, maxResults=pagination_param,
-                                                   pageToken=page_token).execute()
-        else:
-            return service.users().messages().list(userId=user_id, maxResults=pagination_param).execute()
-    except Exception as error:
-        raise error
-
-
-def get_profile(service, user_id):
-    try:
-        return service.users().getProfile(userId=user_id).execute()
-    except Exception as e:
-        raise e
-
-
-def get_labels(service, user_id):
-    try:
-        return service.users().labels().list(userId=user_id).execute()
-    except Exception as e:
-        raise e
-
-
-def get_message(service, user_id, msg_id):
-    try:
-        return service.users().messages().get(userId=user_id, id=msg_id, format='metadata').execute()
-    except Exception as error:
-        raise error
-
-
 def get_mime_message(service, user_id, msg_id):
     try:
         message = service.users().messages().get(userId=user_id, id=msg_id,
@@ -164,21 +127,6 @@ def get_attachments(service, user_id, msg_id, store_dir):
                 f.close()
     except Exception as error:
         print('An error occurred: %s' % error)
-
-
-def create_draft(service, user_id, message_body):
-    try:
-        message = {'message': message_body}
-        draft = service.users().drafts().create(userId=user_id, body=message).execute()
-
-        print("Draft id: %s\nDraft message: %s" % (draft['id'], draft['message']))
-
-        return draft
-    except Exception as e:
-        print('An error occurred: %s' % e)
-        return None
-
-    # Press the green button in the gutter to run the script.
 
 
 def credentials_to_dict(credentials):
