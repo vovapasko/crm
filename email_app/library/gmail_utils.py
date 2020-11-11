@@ -6,7 +6,8 @@ import googleapiclient.discovery
 from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
 from email_app.library import constants
-from email_app.library.gmail_helpers import credentials_to_dict, get_messages, get_labels, get_message, get_profile
+from email_app.library.gmail_api import get_messages, get_labels, get_profile
+from email_app.library.gmail_helpers import credentials_to_dict
 import os
 
 if settings.DEBUG:

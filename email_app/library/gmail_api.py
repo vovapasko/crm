@@ -67,17 +67,53 @@ def create_draft(service, user_id, message_body):
         return None
 
 
-def trash_message():
-    pass
+def trash_message(service, user_id: str, id: str):
+    '''
+    Moves the specified message to the trash.
+    user_id: string
+    The user's email address. The special value me can be used to indicate the authenticated user.
+    id: string
+    The ID of the message to Trash.
+    '''
+    try:
+        message = service.users().messages().trash(userId=user_id, id=id)
+        return message
+    except Exception as e:
+        print('An error occurred: %s' % e)
+        return None
 
 
-def untrash_message():
-    pass
+def untrash_message(service, user_id: str, id: str):
+    '''
+    Moves the specified message from the trash.
+    user_id: string
+    The user's email address. The special value me can be used to indicate the authenticated user.
+    id: string
+    The ID of the message to Trash.
+    '''
+    try:
+        message = service.users().messages().untrash(userId=user_id, id=id)
+        return message
+    except Exception as e:
+        print('An error occurred: %s' % e)
+        return None
 
 
-def delete_message():
-    pass
+def delete_message(service, user_id, id):
+    '''
+    Immediately and permanently deletes the specified message. This operation cannot be undone.
+    user_id: string
+    The user's email address. The special value me can be used to indicate the authenticated user.
+    id: string
+    The ID of the message to Trash.
+    '''
+    try:
+        message = service.users().messages().delete(userId=user_id, id=id)
+        return message
+    except Exception as e:
+        print('An error occurred: %s' % e)
+        return None
 
-
+# todo complete this function
 def show_sent_messages():
     pass
