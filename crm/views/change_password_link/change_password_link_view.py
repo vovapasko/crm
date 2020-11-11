@@ -16,6 +16,7 @@ class ChangePasswordLinkView(BaseView):
     permission_classes = (IsAuthenticated,)
     template_name = PASSWORD_CHANGE_EMAIL
 
+    # todo lookup docs tools for generating links
     def get(self, request: Request, *args, **kwargs) -> Response:
         """
         :return: json response
@@ -40,6 +41,7 @@ class ChangePasswordLinkView(BaseView):
         sends confirmation link to user from request email
         """
         data = signing.dumps(dict(id=request.user.id))
+        # todo try to keep all constants in settings.py
         link = format_link(CHANGE_PASSWORD_LINK)
         send_dmc_email(
             self.template_name,

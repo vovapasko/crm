@@ -10,7 +10,7 @@ from crm.models import NewsWave, Contractor, Hashtag, NewsCharacter, NewsBurstMe
 from typing import Type, List
 from crm.serializers.news import NewsCharacterSerializer, NewsBurstMethodSerializer, HashtagSerializer
 from crm.serializers.news.news_wave_price_list_serializer import NewsWavePriceListSerializer
-from crm.serializers import UserSerializer
+from crm.serializers import UserSerializer, ContractorSerializer
 
 
 class NewsWaveSerializer(WritableNestedModelSerializer):
@@ -22,6 +22,7 @@ class NewsWaveSerializer(WritableNestedModelSerializer):
     hashtags = HashtagSerializer(many=True)
     news_in_project = NewsSerializer(many=True)
     created_by = UserSerializer(read_only=True)
+    contractors = ContractorSerializer(many=True)
 
     newswavepricelist_set = NewsWavePriceListSerializer(many=True)
 

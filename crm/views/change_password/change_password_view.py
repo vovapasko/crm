@@ -37,7 +37,7 @@ class ChangePasswordView(BaseView):
             return self.json_failed_response(errors=serializer.errors)
 
         data_from_request = serializer.data
-
+        # todo look up in docs how to do it
         if not self.__is_user_password_change_allowed(request, **kwargs):
             return self.json_forbidden_response(
                 errors={

@@ -3,13 +3,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from crm.models import WaveFormationAttachment, WaveFormation
+from crm.serializers.news.attachments.base64_attachment_serializer import Base64AttachmentSerializer
 
 
 class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
-    file = serializers.ListField(
-        child=serializers.FileField(use_url=True)
+    attachments = serializers.ListField(
+        child=Base64AttachmentSerializer()
     )
-    wave_formation_id = serializers.IntegerField()
 
     class Meta:
         model = WaveFormationAttachment
@@ -24,10 +24,9 @@ class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
         return wave_formation_id
 
     def create(self, validated_data: dict) -> WaveFormationAttachment:
-        wave_formation = WaveFormation.objects.get(pk=self.data.get('wave_formation_id'))
-        files = validated_data.pop('file')
+        files = validated_data.pop('attachments')
         attachments = []
         for file in files:
-            attachments.append(WaveFormationAttachment(file=file, wave_formation=wave_formation,
+            attachments.append(WaveFormationAttachment(file=file,
                                                        **validated_data))
         return WaveFormationAttachment.objects.bulk_create(attachments)

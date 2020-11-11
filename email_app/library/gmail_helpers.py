@@ -9,6 +9,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
+from crm.library.helpers import from_base64_to_content_file
 from crm.models import NewsEmail
 
 
@@ -59,34 +60,30 @@ def create_message_with_attachments(sender, to, subject, message_text, files):
     message['from'] = sender
     message['subject'] = subject
 
-    msg = MIMEText(message_text)
+    msg = MIMEText(message_text, 'html')
     message.attach(msg)
     for file in files:
-        content_type, encoding = mimetypes.guess_type(file)
+        content_type = file.type
 
-        if content_type is None or encoding is not None:
+        if content_type is None:
             content_type = 'application/octet-stream'
 
         main_type, sub_type = content_type.split('/', 1)
-
+        fp = from_base64_to_content_file(file.base_64, file.name)
         if main_type == 'text':
-            fp = open(file, 'rb')
             msg = MIMEText(fp.read().decode("utf-8"), _subtype=sub_type)
             fp.close()
         elif main_type == 'image':
-            fp = open(file, 'rb')
             msg = MIMEImage(fp.read(), _subtype=sub_type)
             fp.close()
         elif main_type == 'audio':
-            fp = open(file, 'rb')
             msg = MIMEAudio(fp.read(), _subtype=sub_type)
             fp.close()
         else:
-            fp = open(file, 'rb')
             msg = MIMEBase(main_type, sub_type)
             msg.set_payload(fp.read())
             fp.close()
-        filename = os.path.basename(file)
+        filename = file.name
         msg.add_header('Content-Disposition', 'attachment', filename=filename)
         message.attach(msg)
 
@@ -95,7 +92,7 @@ def create_message_with_attachments(sender, to, subject, message_text, files):
 
 
 def create_message(sender, to, subject, message_text):
-    message = MIMEText(message_text)
+    message = MIMEText(message_text, 'html')
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject

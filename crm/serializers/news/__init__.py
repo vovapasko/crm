@@ -11,3 +11,4 @@ from .wave_formation_attachment_serializer import WaveFormationAttachmentSeriali
 from .wave_formation_attachment_put_serializer import WaveFormationAttachmentPutSerializer
 from .wave_formation_serializer import WaveFormationSerializer
 from .news_wave_price_list_serializer import NewsWavePriceListSerializer
+from .news_wave_create_serializer import NewsWaveCreateSerializer
