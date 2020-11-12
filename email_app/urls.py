@@ -8,5 +8,6 @@ urlpatterns = [
     path('gmail-creds-clear/', GmailCredentialsClearView.as_view(), name='gmail-creds-clear'),
     path('gmail-token-revoke/', GmailTokenRevokeView.as_view(), name='gmail-token-revoke'),
     path('inbox/', EmailInboxView.as_view(), name='inbox'),
-    path('messages/', EmailGetMessageView.as_view(), name='get-message')
+    path('messages/', EmailGetMessageView.as_view(), name='get-message'),
+    path('trash-message', TrashMessageView.as_view(), name='trash-message')
 ]
