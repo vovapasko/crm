@@ -45,6 +45,29 @@ def get_message_with_metadata(service, user_id, msg_id):
         raise error
 
 
+def get_attachment(service, user_id, msg_id, attachment_id):
+    try:
+        return service.users().messages().attachments().get(userId=user_id, messageId=msg_id,
+                                                           id=attachment_id).execute()
+    except Exception as error:
+        raise error
+
+
+def get_raw_message(service, user_id, msg_id):
+    return get_message_with_param(service, user_id, msg_id, 'raw')
+
+
+def get_full_message(service, user_id, msg_id):
+    return get_message_with_param(service, user_id, msg_id, 'full')
+
+
+def get_message_with_param(service, user_id, msg_id, param: str):
+    try:
+        return service.users().messages().get(userId=user_id, id=msg_id, format=param).execute()
+    except Exception as error:
+        raise error
+
+
 # todo finish this function
 def get_message_attachments(service, user_id, msg_id, part):
     try:
@@ -113,6 +136,7 @@ def delete_message(service, user_id, id):
     except Exception as e:
         print('An error occurred: %s' % e)
         return None
+
 
 # todo complete this function
 def show_sent_messages():
