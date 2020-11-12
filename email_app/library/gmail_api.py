@@ -90,7 +90,7 @@ def create_draft(service, user_id, message_body):
         return None
 
 
-def trash_message(service, user_id: str, id: str):
+def trash_message(service, user_id: str, message_id: str):
     '''
     Moves the specified message to the trash.
     user_id: string
@@ -99,7 +99,7 @@ def trash_message(service, user_id: str, id: str):
     The ID of the message to Trash.
     '''
     try:
-        message = service.users().messages().trash(userId=user_id, id=id)
+        message = service.users().messages().trash(userId=user_id, id=message_id).execute()
         return message
     except Exception as e:
         print('An error occurred: %s' % e)
@@ -115,7 +115,7 @@ def untrash_message(service, user_id: str, id: str):
     The ID of the message to Trash.
     '''
     try:
-        message = service.users().messages().untrash(userId=user_id, id=id)
+        message = service.users().messages().untrash(userId=user_id, id=id).execute()
         return message
     except Exception as e:
         print('An error occurred: %s' % e)
@@ -131,7 +131,7 @@ def delete_message(service, user_id, id):
     The ID of the message to Trash.
     '''
     try:
-        message = service.users().messages().delete(userId=user_id, id=id)
+        message = service.users().messages().delete(userId=user_id, id=id).execute()
         return message
     except Exception as e:
         print('An error occurred: %s' % e)
