@@ -207,7 +207,7 @@ AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 # for GMAIL API
-SENDING_EMAIL_SCOPE = ['https://www.googleapis.com/auth/gmail.modify']
+SENDING_EMAIL_SCOPE = ['https://mail.google.com/']
 CLIENT_SECRETS_FILE = "client_secrets.json"
 uri = "emails/gmail-auth/"
 local_gmail_redirect_uri = "http://127.0.0.1:8000/"
