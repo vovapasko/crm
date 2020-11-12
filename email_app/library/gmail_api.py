@@ -48,7 +48,7 @@ def get_message_with_metadata(service, user_id, msg_id):
 def get_attachment(service, user_id, msg_id, attachment_id):
     try:
         return service.users().messages().attachments().get(userId=user_id, messageId=msg_id,
-                                                           id=attachment_id).execute()
+                                                            id=attachment_id).execute()
     except Exception as error:
         raise error
 
@@ -106,7 +106,7 @@ def trash_message(service, user_id: str, message_id: str):
         return None
 
 
-def untrash_message(service, user_id: str, id: str):
+def untrash_message(service, user_id: str, message_id: str):
     '''
     Moves the specified message from the trash.
     user_id: string
@@ -115,7 +115,7 @@ def untrash_message(service, user_id: str, id: str):
     The ID of the message to Trash.
     '''
     try:
-        message = service.users().messages().untrash(userId=user_id, id=id).execute()
+        message = service.users().messages().untrash(userId=user_id, id=message_id).execute()
         return message
     except Exception as e:
         print('An error occurred: %s' % e)

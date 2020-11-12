@@ -7,7 +7,7 @@ from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
 from email_app.library import constants
 from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
-    get_message_with_metadata, get_raw_message, trash_message
+    get_message_with_metadata, get_raw_message, trash_message, untrash_message, get_full_message
 from email_app.library.gmail_helpers import credentials_to_dict
 import os
 
@@ -108,8 +108,22 @@ def get_raw_gmail_message(email: NewsEmail, message_id: str):
     return message
 
 
+def get_full_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = get_full_message(service=service, user_id=email.email, msg_id=message_id)
+    return message
+
+
 def trash_gmail_message(email: NewsEmail, message_id: str):
     creds = email.gmail_credentials.credentials_for_service()
     service = build_service(credentials=creds)
     message = trash_message(service=service, user_id=email.email, message_id=message_id)
+    return message
+
+
+def untrash_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = untrash_message(service=service, user_id=email.email, message_id=message_id)
     return message
