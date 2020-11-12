@@ -11,10 +11,12 @@ class Command(BaseCommand):
     credentials = news_email.gmail_credentials.credentials_for_service()
     service = build_service(credentials)
     user_id = news_email.email
+    test_message_id = '175bb8c3b24d95c3'
     message_id = '175bb6dea657a2d7'
     attachment_id = 'ANGjdJ8u_DqwdACoXGqHDh3iGqlESdAGfXbzXDLXWzcOn_xCvRwt6kvI2HYr8QoGbeX11tHvzDe2O4XGYMvgkBZF8HmnSzzehirHm-Xb4kiIhFkT3Ekhl2XkJFudlXpLiojbZJ3Ad3ub9GYtwkpjmbQa4di9OJzg4BJ-wlsXwabjxB_vc9jLXpur0ofPqHI3FvdMXUiSGrfKLyfKaKKHhJcOpyN8G94mMxEVujAzVDKKg8qzkOp8TEIPhCXcuCv47O9I-DGTPeWwO_l9n8Ff-_yE8QeFwuXvYXYsQNitSoIOSybzHBS0JIBnQsGstcJM-R51BTLi8nJp02GsVlZQkR0X-AxNQwvhoFWVBaZ4-eMZByUrwQJruQXx3104e-lajzWRt1WcVuFgg6spk0WP'
 
     def handle(self, *args, **options):
+        message = self.raw_message(self.test_message_id)
         print()
 
     def delete(self, message_id):

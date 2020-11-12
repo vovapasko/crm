@@ -6,7 +6,8 @@ import googleapiclient.discovery
 from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
 from email_app.library import constants
-from email_app.library.gmail_api import get_messages, get_labels, get_profile, get_message_with_metadata
+from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
+    get_message_with_metadata, get_raw_message
 from email_app.library.gmail_helpers import credentials_to_dict
 import os
 
@@ -98,3 +99,10 @@ def get_gmail_profile(email: NewsEmail) -> dict:
     service = build_service(credentials=creds)
     profile = get_profile(service=service, user_id=email.email)
     return profile
+
+
+def get_raw_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = get_raw_message(service=service, user_id=email.email, msg_id=message_id)
+    return message
