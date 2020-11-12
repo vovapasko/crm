@@ -19,7 +19,7 @@ class EmailRemoveMessagesView(BaseView):
             results = {}
             for message_id in message_ids:
                 try:
-                    result = remove_gmail_message(email=news_email, message_id=message_id)
+                    remove_gmail_message(email=news_email, message_id=message_id)
                     results.update({message_id: "Message removed"})
                 except Exception as e:
                     results.update({message_id: str(e)})

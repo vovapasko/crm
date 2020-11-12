@@ -81,9 +81,13 @@ def get_gmail_messages(email: NewsEmail, pagination: int, next_page_token: str =
     service = build_service(credentials=creds)
     messages = get_messages(service=service, user_id=email.email, pagination_param=pagination,
                             page_token=next_page_token)
+    return add_metadata_to_messages(service=service, email=email.email, messages=messages)
+
+
+def add_metadata_to_messages(service, email: str, messages: dict):
     lst = messages.get('messages')
     for _, i in zip(lst, range(len(lst))):
-        message = get_message_with_metadata(service, email.email, _.get('id'))
+        message = get_message_with_metadata(service, email, _.get('id'))
         messages.get('messages')[i] = message
     return messages
 

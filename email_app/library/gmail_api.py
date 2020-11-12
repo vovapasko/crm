@@ -1,4 +1,5 @@
 # this file contains basic functions for interacting with google gmail api
+from typing import List
 
 
 def send_message(service, user_id, message):
@@ -133,6 +134,15 @@ def delete_message(service, user_id: str, message_id: str):
     try:
         message = service.users().messages().delete(userId=user_id, id=message_id).execute()
         return message
+    except Exception as e:
+        print('An error occurred: %s' % e)
+        raise e
+
+
+def list_messages_with_label(service, user_id: str, label_ids: List[str]):
+    try:
+        messages = service.users().messages().list(userId=user_id, labelIds=label_ids, includeSpamTrash=True).execute()
+        return messages
     except Exception as e:
         print('An error occurred: %s' % e)
         raise e
