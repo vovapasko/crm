@@ -1,5 +1,5 @@
 from .email_inbox_view import EmailInboxView
-from .email_deleted_messages_view import EmailDeletedMessagesView
+from .email_remove_message_view import EmailRemoveMessagesView
 from .email_sent_messages_view import EmailSentMessagesView
 from .trash_message_view import TrashMessageView
 from .untrash_message_view import UntrashMessageView

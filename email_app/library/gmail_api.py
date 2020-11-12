@@ -122,20 +122,20 @@ def untrash_message(service, user_id: str, message_id: str):
         return None
 
 
-def delete_message(service, user_id, id):
+def delete_message(service, user_id: str, message_id: str):
     '''
     Immediately and permanently deletes the specified message. This operation cannot be undone.
     user_id: string
     The user's email address. The special value me can be used to indicate the authenticated user.
-    id: string
-    The ID of the message to Trash.
+    message_id: string
+    The ID of the message to delete.
     '''
     try:
-        message = service.users().messages().delete(userId=user_id, id=id).execute()
+        message = service.users().messages().delete(userId=user_id, id=message_id).execute()
         return message
     except Exception as e:
         print('An error occurred: %s' % e)
-        return None
+        raise e
 
 
 # todo complete this function

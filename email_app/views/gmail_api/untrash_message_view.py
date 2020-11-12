@@ -1,11 +1,11 @@
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.library.gmail_utils import untrash_gmail_message
-from email_app.serializers import GmailTrashSerializer
+from email_app.serializers import GmailMessageWithIdsSerializer
 
 
 class UntrashMessageView(BaseView):
-    serializer_class = GmailTrashSerializer
+    serializer_class = GmailMessageWithIdsSerializer
 
     email_param = 'email'
     message_id_param = 'message_ids'

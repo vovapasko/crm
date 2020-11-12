@@ -10,5 +10,6 @@ urlpatterns = [
     path('inbox/', EmailInboxView.as_view(), name='inbox'),
     path('messages/', EmailGetMessageView.as_view(), name='get-message'),
     path('trash-message/', TrashMessageView.as_view(), name='trash-message'),
-    path('untrash-message/', UntrashMessageView.as_view(), name='untrash-message')
+    path('untrash-message/', UntrashMessageView.as_view(), name='untrash-message'),
+    path('remove-message/', EmailRemoveMessagesView.as_view(), name='remove-message')
 ]
