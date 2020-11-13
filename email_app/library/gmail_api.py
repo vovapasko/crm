@@ -70,10 +70,10 @@ def get_message_with_param(service, user_id, msg_id, param: str):
 
 
 # todo finish this function
-def get_message_attachments(service, user_id, msg_id, part):
+def get_message_attachments(service, user_id, message_id, attachment_id):
     try:
-        return service.users().messages().attachments().get(id=part['body']['attachmentId'],
-                                                            userId=user_id, messageId=msg_id).execute()
+        return service.users().messages().attachments().get(userId=user_id, messageId=message_id,
+                                                            id=attachment_id).execute()
     except Exception as error:
         raise error
 
@@ -146,8 +146,3 @@ def list_messages_with_label(service, user_id: str, label_ids: List[str]):
     except Exception as e:
         print('An error occurred: %s' % e)
         raise e
-
-
-# todo complete this function
-def show_sent_messages():
-    pass
