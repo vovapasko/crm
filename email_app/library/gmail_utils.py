@@ -1,4 +1,4 @@
-import requests
+from typing import List
 from django.conf import settings
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
@@ -7,7 +7,8 @@ from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
 from email_app.library import constants
 from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
-    get_message_with_metadata, get_raw_message, trash_message, untrash_message, get_full_message, delete_message
+    get_message_with_metadata, get_raw_message, trash_message, untrash_message, \
+    get_full_message, delete_message, list_messages_with_label
 from email_app.library.gmail_helpers import credentials_to_dict
 import os
 
@@ -138,3 +139,10 @@ def remove_gmail_message(email: NewsEmail, message_id: str):
     service = build_service(credentials=creds)
     message = delete_message(service=service, user_id=email.email, message_id=message_id)
     return message
+
+
+def filter_label_gmail_message(email: NewsEmail, labels: List[str]):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    messages = list_messages_with_label(service=service, user_id=email.email, label_ids=labels)
+    return add_metadata_to_messages(service=service, email=email.email, messages=messages)
