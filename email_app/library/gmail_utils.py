@@ -8,7 +8,7 @@ from crm.models import NewsEmail
 from email_app.library import constants
 from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
     get_message_with_metadata, get_raw_message, trash_message, untrash_message, \
-    get_full_message, delete_message, list_messages_with_label
+    get_full_message, delete_message, list_messages_with_label, get_attachment
 from email_app.library.gmail_helpers import credentials_to_dict
 import os
 
@@ -146,3 +146,11 @@ def filter_label_gmail_message(email: NewsEmail, labels: List[str]):
     service = build_service(credentials=creds)
     messages = list_messages_with_label(service=service, user_id=email.email, label_ids=labels)
     return add_metadata_to_messages(service=service, email=email.email, messages=messages)
+
+
+def get_gmail_attachment(email: NewsEmail, message_id: str, attachment_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    attachment = get_attachment(service, user_id=email.email, message_id=message_id,
+                                attachment_id=attachment_id)
+    return attachment

@@ -146,3 +146,13 @@ def list_messages_with_label(service, user_id: str, label_ids: List[str]):
     except Exception as e:
         print('An error occurred: %s' % e)
         raise e
+
+
+def get_attachment(service, user_id: str, message_id: str, attachment_id: str):
+    try:
+        attachment = service.users().messages().attachments().get(userId=user_id, messageId=message_id,
+                                                                  id=attachment_id).execute()
+        return attachment
+    except Exception as e:
+        print('An error occurred: %s' % e)
+        raise e

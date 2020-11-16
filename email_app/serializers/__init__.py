@@ -4,3 +4,4 @@ from .email_serializer import EmailSerialiser
 from .inbox_email_serializer import InboxEmailSerializer
 from .gmail_message_with_ids_serializer import GmailMessageWithIdsSerializer
 from .gmail_label_serializer import GmailLabelSerializer
+from .gmail_attachment_serializer import GmailAttachmentSerializer
