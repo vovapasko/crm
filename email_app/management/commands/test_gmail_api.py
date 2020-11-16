@@ -3,7 +3,8 @@ from crm.models.news_email import NewsEmail
 from email_app.library.gmai_api_view_utils import build_service
 from email_app.library.gmail_api import get_labels, get_messages, \
     get_full_message, get_raw_message, get_attachment, trash_message, \
-    untrash_message, delete_message, list_messages_with_label
+    untrash_message, delete_message, list_messages_with_label, send_message
+from email_app.library.gmail_helpers import create_message
 
 
 class Command(BaseCommand):
@@ -16,7 +17,12 @@ class Command(BaseCommand):
     attachment_id = 'ANGjdJ8u_DqwdACoXGqHDh3iGqlESdAGfXbzXDLXWzcOn_xCvRwt6kvI2HYr8QoGbeX11tHvzDe2O4XGYMvgkBZF8HmnSzzehirHm-Xb4kiIhFkT3Ekhl2XkJFudlXpLiojbZJ3Ad3ub9GYtwkpjmbQa4di9OJzg4BJ-wlsXwabjxB_vc9jLXpur0ofPqHI3FvdMXUiSGrfKLyfKaKKHhJcOpyN8G94mMxEVujAzVDKKg8qzkOp8TEIPhCXcuCv47O9I-DGTPeWwO_l9n8Ff-_yE8QeFwuXvYXYsQNitSoIOSybzHBS0JIBnQsGstcJM-R51BTLi8nJp02GsVlZQkR0X-AxNQwvhoFWVBaZ4-eMZByUrwQJruQXx3104e-lajzWRt1WcVuFgg6spk0WP'
 
     def handle(self, *args, **options):
-        messages = self.list_message()
+        message = create_message(sender=self.news_email.email,
+                                 to='mail1@gmail.com,mail2@gmail.com',
+                                 subject='Test to multiple receipients',
+                                 message_text="To multiple",
+                                 cc='mail3@gmail.com')
+        m = send_message(self.service, user_id=self.news_email.email, message=message)
         print()
 
     def list_message(self):

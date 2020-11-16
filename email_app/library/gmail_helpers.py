@@ -91,11 +91,13 @@ def create_message_with_attachments(sender, to, subject, message_text, files):
     pass
 
 
-def create_message(sender, to, subject, message_text):
+def create_message(sender: str, to: str, subject: str, message_text: str, cc: Union[str, None] = None):
     message = MIMEText(message_text, 'html')
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
+    if cc is not None:
+        message['Cc'] = cc
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {
         'raw': raw_message.decode("utf-8")
