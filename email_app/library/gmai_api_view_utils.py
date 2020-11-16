@@ -1,6 +1,6 @@
 ### THIS FILE CONTAINS FUNCTIONS FOR INTERACTION BETWEEN GMAIL_API AND VIEWS
 
-from typing import List
+from typing import List, Union
 from django.conf import settings
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
@@ -10,8 +10,8 @@ from crm.models import NewsEmail
 from email_app.library import constants
 from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
     get_message_with_metadata, get_raw_message, trash_message, untrash_message, \
-    get_full_message, delete_message, list_messages_with_label, get_attachment
-from email_app.library.gmail_helpers import credentials_to_dict
+    get_full_message, delete_message, list_messages_with_label, get_attachment, send_message
+from email_app.library.gmail_helpers import credentials_to_dict, create_message, create_message_with_attachments
 import os
 
 if settings.DEBUG:
@@ -156,3 +156,17 @@ def get_gmail_attachment(email: NewsEmail, message_id: str, attachment_id: str):
     attachment = get_attachment(service, user_id=email.email, message_id=message_id,
                                 attachment_id=attachment_id)
     return attachment
+
+
+def send_gmail_message(email: NewsEmail, email_to: str, subject: str, message_text: str,
+                       attachments: Union[list, None]):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    user_id = email.email
+    if attachments is None:
+        message = create_message(sender=user_id, to=email_to, subject=subject, message_text=message_text)
+    else:
+        message = create_message_with_attachments(sender=user_id, to=email_to, subject=subject,
+                                                  message_text=message_text, files=attachments)
+    message = send_message(service, user_id=user_id, message=message)
+    return message

@@ -1,6 +1,6 @@
 from .email_inbox_view import EmailInboxView
 from .email_remove_message_view import EmailRemoveMessagesView
-from .email_sent_message_view import EmailSentMessageView
+from .email_send_message_view import EmailSendMessageView
 from .trash_message_view import TrashMessageView
 from .untrash_message_view import UntrashMessageView
 from .email_get_message_view import EmailGetMessageView

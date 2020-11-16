@@ -86,6 +86,11 @@ def create_message_with_attachments_from_wave(sender, to, subject, message_text,
     return {'raw': raw_message.decode("utf-8")}
 
 
+# todo complete this function
+def create_message_with_attachments(sender, to, subject, message_text, files):
+    pass
+
+
 def create_message(sender, to, subject, message_text):
     message = MIMEText(message_text, 'html')
     message['to'] = to

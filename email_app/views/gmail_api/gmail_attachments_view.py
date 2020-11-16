@@ -3,12 +3,12 @@ from drf_yasg.utils import swagger_auto_schema
 
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
-from email_app.serializers.gmail_attachment_serializer import GmailAttachmentSerializer
+from email_app.serializers.gmail_get_attachment_serializer import GmailGetAttachmentSerializer
 from email_app.library.gmai_api_view_utils import get_gmail_attachment
 
 
 class GmailAttachmentsView(BaseView):
-    serializer = GmailAttachmentSerializer
+    serializer = GmailGetAttachmentSerializer
 
     email_param = 'email'
     message_param = 'message_id'

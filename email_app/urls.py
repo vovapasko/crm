@@ -13,5 +13,6 @@ urlpatterns = [
     path('untrash-message/', UntrashMessageView.as_view(), name='untrash-message'),
     path('remove-message/', EmailRemoveMessagesView.as_view(), name='remove-message'),
     path('filter-messages/', FilterLabelsGmailMessagesView.as_view(), name='filter-messages'),
-    path('attachments/', GmailAttachmentsView.as_view(), name='gmail-attachments')
+    path('attachments/', GmailAttachmentsView.as_view(), name='gmail-attachments'),
+    path('send-message/', EmailSendMessageView.as_view(), name='send-message')
 ]
