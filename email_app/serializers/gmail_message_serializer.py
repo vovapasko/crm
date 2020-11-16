@@ -7,6 +7,7 @@ class GmailMessageSerializer(EmailSerialiser):
     email_to = serializers.CharField()
     subject = serializers.CharField()
     text = serializers.CharField()
+    cc = serializers.CharField(required=False)
     attachments = serializers.ListField(
         child=GmailAttachmentSerializer(), required=False
     )

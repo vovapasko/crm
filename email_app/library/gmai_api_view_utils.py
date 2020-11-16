@@ -159,12 +159,12 @@ def get_gmail_attachment(email: NewsEmail, message_id: str, attachment_id: str):
 
 
 def send_gmail_message(email: NewsEmail, email_to: str, subject: str, message_text: str,
-                       attachments: Union[list, None]):
+                       attachments: Union[list, None], cc: str = None):
     creds = email.gmail_credentials.credentials_for_service()
     service = build_service(credentials=creds)
     user_id = email.email
     if attachments is None:
-        message = create_message(sender=user_id, to=email_to, subject=subject, message_text=message_text)
+        message = create_message(sender=user_id, to=email_to, subject=subject, message_text=message_text, cc=cc)
     else:
         message = create_message_with_attachments(sender=user_id, to=email_to, subject=subject,
                                                   message_text=message_text, files=attachments)
