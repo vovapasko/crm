@@ -1,4 +1,6 @@
-import requests
+### THIS FILE CONTAINS FUNCTIONS FOR INTERACTION BETWEEN GMAIL_API AND VIEWS
+
+from typing import List, Union
 from django.conf import settings
 import google.oauth2.credentials
 import google_auth_oauthlib.flow
@@ -6,7 +8,10 @@ import googleapiclient.discovery
 from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
 from email_app.library import constants
-from email_app.library.gmail_helpers import credentials_to_dict, get_messages, get_labels, get_message, get_profile
+from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
+    get_message_with_metadata, get_raw_message, trash_message, untrash_message, \
+    get_full_message, delete_message, list_messages_with_label, get_attachment, send_message
+from email_app.library.gmail_helpers import credentials_to_dict, create_message, create_message_with_attachments
 import os
 
 if settings.DEBUG:
@@ -79,9 +84,15 @@ def get_gmail_messages(email: NewsEmail, pagination: int, next_page_token: str =
     service = build_service(credentials=creds)
     messages = get_messages(service=service, user_id=email.email, pagination_param=pagination,
                             page_token=next_page_token)
+    return add_metadata_to_messages(service=service, email=email.email, messages=messages)
+
+
+def add_metadata_to_messages(service, email: str, messages: dict):
     lst = messages.get('messages')
+    if lst is None:
+        return {}
     for _, i in zip(lst, range(len(lst))):
-        message = get_message(service, email.email, _.get('id'))
+        message = get_message_with_metadata(service, email, _.get('id'))
         messages.get('messages')[i] = message
     return messages
 
@@ -97,3 +108,67 @@ def get_gmail_profile(email: NewsEmail) -> dict:
     service = build_service(credentials=creds)
     profile = get_profile(service=service, user_id=email.email)
     return profile
+
+
+def get_raw_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = get_raw_message(service=service, user_id=email.email, msg_id=message_id)
+    return message
+
+
+def get_full_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = get_full_message(service=service, user_id=email.email, msg_id=message_id)
+    return message
+
+
+def trash_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = trash_message(service=service, user_id=email.email, message_id=message_id)
+    return message
+
+
+def untrash_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = untrash_message(service=service, user_id=email.email, message_id=message_id)
+    return message
+
+
+def remove_gmail_message(email: NewsEmail, message_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    message = delete_message(service=service, user_id=email.email, message_id=message_id)
+    return message
+
+
+def filter_label_gmail_message(email: NewsEmail, labels: List[str]):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    messages = list_messages_with_label(service=service, user_id=email.email, label_ids=labels)
+    return add_metadata_to_messages(service=service, email=email.email, messages=messages)
+
+
+def get_gmail_attachment(email: NewsEmail, message_id: str, attachment_id: str):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    attachment = get_attachment(service, user_id=email.email, message_id=message_id,
+                                attachment_id=attachment_id)
+    return attachment
+
+
+def send_gmail_message(email: NewsEmail, email_to: str, subject: str, message_text: str,
+                       attachments: Union[list, None], cc: str = None):
+    creds = email.gmail_credentials.credentials_for_service()
+    service = build_service(credentials=creds)
+    user_id = email.email
+    if attachments is None:
+        message = create_message(sender=user_id, to=email_to, subject=subject, message_text=message_text, cc=cc)
+    else:
+        message = create_message_with_attachments(sender=user_id, to=email_to, subject=subject,
+                                                  message_text=message_text, files=attachments, cc=cc)
+    message = send_message(service, user_id=user_id, message=message)
+    return message

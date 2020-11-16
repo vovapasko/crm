@@ -1,39 +1,26 @@
-import mimetypes
-import os
 import base64
 import email
-import os.path
 from email.mime.audio import MIMEAudio
 from email.mime.base import MIMEBase
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from typing import Union
 
 from crm.library.helpers import from_base64_to_content_file
 from crm.models import NewsEmail
+from email_app.library.gmail_api import send_message
 
 
-def send_gmail_message(email_from: str, email_to: str, subject: str = None,
-                       message_text: str = None, attachments: list = None):
-    from email_app.library.gmail_utils import build_service
+def send_gmail_message_from_wave(email_from: str, email_to: str, subject: str = None,
+                                 message_text: str = None, attachments: list = None):
+    from email_app.library.gmai_api_view_utils import build_service
     try:
         test_email = NewsEmail.objects.get(email=email_from)  # this email has to exist
         email_from = test_email.email
-        if attachments is None:
-            message = create_message(
-                sender=email_from,
-                to=email_to,
-                subject=subject,
-                message_text=message_text
-            )
-        else:
-            message = create_message_with_attachments(
-                sender=email_from,
-                to=email_to,
-                subject=subject,
-                message_text=message_text,
-                files=attachments
-            )
+        message = build_message_from_wave(email_from=email_from, email_to=email_to, subject=subject,
+                                          message_text=message_text,
+                                          attachments=attachments)
         credentials = test_email.gmail_credentials
         service = build_service(credentials=credentials.credentials_for_service())
         res = send_message(service=service, user_id=email_from, message=message)
@@ -42,19 +29,27 @@ def send_gmail_message(email_from: str, email_to: str, subject: str = None,
         raise e
 
 
-def send_message(service, user_id, message):
-    try:
-        message = service.users().messages().send(userId=user_id, body=message).execute()
+def build_message_from_wave(email_from: str, email_to: str, subject: str,
+                            message_text: str, attachments: Union[list, None]) -> Union[MIMEBase, dict]:
+    if attachments is None:
+        message = create_message(
+            sender=email_from,
+            to=email_to,
+            subject=subject,
+            message_text=message_text
+        )
+    else:
+        message = create_message_with_attachments_from_wave(
+            sender=email_from,
+            to=email_to,
+            subject=subject,
+            message_text=message_text,
+            files=attachments
+        )
+    return message
 
-        print('Message Id: %s' % message['id'])
 
-        return message
-    except Exception as e:
-        print('An error occurred: %s' % e)
-        raise e
-
-
-def create_message_with_attachments(sender, to, subject, message_text, files):
+def create_message_with_attachments_from_wave(sender, to, subject, message_text, files):
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
@@ -91,47 +86,58 @@ def create_message_with_attachments(sender, to, subject, message_text, files):
     return {'raw': raw_message.decode("utf-8")}
 
 
-def create_message(sender, to, subject, message_text):
+# todo complete this function
+def create_message_with_attachments(sender, to: str, subject: str, message_text: str, files: Union[list, None],
+                                    cc: str):
+    message = MIMEMultipart()
+    message['to'] = to
+    message['from'] = sender
+    message['subject'] = subject
+    if cc is not None:
+        message['Cc'] = cc
+
+    msg = MIMEText(message_text, 'html')
+    message.attach(msg)
+    for file in files:
+        content_type = file.get('type')
+
+        if content_type is None:
+            content_type = 'application/octet-stream'
+
+        main_type, sub_type = content_type.split('/', 1)
+        fp = from_base64_to_content_file(file.get('base_64'), file.get('name'))
+        if main_type == 'text':
+            msg = MIMEText(fp.read().decode("utf-8"), _subtype=sub_type)
+            fp.close()
+        elif main_type == 'image':
+            msg = MIMEImage(fp.read(), _subtype=sub_type)
+            fp.close()
+        elif main_type == 'audio':
+            msg = MIMEAudio(fp.read(), _subtype=sub_type)
+            fp.close()
+        else:
+            msg = MIMEBase(main_type, sub_type)
+            msg.set_payload(fp.read())
+            fp.close()
+        filename = file.get('name')
+        msg.add_header('Content-Disposition', 'attachment', filename=filename)
+        message.attach(msg)
+
+    raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
+    return {'raw': raw_message.decode("utf-8")}
+
+
+def create_message(sender: str, to: str, subject: str, message_text: str, cc: Union[str, None] = None):
     message = MIMEText(message_text, 'html')
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
+    if cc is not None:
+        message['Cc'] = cc
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {
         'raw': raw_message.decode("utf-8")
     }
-
-
-def get_messages(service, user_id: str, pagination_param: int, page_token: str = None) -> dict:
-    try:
-        if page_token:
-            return service.users().messages().list(userId=user_id, maxResults=pagination_param,
-                                                   pageToken=page_token).execute()
-        else:
-            return service.users().messages().list(userId=user_id, maxResults=pagination_param).execute()
-    except Exception as error:
-        raise error
-
-
-def get_profile(service, user_id):
-    try:
-        return service.users().getProfile(userId=user_id).execute()
-    except Exception as e:
-        raise e
-
-
-def get_labels(service, user_id):
-    try:
-        return service.users().labels().list(userId=user_id).execute()
-    except Exception as e:
-        raise e
-
-
-def get_message(service, user_id, msg_id):
-    try:
-        return service.users().messages().get(userId=user_id, id=msg_id, format='metadata').execute()
-    except Exception as error:
-        raise error
 
 
 def get_mime_message(service, user_id, msg_id):
@@ -164,21 +170,6 @@ def get_attachments(service, user_id, msg_id, store_dir):
                 f.close()
     except Exception as error:
         print('An error occurred: %s' % error)
-
-
-def create_draft(service, user_id, message_body):
-    try:
-        message = {'message': message_body}
-        draft = service.users().drafts().create(userId=user_id, body=message).execute()
-
-        print("Draft id: %s\nDraft message: %s" % (draft['id'], draft['message']))
-
-        return draft
-    except Exception as e:
-        print('An error occurred: %s' % e)
-        return None
-
-    # Press the green button in the gutter to run the script.
 
 
 def credentials_to_dict(credentials):

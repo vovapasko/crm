@@ -6,7 +6,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework.request import Request
 from rest_framework.response import Response
 from email_app.views.gmail_token.gmail_token_base_view import GmailTokenBaseView
-from email_app.library.gmail_utils import start_authorize, finish_authorize
+from email_app.library.gmai_api_view_utils import start_authorize, finish_authorize
 from email_app.serializers import GmailCredentialsSerializer
 from django.http.response import HttpResponse
 

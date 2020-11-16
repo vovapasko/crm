@@ -7,5 +7,12 @@ urlpatterns = [
     path('gmail-auth/', GmailAuthView.as_view(), name='gmail-auth'),
     path('gmail-creds-clear/', GmailCredentialsClearView.as_view(), name='gmail-creds-clear'),
     path('gmail-token-revoke/', GmailTokenRevokeView.as_view(), name='gmail-token-revoke'),
-    path('inbox/', EmailInboxView.as_view(), name='inbox')
+    path('inbox/', EmailInboxView.as_view(), name='inbox'),
+    path('messages/', EmailGetMessageView.as_view(), name='get-message'),
+    path('trash-message/', TrashMessageView.as_view(), name='trash-message'),
+    path('untrash-message/', UntrashMessageView.as_view(), name='untrash-message'),
+    path('remove-message/', EmailRemoveMessagesView.as_view(), name='remove-message'),
+    path('filter-messages/', FilterLabelsGmailMessagesView.as_view(), name='filter-messages'),
+    path('attachments/', GmailAttachmentsView.as_view(), name='gmail-attachments'),
+    path('send-message/', EmailSendMessageView.as_view(), name='send-message')
 ]
