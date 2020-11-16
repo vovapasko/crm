@@ -12,10 +12,10 @@ from django.core.files.base import ContentFile
 from django.core.management.base import BaseCommand
 
 from crm.models import WaveFormationAttachment, NewsEmail
-from email_app.library.gmail_helpers import send_gmail_message, send_message
+from email_app.library.gmail_helpers import send_gmail_message_from_wave, send_message
 from pathlib import Path
 
-from email_app.library.gmail_utils import build_service
+from email_app.library.gmai_api_view_utils import build_service
 
 
 def from_base64_to_content_file(base64_str: str, filename: str):

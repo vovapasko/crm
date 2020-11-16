@@ -1,7 +1,7 @@
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.email_get_message_serializer import EmailGetMessageSerializer
-from email_app.library.gmail_utils import get_raw_gmail_message, get_full_gmail_message
+from email_app.library.gmai_api_view_utils import get_raw_gmail_message, get_full_gmail_message
 from googleapiclient.errors import HttpError
 
 

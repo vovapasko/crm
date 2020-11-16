@@ -8,7 +8,7 @@ from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from crm.paginations import SmallResultsSetPagination
 from email_app.serializers.inbox_email_serializer import InboxEmailSerializer
-from email_app.library.gmail_utils import get_gmail_messages, get_gmail_labels, get_gmail_profile
+from email_app.library.gmai_api_view_utils import get_gmail_messages, get_gmail_labels, get_gmail_profile
 
 
 class EmailInboxView(BaseView):

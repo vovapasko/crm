@@ -69,15 +69,6 @@ def get_message_with_param(service, user_id, msg_id, param: str):
         raise error
 
 
-# todo finish this function
-def get_message_attachments(service, user_id, message_id, attachment_id):
-    try:
-        return service.users().messages().attachments().get(userId=user_id, messageId=message_id,
-                                                            id=attachment_id).execute()
-    except Exception as error:
-        raise error
-
-
 def create_draft(service, user_id, message_body):
     try:
         message = {'message': message_body}

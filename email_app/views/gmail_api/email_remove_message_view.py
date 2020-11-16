@@ -1,7 +1,7 @@
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.gmail_message_with_ids_serializer import GmailMessageWithIdsSerializer
-from email_app.library.gmail_utils import remove_gmail_message
+from email_app.library.gmai_api_view_utils import remove_gmail_message
 
 
 class EmailRemoveMessagesView(BaseView):

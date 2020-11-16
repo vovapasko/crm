@@ -1,7 +1,7 @@
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.gmail_label_serializer import GmailLabelSerializer
-from email_app.library.gmail_utils import filter_label_gmail_message
+from email_app.library.gmai_api_view_utils import filter_label_gmail_message
 
 
 class FilterLabelsGmailMessagesView(BaseView):

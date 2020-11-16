@@ -12,15 +12,15 @@ from crm.models import NewsEmail
 from email_app.library.gmail_api import send_message
 
 
-def send_gmail_message(email_from: str, email_to: str, subject: str = None,
-                       message_text: str = None, attachments: list = None):
-    from email_app.library.gmail_utils import build_service
+def send_gmail_message_from_wave(email_from: str, email_to: str, subject: str = None,
+                                 message_text: str = None, attachments: list = None):
+    from email_app.library.gmai_api_view_utils import build_service
     try:
         test_email = NewsEmail.objects.get(email=email_from)  # this email has to exist
         email_from = test_email.email
-        message = build_message(email_from=email_from, email_to=email_to, subject=subject,
-                                message_text=message_text,
-                                attachments=attachments)
+        message = build_message_from_wave(email_from=email_from, email_to=email_to, subject=subject,
+                                          message_text=message_text,
+                                          attachments=attachments)
         credentials = test_email.gmail_credentials
         service = build_service(credentials=credentials.credentials_for_service())
         res = send_message(service=service, user_id=email_from, message=message)
@@ -29,8 +29,8 @@ def send_gmail_message(email_from: str, email_to: str, subject: str = None,
         raise e
 
 
-def build_message(email_from: str, email_to: str, subject: str,
-                  message_text: str, attachments: Union[list, None]) -> Union[MIMEBase, dict]:
+def build_message_from_wave(email_from: str, email_to: str, subject: str,
+                            message_text: str, attachments: Union[list, None]) -> Union[MIMEBase, dict]:
     if attachments is None:
         message = create_message(
             sender=email_from,
@@ -39,7 +39,7 @@ def build_message(email_from: str, email_to: str, subject: str,
             message_text=message_text
         )
     else:
-        message = create_message_with_attachments(
+        message = create_message_with_attachments_from_wave(
             sender=email_from,
             to=email_to,
             subject=subject,
@@ -49,7 +49,7 @@ def build_message(email_from: str, email_to: str, subject: str,
     return message
 
 
-def create_message_with_attachments(sender, to, subject, message_text, files):
+def create_message_with_attachments_from_wave(sender, to, subject, message_text, files):
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender

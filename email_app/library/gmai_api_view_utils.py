@@ -1,3 +1,5 @@
+### THIS FILE CONTAINS FUNCTIONS FOR INTERACTION BETWEEN GMAIL_API AND VIEWS
+
 from typing import List
 from django.conf import settings
 import google.oauth2.credentials

@@ -13,7 +13,7 @@ from crm.serializers import NewsWaveCreateSerializer
 from rest_framework import generics
 from crm.paginations import StandardResultsSetPagination
 from typing import List, Union
-from email_app.library.gmail_helpers import send_gmail_message
+from email_app.library.gmail_helpers import send_gmail_message_from_wave
 
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
@@ -130,11 +130,11 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         for to_email in to_emails:
             email_from = email.email
             try:
-                res = send_gmail_message(email_from=email_from,
-                                         email_to=to_email,
-                                         subject=subject,
-                                         message_text=content,
-                                         attachments=converted_attachments)
+                res = send_gmail_message_from_wave(email_from=email_from,
+                                                   email_to=to_email,
+                                                   subject=subject,
+                                                   message_text=content,
+                                                   attachments=converted_attachments)
             except Exception as e:
                 res = str(e)
             results.update({to_email: res})

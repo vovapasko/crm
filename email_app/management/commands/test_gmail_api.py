@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 from crm.models.news_email import NewsEmail
-from email_app.library.gmail_utils import build_service
+from email_app.library.gmai_api_view_utils import build_service
 from email_app.library.gmail_api import get_labels, get_messages, \
     get_full_message, get_raw_message, get_attachment, trash_message, \
     untrash_message, delete_message, list_messages_with_label

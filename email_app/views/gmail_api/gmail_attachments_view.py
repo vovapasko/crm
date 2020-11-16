@@ -4,7 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.gmail_attachment_serializer import GmailAttachmentSerializer
-from email_app.library.gmail_utils import get_gmail_attachment
+from email_app.library.gmai_api_view_utils import get_gmail_attachment
 
 
 class GmailAttachmentsView(BaseView):
