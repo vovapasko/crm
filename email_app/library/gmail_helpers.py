@@ -105,7 +105,7 @@ def create_message_with_attachments(sender, to: str, subject: str, message_text:
             content_type = 'application/octet-stream'
 
         main_type, sub_type = content_type.split('/', 1)
-        fp = from_base64_to_content_file(file.get('base64'), file.get('name'))
+        fp = from_base64_to_content_file(file.get('base_64'), file.get('name'))
         if main_type == 'text':
             msg = MIMEText(fp.read().decode("utf-8"), _subtype=sub_type)
             fp.close()
