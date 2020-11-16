@@ -12,15 +12,23 @@ from crm.models import NewsEmail
 from email_app.library.gmail_api import send_message
 
 
-def send_gmail_message_from_wave(email_from: str, email_to: str, subject: str = None,
-                                 message_text: str = None, attachments: list = None):
+def send_gmail_message_from_wave(email_from: str, email_to: str,
+                                 subject: str,
+                                 message_text: str,
+                                 attachments: list = None,
+                                 template: str = None,
+                                 signature: str = None):
     from email_app.library.gmai_api_view_utils import build_service
     try:
         test_email = NewsEmail.objects.get(email=email_from)  # this email has to exist
         email_from = test_email.email
-        message = build_message_from_wave(email_from=email_from, email_to=email_to, subject=subject,
+        message = build_message_from_wave(email_from=email_from,
+                                          email_to=email_to,
+                                          subject=subject,
                                           message_text=message_text,
-                                          attachments=attachments)
+                                          attachments=attachments,
+                                          template=template,
+                                          signature=signature)
         credentials = test_email.gmail_credentials
         service = build_service(credentials=credentials.credentials_for_service())
         res = send_message(service=service, user_id=email_from, message=message)
@@ -30,13 +38,19 @@ def send_gmail_message_from_wave(email_from: str, email_to: str, subject: str = 
 
 
 def build_message_from_wave(email_from: str, email_to: str, subject: str,
-                            message_text: str, attachments: Union[list, None]) -> Union[MIMEBase, dict]:
+                            message_text: str,
+                            attachments: Union[list, None] = None,
+                            template: str = None,
+                            signature: str = None
+                            ) -> Union[MIMEBase, dict]:
     if attachments is None:
         message = create_message(
             sender=email_from,
             to=email_to,
             subject=subject,
-            message_text=message_text
+            message_text=message_text,
+            template=template,
+            signature=signature
         )
     else:
         message = create_message_with_attachments_from_wave(
@@ -44,19 +58,34 @@ def build_message_from_wave(email_from: str, email_to: str, subject: str,
             to=email_to,
             subject=subject,
             message_text=message_text,
-            files=attachments
+            files=attachments,
+            template=template,
+            signature=signature
         )
     return message
 
 
-def create_message_with_attachments_from_wave(sender, to, subject, message_text, files):
+def create_message_with_attachments_from_wave(sender: str,
+                                              to: str,
+                                              subject: str,
+                                              message_text: str,
+                                              files: Union[list, None] = None,
+                                              template: str = None,
+                                              signature: str = None):
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
 
+    if template is not None:
+        template_mime = MIMEText(template, 'plain')
+        message.attach(template_mime)
     msg = MIMEText(message_text, 'html')
     message.attach(msg)
+    if signature is not None:
+        signature_mime = MIMEText(signature, 'plain')
+        message.attach(signature_mime)
+
     for file in files:
         content_type = file.type
 
@@ -86,9 +115,9 @@ def create_message_with_attachments_from_wave(sender, to, subject, message_text,
     return {'raw': raw_message.decode("utf-8")}
 
 
-# todo complete this function
-def create_message_with_attachments(sender, to: str, subject: str, message_text: str, files: Union[list, None],
-                                    cc: str):
+def create_message_with_attachments(sender, to: str, subject: str, message_text: str,
+                                    files: Union[list, None] = None,
+                                    cc: str = None):
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
@@ -127,13 +156,26 @@ def create_message_with_attachments(sender, to: str, subject: str, message_text:
     return {'raw': raw_message.decode("utf-8")}
 
 
-def create_message(sender: str, to: str, subject: str, message_text: str, cc: Union[str, None] = None):
-    message = MIMEText(message_text, 'html')
+def create_message(sender: str, to: str, subject: str,
+                   message_text: str,
+                   cc: Union[str, None] = None,
+                   template: str = None,
+                   signature: str = None):
+    message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
     if cc is not None:
         message['Cc'] = cc
+    if template is not None:
+        template_mime = MIMEText(template, 'plain')
+        message.attach(template_mime)
+    message_text_mime = MIMEText(message_text, 'html')
+    message.attach(message_text_mime)
+    if signature is not None:
+        signature_mime = MIMEText(signature, 'plain')
+        message.attach(signature_mime)
+
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {
         'raw': raw_message.decode("utf-8")
