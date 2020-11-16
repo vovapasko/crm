@@ -167,6 +167,6 @@ def send_gmail_message(email: NewsEmail, email_to: str, subject: str, message_te
         message = create_message(sender=user_id, to=email_to, subject=subject, message_text=message_text, cc=cc)
     else:
         message = create_message_with_attachments(sender=user_id, to=email_to, subject=subject,
-                                                  message_text=message_text, files=attachments)
+                                                  message_text=message_text, files=attachments, cc=cc)
     message = send_message(service, user_id=user_id, message=message)
     return message

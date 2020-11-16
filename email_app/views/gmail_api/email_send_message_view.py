@@ -47,6 +47,7 @@ class EmailSendMessageView(BaseView):
                                             swagger_attachments_param],
                          responses={200: response})
     def post(self, request, *args, **kwargs):
+        print()
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             email_from = serializer.data.get(self.email_from_param)
