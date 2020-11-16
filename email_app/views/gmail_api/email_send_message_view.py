@@ -1,5 +1,6 @@
 from typing import Union
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.gmail_message_serializer import GmailMessageSerializer
@@ -15,6 +16,31 @@ class EmailSendMessageView(BaseView):
     text_param = 'text'
     attachments_param = 'attachments'
 
+    swagger_email_from_param = openapi.Parameter(email_from_param, openapi.IN_QUERY,
+                                                 description="Email from send. This is in body parameter!",
+                                                 type=openapi.TYPE_STRING)
+    swagger_email_to_param = openapi.Parameter(email_to_param, openapi.IN_QUERY,
+                                               description="Email to send. This is in body parameter!",
+                                               type=openapi.TYPE_STRING)
+    swagger_subject_param = openapi.Parameter(subject_param, openapi.IN_QUERY,
+                                              description="Subject of message. This is in body parameter!",
+                                              type=openapi.TYPE_STRING)
+    swagger_text_param = openapi.Parameter(text_param, openapi.IN_QUERY,
+                                           description="Text of message. This is in body parameter!",
+                                           type=openapi.TYPE_STRING)
+    swagger_attachments_param = openapi.Parameter(attachments_param, openapi.IN_QUERY,
+                                                  description="Array of attachments in format "
+                                                              "[{type: '', name: '', base_64: ''}, ...]"
+                                                              "This is in body parameter!",
+                                                  type=openapi.TYPE_STRING, required=False)
+    response = openapi.Response('Returns id of message or Exception in format {"Exception": "text"}')
+
+    @swagger_auto_schema(manual_parameters=[swagger_email_from_param,
+                                            swagger_email_to_param,
+                                            swagger_subject_param,
+                                            swagger_text_param,
+                                            swagger_attachments_param],
+                         responses={200: response})
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
