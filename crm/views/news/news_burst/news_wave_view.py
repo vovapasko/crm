@@ -3,7 +3,8 @@ from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions, status
 from rest_framework.generics import DestroyAPIView, UpdateAPIView
-from crm.library.helpers.converters import from_base64_to_content_file
+from rest_framework.permissions import DjangoModelPermissions
+
 from rest_framework.request import Request
 from rest_framework.response import Response
 from crm.serializers import NewsWaveSerializer
@@ -18,7 +19,7 @@ from email_app.library.gmail_helpers import send_gmail_message_from_wave
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
     queryset = NewsWave.objects.all().order_by('id')
-    # permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
+    permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
     serializer_class = NewsWaveSerializer
     pagination_class = StandardResultsSetPagination
     create_serializer_class = NewsWaveCreateSerializer
