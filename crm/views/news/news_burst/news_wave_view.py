@@ -74,13 +74,14 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         wave_formation = news_wave.wave_formation
         news_in_project = news_wave.news_in_project
         if wave_formation is None:
-            return self.__send_news(news_in_project.all())
+            return self.__send_news(news_wave)
         if len(news_in_project.all()) == 0:
             return self.__send_wave(news_wave)
         else:
             raise Exception("Wave formation and News in Project are empty")
 
-    def __send_news(self, news_in_project: List[News]):
+    def __send_news(self, news_wave: NewsWave):
+        news_in_project = news_wave.news_in_project.all()
         all_news_sending_results = {}
         for news in news_in_project:
             email = news.email
@@ -97,7 +98,9 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
                 email=email,
                 subject=title,
                 content=content,
-                converted_attachments=attachments
+                converted_attachments=attachments,
+                template=email.template,
+                signature=email.signature
             )
             all_news_sending_results.update({news.title: current_news_sending_results})
         return all_news_sending_results
@@ -116,7 +119,9 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             email=email,
             subject=news_wave.title,
             content=content,
-            converted_attachments=attachments
+            converted_attachments=attachments,
+            template=email.template,
+            signature=email.signature
         )
         return sending_results
 
@@ -125,7 +130,9 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
                       email: NewsEmail,
                       subject: str,
                       content: str,
-                      converted_attachments: Union[list, None]):
+                      converted_attachments: Union[list, None] = None,
+                      template: str = None,
+                      signature: str = None):
         results = {}
         for to_email in to_emails:
             email_from = email.email
@@ -134,7 +141,9 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
                                                    email_to=to_email,
                                                    subject=subject,
                                                    message_text=content,
-                                                   attachments=converted_attachments)
+                                                   attachments=converted_attachments,
+                                                   template=template,
+                                                   signature=signature)
             except Exception as e:
                 res = str(e)
             results.update({to_email: res})
