@@ -2,9 +2,10 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-from crm.models import NewsAttachment, News
+from crm.models import News
 
 
+# todo remove this serializer and replace with one NewsWaveAttachmentSerializer
 class NewsAttachmentPutSerializer(serializers.ModelSerializer):
     """
     Because of incorrect serialization of ListField in file, you should

@@ -5,7 +5,7 @@ from rest_framework.exceptions import ValidationError
 from crm.models import WaveFormationAttachment, WaveFormation
 from crm.serializers.news.attachments.base64_attachment_serializer import Base64AttachmentSerializer
 
-
+# todo remove this serializer and replace with one NewsWaveAttachmentSerializer
 class WaveFormationAttachmentPutSerializer(serializers.ModelSerializer):
     attachments = serializers.ListField(
         child=Base64AttachmentSerializer()

@@ -6,6 +6,7 @@ from crm.models import WaveFormation, WaveFormationAttachment
 from drf_writable_nested import WritableNestedModelSerializer
 
 
+# todo remove this serializer and replace with one NewsWaveAttachmentSerializer
 class WaveFormationSerializer(WritableNestedModelSerializer):
     email = NewsEmailSerializer()
     attachments = serializers.SerializerMethodField()

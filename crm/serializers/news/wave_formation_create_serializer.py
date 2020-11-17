@@ -5,6 +5,7 @@ from crm.serializers.news.wave_formation_attachment_serializer import WaveFormat
 from ...models import WaveFormationAttachment
 
 
+# todo remove this serializer and replace with one NewsWaveAttachmentSerializer
 class WaveFormationCreateSerializer(WaveFormationSerializer):
     attachments = serializers.ListField(
         child=WaveFormationAttachmentSerializer(), required=False
