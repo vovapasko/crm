@@ -93,7 +93,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             content = news.content
             contractors_emails = news.contractors.values_list('email', flat=True)
             title = news.title
-            attachments = news.newsattachment_set.all()
+            attachments = news.newswaveattachment_set.all()
             current_news_sending_results = self.__send_emails(
                 to_emails=contractors_emails,
                 email=email,
@@ -110,7 +110,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         to_emails = news_wave.contractors.values_list('email', flat=True)
         content = news_wave.wave_formation.content
         email = news_wave.wave_formation.email
-        attachments = news_wave.wave_formation.waveformationattachment_set.all()
+        attachments = news_wave.wave_formation.newswaveattachment_set.all()
         try:
             self.__check_credentials(email)
         except Exception as e:
