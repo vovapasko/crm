@@ -81,7 +81,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             raise Exception("Wave formation and News in Project are empty")
 
     def __send_news(self, news_wave: NewsWave):
-        news_in_project = news_wave.news_in_project
+        news_in_project = news_wave.news_in_project.all()
         all_news_sending_results = {}
         for news in news_in_project:
             email = news.email
@@ -98,7 +98,9 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
                 email=email,
                 subject=title,
                 content=content,
-                converted_attachments=attachments
+                converted_attachments=attachments,
+                template=email.template,
+                signature=email.signature
             )
             all_news_sending_results.update({news.title: current_news_sending_results})
         return all_news_sending_results
@@ -118,7 +120,8 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             subject=news_wave.title,
             content=content,
             converted_attachments=attachments,
-            # template=
+            template=email.template,
+            signature=email.signature
         )
         return sending_results
 

@@ -78,12 +78,12 @@ def create_message_with_attachments_from_wave(sender: str,
     message['subject'] = subject
 
     if template is not None:
-        template_mime = MIMEText(template, 'plain')
+        template_mime = MIMEText(template, 'html')
         message.attach(template_mime)
     msg = MIMEText(message_text, 'html')
     message.attach(msg)
     if signature is not None:
-        signature_mime = MIMEText(signature, 'plain')
+        signature_mime = MIMEText(signature, 'html')
         message.attach(signature_mime)
 
     for file in files:
@@ -168,12 +168,12 @@ def create_message(sender: str, to: str, subject: str,
     if cc is not None:
         message['Cc'] = cc
     if template is not None:
-        template_mime = MIMEText(template, 'plain')
+        template_mime = MIMEText(template, 'html')
         message.attach(template_mime)
     message_text_mime = MIMEText(message_text, 'html')
     message.attach(message_text_mime)
     if signature is not None:
-        signature_mime = MIMEText(signature, 'plain')
+        signature_mime = MIMEText(signature, 'html')
         message.attach(signature_mime)
 
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
