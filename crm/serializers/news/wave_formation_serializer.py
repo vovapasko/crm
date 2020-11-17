@@ -17,7 +17,7 @@ class WaveFormationSerializer(WritableNestedModelSerializer):
         depth = 1
 
     def get_attachments(self, instance: NewsWaveAttachment) -> str:
-        return NewsWaveAttachmentSerializer(instance.waveformationattachment_set.all(), many=True).data
+        return NewsWaveAttachmentSerializer(instance.newswaveattachment_set.all(), many=True).data
 
     def create(self, validated_data):
         return super().create(validated_data)

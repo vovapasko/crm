@@ -18,4 +18,4 @@ class NewsSerializer(WritableNestedModelSerializer):
         depth = 1
 
     def get_attachments(self, instance: NewsWaveAttachment) -> str:
-        return NewsWaveAttachmentSerializer(instance.newsattachment_set.all(), many=True).data
+        return NewsWaveAttachmentSerializer(instance.newswaveattachment_set.all(), many=True).data
