@@ -1,13 +1,12 @@
 from rest_framework import serializers
-
+from crm.models.burst_news.news_wave_attachment import NewsWaveAttachment
 from .news_serializer import NewsSerializer
-from crm.serializers.news.news_attachment_serializer import NewsAttachmentSerializer
-from ...models import NewsAttachment
+from crm.serializers.news.news_wave_attachment_serializer import NewsWaveAttachmentSerializer
 
 
 class NewsCreateSerializer(NewsSerializer):
     attachments = serializers.ListField(
-        child=NewsAttachmentSerializer(), required=False
+        child=NewsWaveAttachmentSerializer(), required=False
     )
 
     def create(self, validated_data):
@@ -15,7 +14,7 @@ class NewsCreateSerializer(NewsSerializer):
             files = validated_data.pop('attachments')
             attachments = []
             for file in files:
-                attachments.append(NewsAttachment(**file))
+                attachments.append(NewsWaveAttachment(**file))
             validated_data['attachments'] = attachments
         except Exception:
             print("no attachments")
