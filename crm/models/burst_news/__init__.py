@@ -6,3 +6,4 @@ from .wave_formation import WaveFormation
 from .news_attachment import NewsAttachment
 from .wave_formation_attachment import WaveFormationAttachment
 from .news_wave_price_list import NewsWavePriceList
+from .news_wave_attachment import NewsWaveAttachment
