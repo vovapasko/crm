@@ -46,14 +46,6 @@ def get_message_with_metadata(service, user_id, msg_id):
         raise error
 
 
-def get_attachment(service, user_id, msg_id, attachment_id):
-    try:
-        return service.users().messages().attachments().get(userId=user_id, messageId=msg_id,
-                                                            id=attachment_id).execute()
-    except Exception as error:
-        raise error
-
-
 def get_raw_message(service, user_id, msg_id):
     return get_message_with_param(service, user_id, msg_id, 'raw')
 

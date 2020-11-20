@@ -214,6 +214,8 @@ local_gmail_redirect_uri = "http://127.0.0.1:8000/"
 dev_gmail_redirect_uri = "https://dmc-crm-backend.herokuapp.com/"
 GMAIL_API_REDIRECT_URI = f'{local_gmail_redirect_uri}emails/gmail-auth/' if DEBUG \
     else f'{dev_gmail_redirect_uri}emails/gmail-auth/'
+API_SERVICE_NAME = 'gmail'
+API_VERSION = 'v1'
 
 GRAPH_MODELS = {
     'all_applications': True,

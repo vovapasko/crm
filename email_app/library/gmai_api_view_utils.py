@@ -7,7 +7,6 @@ import google_auth_oauthlib.flow
 import googleapiclient.discovery
 from googleapiclient.discovery import Resource
 from crm.models import NewsEmail
-from email_app.library import constants
 from email_app.library.gmail_api import get_messages, get_labels, get_profile, \
     get_message_with_metadata, get_raw_message, trash_message, untrash_message, \
     get_full_message, delete_message, list_messages_with_label, get_attachment, send_message
@@ -22,8 +21,8 @@ CLIENT_SECRETS_FILE = settings.CLIENT_SECRETS_FILE
 # This OAuth 2.0 access scope allows for full read/write access to the
 # authenticated user's account and requires requests to use an SSL connection.
 SCOPES = settings.SENDING_EMAIL_SCOPE
-API_SERVICE_NAME = constants.API_SERVICE_NAME
-API_VERSION = constants.API_VERSION
+API_SERVICE_NAME = settings.API_SERVICE_NAME
+API_VERSION = settings.API_VERSION
 
 
 def build_service(credentials: dict) -> Resource:
