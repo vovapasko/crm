@@ -8,6 +8,7 @@ from email.mime.text import MIMEText
 from typing import Union, List, Dict
 
 from crm.library.helpers import from_base64_to_content_file
+from crm.library.helpers.converters import convert_base64_to_mime_attachment
 from crm.models import NewsEmail
 from email_app.library.gmail_api import send_message
 
@@ -43,40 +44,22 @@ def build_message_from_wave(email_from: str, email_to: str, subject: str,
                             template: str = None,
                             signature: str = None
                             ) -> Union[MIMEBase, dict]:
-    if attachments is None:
-        message = create_message(
-            sender=email_from,
-            to=email_to,
-            subject=subject,
-            message_text=message_text,
-            template=template,
-            signature=signature
-        )
-    else:
-        message = create_message_with_attachments_from_wave(
-            sender=email_from,
-            to=email_to,
-            subject=subject,
-            message_text=message_text,
-            files=attachments,
-            template=template,
-            signature=signature
-        )
+    message = create_message_from_wave(
+        sender=email_from,
+        to=email_to,
+        subject=subject,
+        message_text=message_text,
+        files=attachments,
+        template=template,
+        signature=signature
+    )
     return message
 
 
-def create_message_with_attachments_from_wave(sender: str,
-                                              to: str,
-                                              subject: str,
-                                              message_text: str,
-                                              files: Union[list, None] = None,
-                                              template: str = None,
-                                              signature: str = None):
-    message = MIMEMultipart()
-    message['to'] = to
-    message['from'] = sender
-    message['subject'] = subject
-
+def create_mime_message_body(message: MIMEBase,
+                             message_text: str,
+                             template: str = None,
+                             signature: str = None) -> None:
     if template is not None:
         template_mime = MIMEText(template, 'html')
         message.attach(template_mime)
@@ -86,14 +69,37 @@ def create_message_with_attachments_from_wave(sender: str,
         signature_mime = MIMEText(signature, 'html')
         message.attach(signature_mime)
 
-    for file in files:
-        msg = convert_base64_to_mime_attachment(file_type=file.type, file_name=file.name,
-                                                file_base64=file.base_64)
 
-        message.attach(msg)
+def create_message_from_wave(sender: str,
+                             to: str,
+                             subject: str,
+                             message_text: str,
+                             files: Union[list, None] = None,
+                             template: str = None,
+                             signature: str = None) -> dict:
+    message = create_mime_signature(sender, to, subject)
+
+    create_mime_message_body(message, message_text, template, signature)
+
+    if files:
+        for file in files:
+            msg = convert_base64_to_mime_attachment(file_type=file.type, file_name=file.name,
+                                                    file_base64=file.base_64)
+
+            message.attach(msg)
 
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {'raw': raw_message.decode("utf-8")}
+
+
+def create_mime_signature(sender: str, to: str, subject: str, cc: str = None):
+    message = MIMEMultipart()
+    message['to'] = to
+    message['from'] = sender
+    message['subject'] = subject
+    if cc is not None:
+        message['Cc'] = cc
+    return message
 
 
 def create_message_with_attachments(sender, to: str, subject: str, message_text: str,
@@ -115,31 +121,6 @@ def create_message_with_attachments(sender, to: str, subject: str, message_text:
 
     raw_message = base64.urlsafe_b64encode(message.as_string().encode("utf-8"))
     return {'raw': raw_message.decode("utf-8")}
-
-
-def convert_base64_to_mime_attachment(file_name: str, file_base64: str, file_type: Union[str, None]) -> MIMEBase:
-    content_type = file_type
-
-    if content_type is None:
-        content_type = 'application/octet-stream'
-
-    main_type, sub_type = content_type.split('/', 1)
-    fp = from_base64_to_content_file(file_base64, file_name)
-    if main_type == 'text':
-        mime_part = MIMEText(fp.read().decode("utf-8"), _subtype=sub_type)
-        fp.close()
-    elif main_type == 'image':
-        mime_part = MIMEImage(fp.read(), _subtype=sub_type)
-        fp.close()
-    elif main_type == 'audio':
-        mime_part = MIMEAudio(fp.read(), _subtype=sub_type)
-        fp.close()
-    else:
-        mime_part = MIMEBase(main_type, sub_type)
-        mime_part.set_payload(fp.read())
-        fp.close()
-    mime_part.add_header('Content-Disposition', 'attachment', filename=file_name)
-    return mime_part
 
 
 def create_message(sender: str, to: str, subject: str,
@@ -166,38 +147,6 @@ def create_message(sender: str, to: str, subject: str,
     return {
         'raw': raw_message.decode("utf-8")
     }
-
-
-def get_mime_message(service, user_id, msg_id):
-    try:
-        message = service.users().messages().get(userId=user_id, id=msg_id,
-                                                 format='raw').execute()
-        print('Message snippet: %s' % message['snippet'])
-        msg_str = base64.urlsafe_b64decode(message['raw'].encode("utf-8")).decode("utf-8")
-        mime_msg = email.message_from_string(msg_str)
-
-        return mime_msg
-    except Exception as error:
-        print('An error occurred: %s' % error)
-
-
-def get_attachments(service, user_id, msg_id, store_dir):
-    try:
-        message = service.users().messages().get(userId=user_id, id=msg_id).execute()
-
-        for part in message['payload']['parts']:
-            if (part['filename'] and part['body'] and part['body']['attachmentId']):
-                attachment = service.users().messages().attachments().get(id=part['body']['attachmentId'],
-                                                                          userId=user_id, messageId=msg_id).execute()
-
-                file_data = base64.urlsafe_b64decode(attachment['data'].encode('utf-8'))
-                path = ''.join([store_dir, part['filename']])
-
-                f = open(path, 'wb')
-                f.write(file_data)
-                f.close()
-    except Exception as error:
-        print('An error occurred: %s' % error)
 
 
 def credentials_to_dict(credentials):
