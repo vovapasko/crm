@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 from rest_framework.response import Response
 from crm.paginations import StandardResultsSetPagination
+from crm.permissions import DjangoModelNoGetPermissions
 from crm.views import BaseView
 from crm.models import Client
 from crm.serializers import ClientSerializer
@@ -10,7 +11,7 @@ from crm.serializers import ClientSerializer
 
 class ClientView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
     queryset = Client.objects.all().order_by('id')
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = ClientSerializer
     pagination_class = StandardResultsSetPagination
 

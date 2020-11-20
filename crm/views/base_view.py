@@ -17,6 +17,9 @@ from typing import Type, Union
 
 class BaseView(APIView):
 
+    def make_response(self, data, **kwargs):
+        return Response(data=data, **kwargs)
+
     def json_response(self, response_code: int, **kwargs):
         return Response(kwargs, status=response_code)
 
@@ -31,11 +34,9 @@ class BaseView(APIView):
 
     def json_failed_response(self, response_code: int = status.HTTP_400_BAD_REQUEST, errors: dict = None,
                              **kwargs) -> Response:
-        return self.json_response(
-            response_code=response_code,
-            success=False,
-            errors=errors,
-            **kwargs
+        return self.make_response(
+            data=errors,
+            status=response_code
         )
 
     def json_forbidden_response(self, response_code: int = status.HTTP_403_FORBIDDEN, errors: dict = None,
@@ -76,6 +77,12 @@ class BaseView(APIView):
             return self.__create_response_object(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 message={'error': e.default_code}
+            )
+
+        if user is not None and getattr(user, 'is_confirmed') is False:
+            return self.__create_response_object(
+                status_code=status.HTTP_403_FORBIDDEN,
+                message={'message': 'user is not confirmed'}
             )
 
         if user is not None and hasattr(self, 'permission_required'):
@@ -140,7 +147,8 @@ class BaseView(APIView):
             )
         return entity, error_json
 
-    def get_custom_queryset(self, *, model: Type[Model], query_param: Union[str, int], order_by_param: str = 'id') -> QuerySet:
+    def get_custom_queryset(self, *, model: Type[Model], query_param: Union[str, int],
+                            order_by_param: str = 'id') -> QuerySet:
         """
                 Get specified entity from queryset according to request param
                 """

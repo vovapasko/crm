@@ -44,6 +44,6 @@ class EmailTestCase(BaseTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertIn(
-            member="errors",
+            member="error",
             container=self.get_json_content_from_response(response)
         )

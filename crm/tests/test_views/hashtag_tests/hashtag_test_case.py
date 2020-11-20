@@ -50,10 +50,6 @@ class HashtagTestCase(BaseTestCase):
             data=correct_new_hashtag
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.check_keys_in_dict(
-            data=self.get_json_content_from_response(response),
-            keys_to_check=self.keys_to_check_correct_response
-        )
         self.compare_data(
             compare_what=correct_new_hashtag,
             compare_to=self.get_json_content_from_response(response).get('hashtag')
@@ -75,7 +71,3 @@ class HashtagTestCase(BaseTestCase):
             data=post_data
         )
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.check_keys_in_dict(
-            data=self.get_json_content_from_response(response),
-            keys_to_check=self.keys_to_check_incorrect_response
-        )

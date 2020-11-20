@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
-from .wave_formation_attachment_serializer import WaveFormationAttachmentSerializer
 from .news_email_serializer import NewsEmailSerializer
-from crm.models import WaveFormation, WaveFormationAttachment
+from crm.models import WaveFormation, NewsWaveAttachment
 from drf_writable_nested import WritableNestedModelSerializer
+from crm.serializers.news.news_wave_attachment_serializer import NewsWaveAttachmentSerializer
 
 
 class WaveFormationSerializer(WritableNestedModelSerializer):
@@ -16,5 +16,8 @@ class WaveFormationSerializer(WritableNestedModelSerializer):
         readonly = ['date_created', 'date_updated']
         depth = 1
 
-    def get_attachments(self, instance: WaveFormationAttachment) -> str:
-        return WaveFormationAttachmentSerializer(instance.waveformationattachment_set.all(), many=True).data
+    def get_attachments(self, instance: NewsWaveAttachment) -> str:
+        return NewsWaveAttachmentSerializer(instance.newswaveattachment_set.all(), many=True).data
+
+    def create(self, validated_data):
+        return super().create(validated_data)

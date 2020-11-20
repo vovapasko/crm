@@ -10,11 +10,12 @@ from crm.serializers import ContractorSerializer
 from rest_framework import generics, permissions, status
 from ...models import Contractor
 from ..base_view import BaseView
+from ...permissions import DjangoModelNoGetPermissions
 
 
 class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView):
     queryset = Contractor.objects.all().order_by('id')
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = ContractorSerializer
     pagination_class = StandardResultsSetPagination
 

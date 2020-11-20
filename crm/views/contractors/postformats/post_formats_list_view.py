@@ -2,6 +2,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status
 from rest_framework.generics import UpdateAPIView, ListCreateAPIView
+
+from crm.permissions import DjangoModelNoGetPermissions
 from crm.views.base_view import BaseView
 from crm.paginations import StandardResultsSetPagination
 from crm.models import PostFormatList
@@ -12,7 +14,7 @@ from crm.serializers import PostFormatListSerializer
 
 
 class PostFormatListView(BaseView, ListCreateAPIView, UpdateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = PostFormatListSerializer
     pagination_class = StandardResultsSetPagination
 

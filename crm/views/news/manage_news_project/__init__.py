@@ -1,1 +1,0 @@
-from .manage_news_project_view import ManageNewsProjectView

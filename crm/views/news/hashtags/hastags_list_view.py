@@ -1,5 +1,8 @@
+from rest_framework.generics import DestroyAPIView, UpdateAPIView
+from rest_framework.permissions import IsAuthenticated
+from crm.permissions import DjangoModelNoGetPermissions
 from crm.views.base_view import BaseView
-from rest_framework import generics, permissions
+from rest_framework import generics
 from crm.models import Hashtag
 from crm.serializers import HashtagSerializer
 from rest_framework.request import Request
@@ -9,9 +12,9 @@ from crm.library.constants import MESSAGE_JSON_KEY
 from crm.paginations import StandardResultsSetPagination
 
 
-class HashtagsListView(BaseView, generics.ListCreateAPIView):
+class HashtagsListView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
     queryset = Hashtag.objects.all().order_by('id')
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = HashtagSerializer
     pagination_class = StandardResultsSetPagination
 

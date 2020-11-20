@@ -19,12 +19,18 @@ class UserRegisterSerializer(serializers.Serializer):
         validators=[validate_password],
     )
 
-    def update(self, instance: Model, validated_data: Dict) -> None:
+    def update(self, instance: Model, validated_data: Dict, is_confirmed: bool = True) -> None:
         instance.first_name = validated_data.get(FIRST_NAME, instance.first_name)
         instance.last_name = validated_data.get(LAST_NAME, instance.last_name)
         instance.set_password(validated_data.get(PASSWORD, instance.password))
-        instance.is_confirmed = True
+        instance.is_confirmed = is_confirmed
         instance.save()
+
+    def update_user(self, instance: Model, validated_data: Dict) -> None:
+        self.update(instance, validated_data)
+
+    def update_superuser(self, instance: Model, validated_data: Dict) -> None:
+        self.update(instance, validated_data, is_confirmed=False)
 
     def validate(self, data: Dict) -> Dict:
         if data[PASSWORD] != data[PASSWORD_CONFIRM]:

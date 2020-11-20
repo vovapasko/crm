@@ -1,7 +1,7 @@
 from .views import APP_NAME
 
 
-# permissions names
+# custom permissions names
 CAN_INVITE_NEW_USER = 'can_invite_new_user'
 CAN_DELETE_USER = 'can_delete_user'
 
@@ -13,10 +13,10 @@ CAN_DELETE_USER_PERMISSION = APP_NAME + '.can_delete_user'
 SUPERUSER = 'Superuser'
 ADMIN = 'Admin'
 MANAGER = 'Manager'
-CLIENT = 'Client'
+GUEST = 'Guest'
 
 # list of priority groups for cascade permissions
-GROUPS_FOR_CASCADE = [SUPERUSER, ADMIN, MANAGER, CLIENT]
+GROUPS_FOR_CASCADE = [SUPERUSER, ADMIN, MANAGER, GUEST]
 
 CODENAME = 'codename'
 NAME = 'name'

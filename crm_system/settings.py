@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'storages',
     'drf_yasg',
+    'email_app',
+    'django_extensions'
 ]
 
 MIDDLEWARE = [
@@ -107,7 +109,20 @@ else:
             'PASSWORD': os.environ.get('DMC_DB_PASSWORD'),
             'HOST': os.environ.get('DMC_DB_HOST'),
             'PORT': os.environ.get('DMC_DB_PORT'),
+        },
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.sqlite3',
+        #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # },
+        'test_prod': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'test_dmc',
+            'USER': 'postgres',
+            'PASSWORD': 'postgres',
+            'HOST': '127.0.0.1',
+            'PORT': '5432'
         }
+
     }
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -190,3 +205,20 @@ AWS_DEFAULT_ACL = None
 # for more information see
 # https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# for GMAIL API
+SENDING_EMAIL_SCOPE = ['https://mail.google.com/']
+CLIENT_SECRETS_FILE = "client_secrets.json"
+uri = "emails/gmail-auth/"
+local_gmail_redirect_uri = "http://127.0.0.1:8000/"
+dev_gmail_redirect_uri = "https://dmc-crm-backend.herokuapp.com/"
+prod_gmail_redirect_uri = "https://dmc-crm-production-backend.herokuapp.com/"
+GMAIL_API_REDIRECT_URI = f'{local_gmail_redirect_uri}emails/gmail-auth/' if DEBUG \
+    else f'{dev_gmail_redirect_uri}emails/gmail-auth/'
+if PRODUCTION:
+    GMAIL_API_REDIRECT_URI = f'{prod_gmail_redirect_uri}emails/gmail-auth/'
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}
