@@ -24,6 +24,7 @@ CLIENT_SECRETS_FILE = settings.CLIENT_SECRETS_FILE
 SCOPES = settings.SENDING_EMAIL_SCOPE
 API_SERVICE_NAME = constants.API_SERVICE_NAME
 API_VERSION = constants.API_VERSION
+REDIRECT_URI = settings.GMAIL_API_REDIRECT_URI
 
 
 def build_service(credentials: dict) -> Resource:
@@ -43,7 +44,7 @@ def start_authorize(par_state: str):
     # for the OAuth 2.0 client, which you configured in the API Console. If this
     # value doesn't match an authorized URI, you will get a 'redirect_uri_mismatch'
     # error.
-    flow.redirect_uri = settings.GMAIL_API_REDIRECT_URI
+    flow.redirect_uri = REDIRECT_URI
 
     authorization_url, state = flow.authorization_url(
         # Enable offline access so that you can refresh an access token without
