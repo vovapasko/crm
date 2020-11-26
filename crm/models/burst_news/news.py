@@ -31,3 +31,6 @@ class News(AbstractBaseModel):
     contractors = models.ManyToManyField(Contractor)
 
     objects = NewsManager()
+
+    def __str__(self):
+        return f'News {self.id} for {self.email} - {str(self.title[:10])}'

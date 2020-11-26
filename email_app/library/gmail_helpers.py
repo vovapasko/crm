@@ -103,7 +103,7 @@ def create_mime_signature(sender: str, to: str, subject: str, cc: str = None):
 
 
 def create_message_with_attachments(sender, to: str, subject: str, message_text: str,
-                                    files: Union[List[Dict[str, str, str]], None] = None,
+                                    files: Union[List, None] = None,
                                     cc: str = None):
     message = MIMEMultipart()
     message['to'] = to

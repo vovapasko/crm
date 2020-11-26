@@ -17,4 +17,4 @@ class NewsEmail(AbstractBaseModel):
                                           on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.email} {self.codeword}"
+        return f"{self.email}"
