@@ -4,7 +4,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import permissions, status
 from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import DjangoModelPermissions
-
+from .news_wave_constants import error_sending_dict_message, successful_saving_wave_dict_message
 from rest_framework.request import Request
 from rest_framework.response import Response
 from crm.serializers import NewsWaveSerializer
@@ -61,10 +61,10 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             news_wave = serializer.save()
             try:
                 sending_email_response = self.__send_waves_via_email(news_wave)
-                message = {'status': 'wave is saved'}
+                message = successful_saving_wave_dict_message
             except Exception as e:
                 sending_email_response = str(e)
-                message = {'error': 'error while sending email'}
+                message = error_sending_dict_message
             return self.json_success_response(response_code=status.HTTP_201_CREATED,
                                               message=message,
                                               details=sending_email_response)
