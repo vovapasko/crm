@@ -1,3 +1,6 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.gmail_message_with_ids_serializer import GmailMessageWithIdsSerializer
@@ -10,6 +13,22 @@ class EmailRemoveMessagesView(BaseView):
     email_param = 'email'
     message_id_param = 'message_ids'
 
+    email_swagger_param = openapi.Parameter(email_param,
+                                            openapi.IN_QUERY,
+                                            description='Email for message to permanently remove',
+                                            type=openapi.TYPE_STRING)
+    message_id_swagger_param = openapi.Parameter(message_id_param,
+                                                 openapi.IN_QUERY,
+                                                 type=openapi.TYPE_ARRAY,
+                                                 items=openapi.Items(type=openapi.TYPE_STRING),
+                                                 description='Ids of message to remove')
+    swagger_200_response = openapi.Response('[{message_id: Message removed}]')
+    swagger_400_response = openapi.Response('{errors: errors here}')
+
+    @swagger_auto_schema(
+        manual_parameters=[email_swagger_param, message_id_swagger_param],
+        responses={200: swagger_200_response, 400: swagger_400_response}
+    )
     def post(self, request, *args, **kwargs):
         serializer = self.serializer(data=request.data)
         if serializer.is_valid():
