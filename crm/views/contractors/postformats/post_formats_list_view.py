@@ -1,8 +1,5 @@
-from django.http import Http404
-from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status
-from rest_framework.generics import UpdateAPIView, ListCreateAPIView
-
+from rest_framework.generics import UpdateAPIView, ListCreateAPIView, DestroyAPIView
 from crm.permissions import DjangoModelNoGetPermissions
 from crm.views.base_view import BaseView
 from crm.paginations import StandardResultsSetPagination
@@ -13,34 +10,22 @@ from crm.library.constants import MESSAGE_JSON_KEY
 from crm.serializers import PostFormatListSerializer
 
 
-class PostFormatListView(BaseView, ListCreateAPIView, UpdateAPIView):
+class PostFormatListView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
     permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = PostFormatListSerializer
     pagination_class = StandardResultsSetPagination
+    queryset = PostFormatList.objects.all().order_by('id')
 
-    def get_queryset(self):
-        """
-        Optionally restricts the returned purchases to a given user,
-        by filtering against a `contractor_id` query parameter in the URL.
-        """
-        queryset = PostFormatList.objects.all()
-        contractor_id = self.request.query_params.get('contractor', None)
-        if contractor_id is not None:
-            queryset = queryset.filter(contractor=contractor_id)
-        return queryset.order_by('id')
-
-    def delete(self, request: Request, pk: int) -> Response:
-        try:
-            postformat = get_object_or_404(PostFormatList, pk=pk)
-        except Http404:
-            return self.json_failed_response(
-                response_code=status.HTTP_404_NOT_FOUND,
-                errors=dict(
-                    error=f"Contractor with id {pk} does not exist"
-                )
+    def get(self, request, *args, **kwargs):
+        contractor_id = kwargs.get('contractor', None)
+        if contractor_id:
+            queryset = self.queryset.filter(contractor=contractor_id)
+            return self.make_response(
+                data=self.serializer_class(
+                    instance=queryset, many=True
+                ).data
             )
+        return super(PostFormatListView, self).get(request, *args, **kwargs)
 
-        postformat.delete()
-        return self.json_success_response(
-            message={MESSAGE_JSON_KEY: f"PostFormatList {pk} was deleted successfully"},
-        )
+    def delete(self, request: Request, *args, **kwargs) -> Response:
+        return super().delete(request, *args, **kwargs)

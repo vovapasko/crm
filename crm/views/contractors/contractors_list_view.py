@@ -47,7 +47,7 @@ class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView, D
     def put(self, request: Request, *args, **kwargs) -> Response:
         return self.partial_update(request)
 
-    def delete(self, request: Request, pk: int, *args, **kwargs) -> Response:
+    def delete(self, request: Request, *args, **kwargs) -> Response:
         """
         Deletes contractor
         request params:
