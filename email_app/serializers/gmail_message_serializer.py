@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from email_app.serializers.email_serializer import EmailSerialiser
-from email_app.serializers.gmail_attachment_serializer import GmailAttachmentSerializer
+from crm.serializers.news.news_wave_attachment_serializer import NewsWaveAttachmentSerializer
 
 
 class GmailMessageSerializer(EmailSerialiser):
@@ -9,5 +9,5 @@ class GmailMessageSerializer(EmailSerialiser):
     text = serializers.CharField()
     cc = serializers.CharField(required=False)
     attachments = serializers.ListField(
-        child=GmailAttachmentSerializer(), required=False
+        child=NewsWaveAttachmentSerializer(), required=False
     )
