@@ -18,7 +18,7 @@ from email_app.library.gmail_helpers import send_gmail_message_from_wave
 
 
 class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
-    queryset = NewsWave.objects.all().order_by('id')
+    queryset = NewsWave.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [permissions.IsAuthenticated, DjangoModelPermissions]
     serializer_class = NewsWaveSerializer
     pagination_class = StandardResultsSetPagination

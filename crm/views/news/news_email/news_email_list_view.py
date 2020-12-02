@@ -9,7 +9,7 @@ from crm.permissions import DjangoModelNoGetPermissions
 
 
 class NewsEmailListView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
-    queryset = NewsEmail.objects.all().order_by('id')
+    queryset = NewsEmail.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = NewsEmailSerializer
     pagination_class = StandardResultsSetPagination

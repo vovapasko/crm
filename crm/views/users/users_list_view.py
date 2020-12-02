@@ -15,7 +15,7 @@ from crm.permissions import DjangoModelNoGetPermissions
 
 
 class UsersListView(BaseView, ListCreateAPIView):
-    queryset = User.objects.all().order_by('id')
+    queryset = User.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [IsAuthenticated, CanDeletePermission, DjangoModelNoGetPermissions]
     serializer_class = UserSerializer
     pagination_class = StandardResultsSetPagination

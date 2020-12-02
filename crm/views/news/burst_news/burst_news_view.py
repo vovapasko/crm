@@ -26,8 +26,8 @@ class BurstNewsView(BaseView):
     def get(self, request: Request) -> Response:
         return self.json_success_response(
             message={MESSAGE_JSON_KEY: "Data handled successfully"},
-            contractors=self.__get_objects(self.contractor_serializer, Contractor),
-            hashtags=self.__get_objects(self.hashtag_serializer, Hashtag),
+            contractors=self.__get_objects_with_filter(self.contractor_serializer, Contractor),
+            hashtags=self.__get_objects_with_filter(self.hashtag_serializer, Hashtag),
             characters=self.__get_objects(self.character_serializer, NewsCharacter),
             burst_methods=self.__get_objects(self.burst_method_serializer, NewsBurstMethod),
             formats=self.__to_json(
@@ -37,6 +37,9 @@ class BurstNewsView(BaseView):
 
     def __get_objects(self, serializer: Serializer, obj_class: object) -> List:
         return serializer(obj_class.objects.all(), many=True).data
+
+    def __get_objects_with_filter(self, serializer: Serializer, obj_class: object) -> List:
+        return serializer(obj_class.objects.all().filter(is_archived=False), many=True).data
 
     def __to_json(self, queryset: QuerySet) -> list:
         return json.loads(json.dumps(list(queryset)))
