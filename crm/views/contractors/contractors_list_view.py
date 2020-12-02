@@ -13,7 +13,7 @@ from ...permissions import DjangoModelNoGetPermissions
 
 
 class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView, DestroyAPIView):
-    queryset = Contractor.objects.all().order_by('id')
+    queryset = Contractor.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = ContractorSerializer
     pagination_class = StandardResultsSetPagination
