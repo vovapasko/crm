@@ -1,5 +1,7 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -44,6 +46,16 @@ class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView, D
         #     """
         return super().post(request, *args, **kwargs)
 
+    is_archived_swagger_param = openapi.Parameter(
+        name='is_archived',
+        in_=openapi.IN_QUERY,
+        description='Set this flag in body to true if you want to archive entity',
+        required=False,
+        type=openapi.TYPE_BOOLEAN
+    )
+
+    @swagger_auto_schema(manual_parameters=[is_archived_swagger_param],
+                         responses={200: 'entity will be archived'})
     def put(self, request: Request, *args, **kwargs) -> Response:
         return self.partial_update(request)
 

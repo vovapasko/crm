@@ -13,3 +13,6 @@ class NewsEmailListView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIVi
     permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = NewsEmailSerializer
     pagination_class = StandardResultsSetPagination
+
+    def put(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)

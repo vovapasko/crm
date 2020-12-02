@@ -7,14 +7,14 @@ from crm.permissions.can_delete_permission import CanDeletePermission
 from crm.library.constants import MESSAGE_JSON_KEY
 from crm.paginations import StandardResultsSetPagination
 from crm.serializers import UserSerializer
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.models import User
 from crm.views.base_view import BaseView
 from crm.permissions import DjangoModelNoGetPermissions
 
 
-class UsersListView(BaseView, ListCreateAPIView):
+class UsersListView(BaseView, ListCreateAPIView, UpdateAPIView):
     queryset = User.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [IsAuthenticated, CanDeletePermission, DjangoModelNoGetPermissions]
     serializer_class = UserSerializer
@@ -42,3 +42,6 @@ class UsersListView(BaseView, ListCreateAPIView):
         return self.json_success_response(
             message={MESSAGE_JSON_KEY: f"User {pk} was deleted successfully"},
         )
+
+    def put(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
