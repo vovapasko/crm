@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
 from .contractor_manager import ContractorManager
 
 

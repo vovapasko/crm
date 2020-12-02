@@ -5,7 +5,7 @@ from .news_burst_method import NewsBurstMethod
 from .wave_formation import WaveFormation
 from crm.models import Hashtag, User, Contractor
 from .news import News
-from crm.models.abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
 from crm.models.news_project import NewsProject
 
 

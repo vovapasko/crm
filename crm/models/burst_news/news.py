@@ -2,7 +2,7 @@ from django.db import models
 
 from .. import Contractor
 from ..news_email import NewsEmail
-from ..abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
 
 
 class NewsManager(models.Manager):

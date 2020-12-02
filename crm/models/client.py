@@ -1,4 +1,4 @@
-from .abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
