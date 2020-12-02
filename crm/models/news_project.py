@@ -1,11 +1,11 @@
 from crm.models import Contractor, Hashtag
-from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from .user import User
 
 
-class NewsProject(AbstractBaseModel):
+class NewsProject(AbstractBaseModel, AbstractArchivedModel):
     max_project_name_len = 50
 
     name = models.CharField(

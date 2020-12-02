@@ -1,9 +1,9 @@
-from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class NewsEmail(AbstractBaseModel):
+class NewsEmail(AbstractBaseModel, AbstractArchivedModel):
     codeword_length = 50
 
     email = models.EmailField(_('email address'), unique=True, null=False, blank=False)

@@ -5,11 +5,11 @@ from .news_burst_method import NewsBurstMethod
 from .wave_formation import WaveFormation
 from crm.models import Hashtag, User, Contractor
 from .news import News
-from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 from crm.models.news_project import NewsProject
 
 
-class NewsWave(AbstractBaseModel):
+class NewsWave(AbstractBaseModel, AbstractArchivedModel):
     wave_title_max_length = 200
     default_budget_value = 0
     max_post_format_length = 20

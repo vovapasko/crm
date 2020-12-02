@@ -1,9 +1,9 @@
-from crm.models.abstract_models import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class Client(AbstractBaseModel):
+class Client(AbstractBaseModel, AbstractArchivedModel):
     number_max_length = 40
     name_max_length = 70
     emails_max_length = 70
