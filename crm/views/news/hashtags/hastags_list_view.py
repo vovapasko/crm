@@ -13,7 +13,7 @@ from crm.paginations import StandardResultsSetPagination
 
 
 class HashtagsListView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
-    queryset = Hashtag.objects.all().order_by('id')
+    queryset = Hashtag.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = HashtagSerializer
     pagination_class = StandardResultsSetPagination
@@ -42,3 +42,6 @@ class HashtagsListView(BaseView, generics.ListCreateAPIView, DestroyAPIView, Upd
             message={MESSAGE_JSON_KEY: "Hashtag created successfully"},
             hashtag=serializer.data
         )
+
+    def put(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)
