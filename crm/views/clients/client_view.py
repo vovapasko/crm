@@ -10,7 +10,7 @@ from crm.serializers import ClientSerializer
 
 
 class ClientView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
-    queryset = Client.objects.all().order_by('id')
+    queryset = Client.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = ClientSerializer
     pagination_class = StandardResultsSetPagination
