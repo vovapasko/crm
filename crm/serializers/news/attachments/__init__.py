@@ -1,1 +1,0 @@
-from .base64_attachment_serializer import Base64AttachmentSerializer

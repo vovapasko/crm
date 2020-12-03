@@ -2,7 +2,7 @@ from django.db import models
 
 from .. import Contractor
 from ..news_email import NewsEmail
-from ..abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 
 
 class NewsManager(models.Manager):
@@ -22,7 +22,7 @@ class NewsManager(models.Manager):
         return news
 
 
-class News(AbstractBaseModel):
+class News(AbstractBaseModel, AbstractArchivedModel):
     title_max_length = 30
 
     email = models.ForeignKey(NewsEmail, on_delete=models.PROTECT)
@@ -31,3 +31,6 @@ class News(AbstractBaseModel):
     contractors = models.ManyToManyField(Contractor)
 
     objects = NewsManager()
+
+    def __str__(self):
+        return f'News {self.id} for {self.email} - {str(self.title[:10])}'

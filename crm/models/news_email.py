@@ -1,9 +1,9 @@
-from .abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class NewsEmail(AbstractBaseModel):
+class NewsEmail(AbstractBaseModel, AbstractArchivedModel):
     codeword_length = 50
 
     email = models.EmailField(_('email address'), unique=True, null=False, blank=False)
@@ -17,4 +17,4 @@ class NewsEmail(AbstractBaseModel):
                                           on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f"{self.email} {self.codeword}"
+        return f"{self.email}"

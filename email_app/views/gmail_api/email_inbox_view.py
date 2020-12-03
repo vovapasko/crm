@@ -19,22 +19,23 @@ class EmailInboxView(BaseView):
     pagination_param = 'pagination'
     next_page_token_param = 'nextPageToken'
 
-    email_parameter = openapi.Parameter(email_param,
-                                        openapi.IN_QUERY,
-                                        description="Email for inbox",
-                                        type=openapi.TYPE_STRING)
-    pagination_parameter = openapi.Parameter(pagination_param, openapi.IN_QUERY,
-                                             description="Amount of messages, which you want to get",
-                                             type=openapi.TYPE_STRING)
-    next_page_token_parameter = openapi.Parameter(next_page_token_param, openapi.IN_QUERY,
-                                                  description="Token parameter to get the next messages",
-                                                  type=openapi.TYPE_STRING,
-                                                  required=False)
+    email_swagger_parameter = openapi.Parameter(email_param,
+                                                openapi.IN_QUERY,
+                                                description="Email for inbox",
+                                                type=openapi.TYPE_STRING)
+    pagination_swagger_parameter = openapi.Parameter(pagination_param, openapi.IN_QUERY,
+                                                     description="Amount of messages, which you want to get",
+                                                     type=openapi.TYPE_STRING)
+    next_page_token_swagger_parameter = openapi.Parameter(next_page_token_param, openapi.IN_QUERY,
+                                                          description="Token parameter to get the next messages",
+                                                          type=openapi.TYPE_STRING,
+                                                          required=False)
 
-    response = openapi.Response('Gives dictionary of messages, profile and labels for this email')
+    response_swagger = openapi.Response('Gives dictionary of messages, profile and labels for this email')
 
-    @swagger_auto_schema(manual_parameters=[email_parameter, pagination_parameter, next_page_token_parameter],
-                         responses={200: response})
+    @swagger_auto_schema(
+        manual_parameters=[email_swagger_parameter, pagination_swagger_parameter, next_page_token_swagger_parameter],
+        responses={200: response_swagger})
     def get(self, request: Request, *args, **kwargs):
         serializer = self.serializer_class(data=request.GET)
         if serializer.is_valid():

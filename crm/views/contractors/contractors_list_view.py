@@ -1,9 +1,10 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework.generics import UpdateAPIView
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework.generics import UpdateAPIView, DestroyAPIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-
 from ...library.constants import MESSAGE_JSON_KEY
 from ...paginations import StandardResultsSetPagination
 from crm.serializers import ContractorSerializer
@@ -13,50 +14,52 @@ from ..base_view import BaseView
 from ...permissions import DjangoModelNoGetPermissions
 
 
-class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView):
-    queryset = Contractor.objects.all().order_by('id')
+class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView, DestroyAPIView):
+    queryset = Contractor.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [permissions.IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = ContractorSerializer
     pagination_class = StandardResultsSetPagination
 
     def post(self, request: Request, *args, **kwargs) -> Response:
-        """
-        Creates new contractor
-        body params:
-            - editor_name: str
-            - contact_person: str
-            - phone_number: str
-            - email: str (email)
-            - news_amount: positive int
-            - arranged_news: positive int
-            - one_post_price: positive int
-        :return json response
-            http response codes:
-                200 - ok, contractor was created successfully
-                400 - validation error or bad request
-                401 - bad JWT token or user unauthorized
-            keys:
-                response_code - response code
-                errors - errors during validation
-                data - all created contractor's data
-                message - success message about successful creating
-                contractor
-                detail - message if user was not authorised or had bad JWT token
-        """
-        serializer = self.serializer_class(data=request.data)
+        #     """
+        #     Creates new contractor
+        #     body params:
+        #         - editor_name: str
+        #         - contact_person: str
+        #         - phone_number: str
+        #         - email: str (email)
+        #         - news_amount: positive int
+        #         - arranged_news: positive int
+        #         - one_post_price: positive int
+        #     :return json response
+        #         http response codes:
+        #             200 - ok, contractor was created successfully
+        #             400 - validation error or bad request
+        #             401 - bad JWT token or user unauthorized
+        #         keys:
+        #             response_code - response code
+        #             errors - errors during validation
+        #             data - all created contractor's data
+        #             message - success message about successful creating
+        #             contractor
+        #             detail - message if user was not authorised or had bad JWT token
+        #     """
+        return super().post(request, *args, **kwargs)
 
-        if serializer.is_valid():
-            return self.__save_contractor_send_response(
-                serializer,
-                f"Created contractor",
-            )
+    is_archived_swagger_param = openapi.Parameter(
+        name='is_archived',
+        in_=openapi.IN_QUERY,
+        description='Set this flag in body to true if you want to archive entity',
+        required=False,
+        type=openapi.TYPE_BOOLEAN
+    )
 
-        return self.json_failed_response(errors=serializer.errors)
-
+    @swagger_auto_schema(manual_parameters=[is_archived_swagger_param],
+                         responses={200: 'entity will be archived'})
     def put(self, request: Request, *args, **kwargs) -> Response:
         return self.partial_update(request)
 
-    def delete(self, request: Request, pk: int, *args, **kwargs) -> Response:
+    def delete(self, request: Request, *args, **kwargs) -> Response:
         """
         Deletes contractor
         request params:
@@ -70,20 +73,7 @@ class ContractorsListView(BaseView, generics.ListCreateAPIView, UpdateAPIView):
                 errors - errors during validation
                 message - success message about successful deleting contractor
         """
-        try:
-            contractor = get_object_or_404(Contractor, pk=pk)
-        except Http404:
-            return self.json_failed_response(
-                response_code=status.HTTP_404_NOT_FOUND,
-                errors=dict(
-                    error=f"Contractor with id {pk} does not exist"
-                )
-            )
-
-        contractor.delete()
-        return self.json_success_response(
-            message={MESSAGE_JSON_KEY: f"Contractor {pk} was deleted successfully"},
-        )
+        return super().delete(request, *args, **kwargs)
 
     def __save_contractor_send_response(self, serializer: ContractorSerializer, send_message: str) -> Response:
         serializer.save()

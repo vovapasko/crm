@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.permissions import DjangoModelNoGetPermissions
@@ -13,7 +15,7 @@ from crm.paginations import StandardResultsSetPagination
 
 
 class HashtagsListView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateAPIView):
-    queryset = Hashtag.objects.all().order_by('id')
+    queryset = Hashtag.objects.all().filter(is_archived=False).order_by('id')
     permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     serializer_class = HashtagSerializer
     pagination_class = StandardResultsSetPagination
@@ -42,3 +44,16 @@ class HashtagsListView(BaseView, generics.ListCreateAPIView, DestroyAPIView, Upd
             message={MESSAGE_JSON_KEY: "Hashtag created successfully"},
             hashtag=serializer.data
         )
+
+    is_archived_swagger_param = openapi.Parameter(
+        name='is_archived',
+        in_=openapi.IN_QUERY,
+        description='Set this flag in body to true if you want to archive entity',
+        required=False,
+        type=openapi.TYPE_BOOLEAN
+    )
+
+    @swagger_auto_schema(manual_parameters=[is_archived_swagger_param],
+                         responses={200: 'entity will be archived'})
+    def put(self, request, *args, **kwargs):
+        return super().partial_update(request, *args, **kwargs)

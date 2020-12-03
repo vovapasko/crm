@@ -1,4 +1,4 @@
-from ..abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models import AbstractBaseModel, AbstractArchivedModel
 from django.db import models
 
 
@@ -18,8 +18,11 @@ class WaveFormationManager(models.Manager):
         return wf
 
 
-class WaveFormation(AbstractBaseModel):
+class WaveFormation(AbstractBaseModel, AbstractArchivedModel):
     email = models.ForeignKey('NewsEmail', on_delete=models.PROTECT)
     content = models.TextField()
 
     objects = WaveFormationManager()
+
+    def __str__(self):
+        return f'{self.email} - {str(self.content)[:10]}'

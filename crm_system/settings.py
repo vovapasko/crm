@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
-
+import datetime
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -214,8 +214,22 @@ local_gmail_redirect_uri = "http://127.0.0.1:8000/"
 dev_gmail_redirect_uri = "https://dmc-crm-backend.herokuapp.com/"
 GMAIL_API_REDIRECT_URI = f'{local_gmail_redirect_uri}emails/gmail-auth/' if DEBUG \
     else f'{dev_gmail_redirect_uri}emails/gmail-auth/'
+API_SERVICE_NAME = 'gmail'
+API_VERSION = 'v1'
 
 GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
+}
+
+JWT_AUTH = {
+    # how long the original token is valid for
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
+
+    # allow refreshing of tokens
+    'JWT_ALLOW_REFRESH': True,
+
+    # this is the maximum time AFTER the token was issued that
+    # it can be refreshed.  exprired tokens can't be refreshed.
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
 }

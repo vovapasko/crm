@@ -1,3 +1,5 @@
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from crm.models import NewsEmail
 from crm.views.base_view import BaseView
 from email_app.serializers.email_get_message_serializer import EmailGetMessageSerializer
@@ -12,6 +14,23 @@ class EmailGetMessageView(BaseView):
     message_id_param = 'message_id'
     message_type_param = 'message_type'
 
+    email_swagger_parameter = openapi.Parameter(email_param,
+                                                openapi.IN_QUERY,
+                                                description="Email for message to get",
+                                                type=openapi.TYPE_STRING)
+    message_id_swagger_parameter = openapi.Parameter(message_id_param, openapi.IN_QUERY,
+                                                     description="ID of messages, which you want to get",
+                                                     type=openapi.TYPE_STRING)
+    message_type_param_swagger_parameter = openapi.Parameter(message_type_param, openapi.IN_QUERY,
+                                                             description="Type parameter of message. Can be row or full",
+                                                             type=openapi.TYPE_STRING)
+
+    response_swagger = openapi.Response('Gives message for this email according to the required type')
+
+    @swagger_auto_schema(
+        manual_parameters=[email_swagger_parameter, message_id_swagger_parameter,
+                           message_type_param_swagger_parameter],
+        responses={200: response_swagger})
     def get(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.GET)
         if serializer.is_valid():

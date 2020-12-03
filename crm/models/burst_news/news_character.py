@@ -1,5 +1,5 @@
 from django.db import models
-from ..abstract_base_model import AbstractBaseModel
+from crm.models.abstract_models.abstract_base_model import AbstractBaseModel
 
 
 class NewsCharacter(AbstractBaseModel):

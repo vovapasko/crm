@@ -1,4 +1,4 @@
-from crm.models import Contractor
+from crm.models import Contractor, User
 from rest_framework.test import APIClient
 from rest_framework import status
 
@@ -13,7 +13,8 @@ class ContractorTestCase(BaseTestCase):
     @classmethod
     def setUpTestData(cls: object) -> None:
         super().setUpTestData()
-        cls.user = super().get_test_user()
+        cls.admin_user = super().get_test_user()
+        cls.superuser = super().get_superuser()
         cls.contractors = Contractor.objects.all()
 
     @classmethod
@@ -21,7 +22,7 @@ class ContractorTestCase(BaseTestCase):
         super().tearDownClass()
 
     def test_get_contractors_authorised(self) -> None:
-        client = self.get_api_client(user=self.user)
+        client = self.get_api_client(user=self.admin_user)
         response = client.get(self.url, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.check_keys_in_dict(response.data, keys_to_check)
@@ -34,9 +35,9 @@ class ContractorTestCase(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_post_contractors_authorised(self) -> None:
-        client = self.get_api_client(user=self.user)
+        client = self.get_api_client(user=self.admin_user)
         response = client.post(self.url, data=mock_contractor, format='json')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         # self.compare_data(mock_contractor, self.get_json_content_from_response(response).get('contractor'))
 
     def test_post_contractors_unauthorised(self) -> None:
@@ -45,7 +46,7 @@ class ContractorTestCase(BaseTestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_put_correct_contractors_authorised(self) -> None:
-        client, last_id = self.get_auth_client_and_model_last_id(user=self.user, par_model=self.contractors)
+        client, last_id = self.get_auth_client_and_model_last_id(user=self.admin_user, par_model=self.contractors)
         response = client.put(
             path=self.generate_url(self.url, last_id),
             data=correct_put_data
@@ -80,7 +81,7 @@ class ContractorTestCase(BaseTestCase):
     def test_put_contractors_unauthorised(self) -> None:
         client, last_id = self.get_auth_client_and_model_last_id(
             authenticated=False,
-            user=self.user,
+            user=self.admin_user,
             par_model=self.contractors
         )
         response = client.put(
@@ -90,3 +91,28 @@ class ContractorTestCase(BaseTestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertIn(member=self.error_check_key, container=self.get_json_content_from_response(response))
+
+    def test_delete_contractors_admin_authorised(self) -> None:
+        self.__delete_contractor_by_user(user=self.admin_user, expected_status_code=status.HTTP_403_FORBIDDEN)
+
+    def test_delete_contractors_superuser_authorised(self):
+        last_id = self.__delete_contractor_by_user(user=self.superuser, expected_status_code=status.HTTP_204_NO_CONTENT)
+        self.__delete_contractor_by_user(
+            user=self.superuser,
+            expected_status_code=status.HTTP_404_NOT_FOUND,
+            last_id_param=last_id
+        )
+
+    def __delete_contractor_by_user(self, user: User, expected_status_code: int, last_id_param=None) -> None:
+        client, last_id = self.get_auth_client_and_model_last_id(
+            user=user,
+            par_model=self.contractors
+        )
+        if last_id_param:
+            last_id = last_id_param
+        response = client.delete(
+            path=self.generate_url(self.url, last_id)
+        )
+        # admin is forbidden can not delete contractor
+        self.assertEqual(response.status_code, expected_status_code)
+        return last_id
