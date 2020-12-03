@@ -11,11 +11,7 @@ class UserSerializer(WritableNestedModelSerializer):
 
     class Meta:
         model = User
-        fields = [
-            'id', 'email', 'first_name', 'last_name', 'date_joined', 'date_updated',
-            'is_active', 'is_confirmed', 'avatar', 'is_staff', 'is_superuser', 'groups',
-            'groups_cascade_down',
-        ]
+        exclude = ['password', 'user_permissions']
         depth = 1
 
     def get_groups_cascade_down(self, obj):
