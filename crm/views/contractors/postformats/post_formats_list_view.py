@@ -52,3 +52,6 @@ class PostFormatListView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIV
 
     def delete(self, request: Request, *args, **kwargs) -> Response:
         return super().delete(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs) -> Response:
+        return super().partial_update(request, *args, **kwargs)
