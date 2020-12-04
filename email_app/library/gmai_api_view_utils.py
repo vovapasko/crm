@@ -145,6 +145,8 @@ def remove_gmail_message(email: NewsEmail, message_id: str):
 
 
 def filter_label_gmail_message(email: NewsEmail, labels: List[str]):
+    # todo provide create creds, service function
+    # creds, service = create(...)
     creds = email.gmail_credentials.credentials_for_service()
     service = build_service(credentials=creds)
     messages = list_messages_with_label(service=service, user_id=email.email, label_ids=labels)
@@ -171,3 +173,4 @@ def send_gmail_message(email: NewsEmail, email_to: str, subject: str, message_te
                                                   message_text=message_text, files=attachments, cc=cc)
     message = send_message(service, user_id=user_id, message=message)
     return message
+

@@ -89,6 +89,7 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
             try:
                 self.__check_credentials(email)
             except Exception:
+                # todo add exception to all_news_sending_results
                 continue
             content = news.content
             contractors_emails = news.contractors.values_list('email', flat=True)
@@ -126,14 +127,13 @@ class NewsWaveView(BaseView, generics.ListCreateAPIView, DestroyAPIView, UpdateA
         )
         return sending_results
 
-    def __send_emails(self,
-                      to_emails: list,
-                      email: NewsEmail,
-                      subject: str,
-                      content: str,
-                      converted_attachments: Union[list, None] = None,
-                      template: str = None,
-                      signature: str = None):
+    def __send_emails(self, to_emails: list,
+                            email: NewsEmail,
+                            subject: str,
+                            content: str,
+                            converted_attachments: Union[list, None] = None,
+                            template: str = None,
+                            signature: str = None) -> dict:
         results = {}
         for to_email in to_emails:
             email_from = email.email
