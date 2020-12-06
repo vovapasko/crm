@@ -1,0 +1,1 @@
+from .forgot_password_view import ForgotPasswordView
