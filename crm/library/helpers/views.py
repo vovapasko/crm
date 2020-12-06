@@ -85,3 +85,7 @@ def format_link(link):
     if settings.PRODUCTION:
         server = PRODUCTION_SERVER
     return f"{server}/{link}"
+
+
+def generate_secret():
+    pass
