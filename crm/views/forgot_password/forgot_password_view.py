@@ -1,3 +1,5 @@
+from rest_framework import status
+
 from crm.views.base_view import BaseView
 from crm.serializers.security import EmailRegisteredSerializer
 from crm.library.constants.codes import FORGOT_PASSWORD_LINK_FAILED, FORGOT_PASSWORD_LINK_SUCCESS
@@ -16,7 +18,7 @@ class ForgotPasswordView(BaseView):
             return self.json_success_response(message={
                 FORGOT_PASSWORD_LINK_SUCCESS: email})
 
-        return self.json_failed_response(errors=serializer.errors)
+        return self.json_failed_response(response_code=status.HTTP_404_NOT_FOUND, errors=serializer.errors)
 
     def __send_link(self, email: str) -> None:
         return email
