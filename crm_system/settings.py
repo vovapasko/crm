@@ -222,14 +222,9 @@ GRAPH_MODELS = {
     'group_models': True,
 }
 
-JWT_AUTH = {
-    # how long the original token is valid for
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=2),
-
-    # allow refreshing of tokens
-    'JWT_ALLOW_REFRESH': True,
-
-    # this is the maximum time AFTER the token was issued that
-    # it can be refreshed.  exprired tokens can't be refreshed.
-    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+SIMPLE_JWT = {
+    # how long the access token is valid for
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    # how long the access token is valid for
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(weeks=1),
 }
