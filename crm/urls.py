@@ -13,6 +13,7 @@ urlpatterns = [
     path('change-password-confirm/', ChangePasswordLinkView.as_view(), name='change-password-confirm'),
     path('change-pass/<str:data>', ChangePasswordView.as_view(), name='change-pass'),
     path('forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
+    path('forgot-password-confirm/', ForgotPasswordConfirmView.as_view(), name='forgot-password-confirm'),
     path('confirm-user/<str:data>', UserRegisterView.as_view(), name='confirm-user'),
     path('invite-new-user/', InviteNewUserView.as_view(), name='invite-new-user'),
     path('generate-link/', GenerateLinkView.as_view(), name='generate-link'),

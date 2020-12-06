@@ -2,6 +2,8 @@ from django.core import signing
 import os
 
 from django.template.loader import render_to_string
+from django.utils.encoding import force_text, force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -87,5 +89,9 @@ def format_link(link):
     return f"{server}/{link}"
 
 
-def generate_secret():
-    pass
+def convert_uid(id):
+    return urlsafe_base64_encode(force_bytes(id))
+
+
+def unconvert_uid(converted_uid):
+    return force_text(urlsafe_base64_decode(converted_uid))

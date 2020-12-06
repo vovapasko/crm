@@ -1,1 +1,2 @@
 from .forgot_password_view import ForgotPasswordView
+from .forgot_password_confirm_view import ForgotPasswordConfirmView

@@ -1,5 +1,5 @@
 from .user_serializer import UserSerializer
-from .change_password_serializer import ChangePasswordSerializer
+from crm.serializers.security.change_password_serializer import ChangePasswordSerializer
 from .post_format_list_serializer import PostFormatListSerializer
 from .group_serializer import GroupSerializer
 from .invite_new_user_serializer import InviteNewUserSerializer

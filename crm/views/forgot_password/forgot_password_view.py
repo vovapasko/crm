@@ -1,11 +1,15 @@
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework import status
 
-from crm.library.helpers.views import format_link, generate_secret, send_dmc_email
+from crm.library.helpers.views import format_link, send_dmc_email, convert_uid
+from crm.models import User
 from crm.views.base_view import BaseView
 from crm.serializers.security import EmailRegisteredSerializer
 from crm.library.constants.codes import FORGOT_PASSWORD_LINK_FAILED_STATUS_CODE, \
     FORGOT_PASSWORD_LINK_SUCCESS_STATUS_CODE
 from crm.library.constants.views import FORGOT_PASSWORD_LINK, FORGOT_PASSWORD_EMAIL_TEMPLATE
+from django.contrib.auth.tokens import default_token_generator
 
 
 class ForgotPasswordView(BaseView):
@@ -22,14 +26,18 @@ class ForgotPasswordView(BaseView):
         return self.json_failed_response(response_code=status.HTTP_404_NOT_FOUND, errors=serializer.errors)
 
     def __send_link(self, email: str) -> dict:
-        secret_token = generate_secret()
+        user = User.objects.get(email=email)
+        secret_token = default_token_generator.make_token(
+            user=user
+        )
+        uid = convert_uid(user.id)
         link = format_link(FORGOT_PASSWORD_LINK)
         try:
             send_dmc_email(
                 template=self.template_name,
                 receivers=[email],
                 subject='Reset password form',
-                link=f'{link}/{secret_token}'
+                link=f'{link}/{uid}/{secret_token}'
                 # link format <Host>/<path to password change page>/<data with alert>
             )
             return {FORGOT_PASSWORD_LINK_SUCCESS_STATUS_CODE: email}
