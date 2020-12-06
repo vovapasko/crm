@@ -4,7 +4,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from crm.models import ContractorPublicationsList
-from crm.serializers.contractor_publications_list_serializer import ContractorPublicationsListSerializer
+from crm.serializers import ContractorPublicationsListSerializer
 from crm.views.contractors.contractors_attributes_base_view import ContractorAttributesBaseView
 
 

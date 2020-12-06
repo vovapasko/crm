@@ -1,7 +1,7 @@
 from drf_writable_nested import WritableNestedModelSerializer
 from rest_framework import serializers
 from crm.models.burst_news.news_wave_price_list import NewsWavePriceList
-from crm.serializers import ContractorSerializer
+from crm.serializers.contractors import ContractorSerializer
 
 
 class NewsWavePriceListSerializer(WritableNestedModelSerializer):

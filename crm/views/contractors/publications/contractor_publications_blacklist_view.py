@@ -3,10 +3,8 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from drf_yasg import openapi
 from crm.models import ContractorPublicationsBlacklist
-from crm.permissions import DjangoModelNoGetPermissions
-from crm.serializers.contractor_publications_blacklist_serializer import ContractorPublicationsBlacklistSerializer
+from crm.serializers.contractors.contractor_publications_blacklist_serializer import ContractorPublicationsBlacklistSerializer
 from crm.views.contractors.contractors_attributes_base_view import ContractorAttributesBaseView
-from rest_framework.permissions import IsAuthenticated
 
 
 class ContractorPublicationsBlacklistView(ContractorAttributesBaseView):
