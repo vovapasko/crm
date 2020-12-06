@@ -1,7 +1,6 @@
-from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
-
 from crm.library.helpers.views import format_link, send_dmc_email, convert_uid
 from crm.models import User
 from crm.views.base_view import BaseView
@@ -17,6 +16,22 @@ class ForgotPasswordView(BaseView):
     template_name = FORGOT_PASSWORD_EMAIL_TEMPLATE
     email_param = 'email'
 
+    email_swagger_param = openapi.Parameter(name=email_param, in_=openapi.IN_QUERY,
+                                            description="Email for which you need to reset password",
+                                            required=True, type=openapi.TYPE_STRING)
+
+    response_404 = openapi.Response(
+        description="404 Error in dict {errors: Error type}. No such a user with this email"
+    )
+    response_200 = openapi.Response(
+        description="If message was sent to email without errors, you will get dict"
+                    "{FORGOT_PASSWORD_LINK_SUCCESS: email for which was success sending}. "
+                    "If message was sent to email with error, you will get dict "
+                    "{FORGOT_PASSWORD_LINK_FAILED: exception in str}"
+    )
+
+    @swagger_auto_schema(manual_parameters=[email_swagger_param],
+                         responses={200: response_200, 404: response_404})
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
