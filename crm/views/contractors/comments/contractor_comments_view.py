@@ -4,12 +4,10 @@ from crm.serializers.contractors.contractor_comment_list_serializer import Contr
 from rest_framework.request import Request
 from rest_framework.response import Response
 from drf_yasg import openapi
-from rest_framework.generics import RetrieveAPIView
-
 from crm.views.contractors.contractors_attributes_base_view import ContractorAttributesBaseView
 
 
-class ContractorCommentsView(ContractorAttributesBaseView, RetrieveAPIView, ):
+class ContractorCommentsView(ContractorAttributesBaseView):
     serializer_class = ContractorCommentListSerializer
     queryset = ContractorCommentList.objects.all().order_by('id')
 
