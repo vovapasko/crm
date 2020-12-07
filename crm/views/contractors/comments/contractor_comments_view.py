@@ -1,6 +1,6 @@
 from drf_yasg.utils import swagger_auto_schema
 from crm.models import ContractorCommentList
-from crm.serializers.contractor_comment_list_serializer import ContractorCommentListSerializer
+from crm.serializers.contractors.contractor_comment_list_serializer import ContractorCommentListSerializer
 from rest_framework.request import Request
 from rest_framework.response import Response
 from drf_yasg import openapi

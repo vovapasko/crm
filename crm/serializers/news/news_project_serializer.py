@@ -1,9 +1,9 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
-from .hashtag_serializer import HashtagSerializer
+from crm.serializers.hashtag_serializer import HashtagSerializer
 from .news_email_serializer import NewsEmailSerializer
-from crm.serializers import ContractorSerializer
+from crm.serializers.contractors import ContractorSerializer
 from crm.serializers.client_serializer import ClientSerializer
 from crm.models import NewsProject, User
 from crm.serializers import UserSerializer

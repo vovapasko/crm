@@ -1,4 +1,3 @@
-from .hashtag_serializer import HashtagSerializer
 from .news_burst_method_serializer import NewsBurstMethodSerializer
 from .news_character_serializer import NewsCharacterSerializer
 from .news_email_serializer import NewsEmailSerializer

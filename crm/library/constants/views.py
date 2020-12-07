@@ -29,6 +29,7 @@ APP_NAME = CrmConfig.name
 PASSWORD_CHANGE_EMAIL = f'{APP_NAME}/email/password_change_confirm.txt'
 REGISTER_NEW_USER_EMAIL = f'{APP_NAME}/email/invite_new_user.txt'
 CHANGE_GROUP_EMAIL = f'{APP_NAME}/email/change_group.txt'
+FORGOT_PASSWORD_EMAIL_TEMPLATE = f'{APP_NAME}/email/forgot_password.txt'
 
 # api endpoints
 HOME_API = f'{APP_NAME}:home'
@@ -42,3 +43,4 @@ DEV_SERVER = "https://dmc-front.herokuapp.com"
 PRODUCTION_SERVER = "https://dmc-crm-production-frontend.herokuapp.com"
 INVITE_NEW_USER_LINK = "account/signup"
 CHANGE_PASSWORD_LINK = "account/change-password"
+FORGOT_PASSWORD_LINK = "account/forgot-password"

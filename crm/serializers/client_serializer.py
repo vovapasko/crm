@@ -1,6 +1,6 @@
 from drf_writable_nested import WritableNestedModelSerializer
 from crm.models import Client
-from crm.serializers.news import HashtagSerializer
+from crm.serializers.hashtag_serializer import HashtagSerializer
 
 
 class ClientSerializer(WritableNestedModelSerializer):

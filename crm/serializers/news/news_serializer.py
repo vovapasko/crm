@@ -2,7 +2,7 @@ from rest_framework import serializers
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 from .news_wave_attachment_serializer import NewsWaveAttachmentSerializer
 from .news_email_serializer import NewsEmailSerializer
-from crm.serializers import ContractorSerializer
+from crm.serializers.contractors import ContractorSerializer
 from crm.models import News, NewsWaveAttachment
 
 

@@ -8,9 +8,11 @@ from .news_serializer import NewsSerializer
 from .wave_formation_serializer import WaveFormationSerializer
 from crm.models import NewsWave, Contractor, Hashtag, NewsCharacter, NewsBurstMethod
 from typing import Type, List
-from crm.serializers.news import NewsCharacterSerializer, NewsBurstMethodSerializer, HashtagSerializer
+from crm.serializers.news import NewsCharacterSerializer, NewsBurstMethodSerializer
 from crm.serializers.news.news_wave_price_list_serializer import NewsWavePriceListSerializer
-from crm.serializers import UserSerializer, ContractorSerializer
+from crm.serializers import UserSerializer
+from crm.serializers.contractors import ContractorSerializer
+from crm.serializers.hashtag_serializer import HashtagSerializer
 
 
 class NewsWaveSerializer(WritableNestedModelSerializer):
