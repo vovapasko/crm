@@ -6,7 +6,7 @@ from rest_framework import status
 
 
 class ContractorCommentsTestCase(BaseTestCase):
-    url = reverse('crm:contractor-publications')
+    url = reverse('crm:contractor-comments')
 
     @classmethod
     def setUpTestData(cls):
