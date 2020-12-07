@@ -22,6 +22,8 @@ urlpatterns = [
     path('contractors/<int:contractor>/postformats/', PostFormatListView.as_view(), name='contractor-post-formats'),
     path('contractors/<int:contractor>/postformats/<int:pk>', PostFormatListView.as_view(),
          name='contractor-post-formats-pk'),
+    path('contractors/<int:contractor>/comments/', ContractorCommentsView.as_view(), name='contractor-comments'),
+    path('contractors/<int:contractor>/comments/<int:pk>', ContractorCommentsView.as_view(), name='contractor-comments'),
     path('email-registered/<str:email>', CheckEmailRegisteredView.as_view(), name='email-registered'),
     path('change-group/<int:user_id>', ChangeGroupView.as_view(), name='change-group'),
     path('hashtags/', HashtagsListView.as_view(), name='hashtags'),
@@ -41,6 +43,5 @@ urlpatterns = [
          name='contractor-publications-blacklist'),
     path('publications-blacklist/<int:pk>', ContractorPublicationsBlacklistView.as_view(),
          name='contractor-publications-blacklist'),
-    path('comments/', ContractorCommentsView.as_view(), name='contractor-comments'),
-    path('comments/<int:pk>', ContractorCommentsView.as_view(), name='contractor-comments'),
+
 ]
