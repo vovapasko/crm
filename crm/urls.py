@@ -29,6 +29,11 @@ urlpatterns = [
          name='contractor-publications'),
     path('contractors/<int:contractor>/publications/<int:pk>', ContractorPublicationsView.as_view(),
          name='contractor-publications'),
+    path('contractors/<int:contractor>/publications-blacklist/', ContractorPublicationsBlacklistView.as_view(),
+         name='contractor-publications-blacklist'),
+    path('contractors/<int:contractor>/publications-blacklist/<int:pk>', ContractorPublicationsBlacklistView.as_view(),
+         name='contractor-publications-blacklist'),
+
     path('email-registered/<str:email>', CheckEmailRegisteredView.as_view(), name='email-registered'),
     path('change-group/<int:user_id>', ChangeGroupView.as_view(), name='change-group'),
     path('hashtags/', HashtagsListView.as_view(), name='hashtags'),
@@ -42,9 +47,4 @@ urlpatterns = [
     path('news-waves/<int:pk>', NewsWaveView.as_view(), name="newswaves"),
     path('clients/', ClientView.as_view(), name='clients'),
     path('clients/<int:pk>', ClientView.as_view(), name='update-clients'),
-    path('publications-blacklist/', ContractorPublicationsBlacklistView.as_view(),
-         name='contractor-publications-blacklist'),
-    path('publications-blacklist/<int:pk>', ContractorPublicationsBlacklistView.as_view(),
-         name='contractor-publications-blacklist'),
-
 ]
