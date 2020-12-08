@@ -33,7 +33,6 @@ urlpatterns = [
          name='contractor-publications-blacklist'),
     path('contractors/<int:contractor>/publications-blacklist/<int:pk>', ContractorPublicationsBlacklistView.as_view(),
          name='contractor-publications-blacklist'),
-
     path('email-registered/<str:email>', CheckEmailRegisteredView.as_view(), name='email-registered'),
     path('change-group/<int:user_id>', ChangeGroupView.as_view(), name='change-group'),
     path('hashtags/', HashtagsListView.as_view(), name='hashtags'),
