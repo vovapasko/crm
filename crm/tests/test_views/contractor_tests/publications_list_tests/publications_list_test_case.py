@@ -7,13 +7,13 @@ from crm.models.contractor_publications_list import ContractorPublicationsList
 
 
 class PublicationsListTestCase(BaseTestCase):
-    url = reverse('crm:contractor-publications')
 
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
         cls.test_user = cls.get_admin_user()
         cls.test_contractor = Contractor.objects.first()
+        cls.url = reverse('crm:contractor-publications', kwargs={'contractor': cls.test_contractor.id})
 
     @classmethod
     def tearDownClass(cls):
