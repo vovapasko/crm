@@ -1,6 +1,7 @@
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
 from django.db.models import Model
+from django.db import IntegrityError
 
 from ...models import User, Contractor, Hashtag, NewsCharacter, NewsBurstMethod, NewsEmail, Client, NewsProject, \
     NewsWave
@@ -24,33 +25,29 @@ class Command(BaseCommand):
         self.__create_news_waves()
 
     def __create_users(self):
-        User.objects.create_superuser(
-            email=TEST_SUPERUSER_EMAIL,
-            password=TEST_SUPERUSER_PASSWORD,
-            is_confirmed=True
-        )
-        self.__print_user_message("Superuser")
 
-        User.objects.create_admin_user(
-            email=TEST_ADMIN_EMAIL,
-            password=TEST_ADMIN_PASSWORD,
-            is_confirmed=True
+        self.__create_user_print_status(
+            method=User.objects.create_superuser,
+            status='Superuser',
+            **(MOCK_USERS[0])
         )
-        self.__print_user_message("Admin")
+        self.__create_user_print_status(
+            method=User.objects.create_admin_user,
+            status='Admin',
+            **(MOCK_USERS[1])
+        )
 
-        User.objects.create_manager_user(
-            email=TEST_MANAGER_EMAIL,
-            password=TEST_MANAGER_PASSWORD,
-            is_confirmed=True
+        self.__create_user_print_status(
+            method=User.objects.create_manager_user,
+            status='Manager',
+            **(MOCK_USERS[2])
         )
-        self.__print_user_message("Manager")
 
-        User.objects.create_guest_user(
-            email=TEST_CLIENT_EMAIL,
-            password=TEST_CLIENT_PASSWORD,
-            is_confirmed=True
+        self.__create_user_print_status(
+            method=User.objects.create_guest_user,
+            status='Guest',
+            **(MOCK_USERS[3])
         )
-        self.__print_user_message("Client")
 
     def __create_contractors(self):
         for mock_data in MOCK_CONTRACTORS_DATA:
@@ -109,3 +106,12 @@ class Command(BaseCommand):
     def __bulk_create_model(self, model_name: Model, mock_data: dict):
         model_name.objects.bulk_create([model_name(**element) for element in mock_data])
         self.__print_created_model(model_name.__name__)
+
+    def __create_user_print_status(self, method, status: str = None,
+                                   error_message: str = "Such a user is already created. We will skip it",
+                                   **arguments) -> None:
+        try:
+            method(**arguments)
+            self.__print_user_message(status)
+        except IntegrityError:
+            self.__print_user_message(error_message)

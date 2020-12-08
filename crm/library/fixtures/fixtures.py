@@ -12,6 +12,29 @@ TEST_MANAGER_PASSWORD = "manager"
 TEST_CLIENT_EMAIL = "client@client.com"
 TEST_CLIENT_PASSWORD = "client"
 
+MOCK_USERS = [
+    {
+        "email": TEST_SUPERUSER_EMAIL,
+        "password": TEST_SUPERUSER_PASSWORD,
+        "is_confirmed": True
+    },
+    {
+        "email": TEST_ADMIN_EMAIL,
+        "password": TEST_ADMIN_PASSWORD,
+        "is_confirmed": True
+    },
+    {
+        "email": TEST_MANAGER_EMAIL,
+        "password": TEST_MANAGER_PASSWORD,
+        "is_confirmed": True
+    },
+    {
+        "email": TEST_CLIENT_EMAIL,
+        "password": TEST_CLIENT_PASSWORD,
+        "is_confirmed": True
+    }
+]
+
 MOCK_CONTRACTORS_DATA = [
     {
         "editor_name": "Editor 1",
