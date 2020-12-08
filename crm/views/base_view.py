@@ -157,3 +157,11 @@ class BaseView(APIView):
         if entity is not None:
             queryset = queryset.filter(query_param=entity)
         return queryset.order_by(order_by_param)
+
+    def get_request_from_queryset(self, **filter_params):
+        queryset = self.queryset.filter(**filter_params)
+        return self.make_response(
+            data=self.serializer_class(
+                instance=queryset, many=True
+            ).data
+        )

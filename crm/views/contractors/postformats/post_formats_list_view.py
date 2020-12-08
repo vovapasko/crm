@@ -37,12 +37,7 @@ class PostFormatListView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIV
         if contractor_id and postformat_id:
             return super().retrieve(request, *args, **kwargs)
         else:
-            queryset = self.queryset.filter(contractor=contractor_id)
-            return self.make_response(
-                data=self.serializer_class(
-                    instance=queryset, many=True
-                ).data
-            )
+            return self.get_request_from_queryset(contractor=contractor_id)
 
     def delete(self, request: Request, *args, **kwargs) -> Response:
         return super().delete(request, *args, **kwargs)

@@ -1,14 +1,15 @@
 # contains common methods for comments, publications and publications blacklist
 from typing import Type
 from django.db.models import Model
-from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView
+from rest_framework.generics import ListCreateAPIView, UpdateAPIView, DestroyAPIView, \
+    RetrieveAPIView
 from rest_framework.permissions import IsAuthenticated
 from crm.paginations import StandardResultsSetPagination
 from crm.permissions import DjangoModelNoGetPermissions
 from crm.views.base_view import BaseView
 
 
-class ContractorAttributesBaseView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView):
+class ContractorAttributesBaseView(BaseView, ListCreateAPIView, UpdateAPIView, DestroyAPIView, RetrieveAPIView):
     permission_classes = [IsAuthenticated, DjangoModelNoGetPermissions]
     pagination_class = StandardResultsSetPagination
     get_request_param = 'contractor'
@@ -23,3 +24,8 @@ class ContractorAttributesBaseView(BaseView, ListCreateAPIView, UpdateAPIView, D
         if contractor_id is not None:
             queryset = queryset.filter(contractor=contractor_id)
         return queryset.order_by('id')
+
+    def get_contractor_entity_response(self, request, key: str, *args, **kwargs):
+        if kwargs.get(key):
+            return super().retrieve(request, *args, **kwargs)
+        return self.get_request_from_queryset(contractor=kwargs.get(self.get_request_param))
