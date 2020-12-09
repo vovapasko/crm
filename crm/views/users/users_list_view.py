@@ -1,5 +1,7 @@
 from django.http import Http404
 from django.shortcuts import get_object_or_404
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.request import Request
 from rest_framework.response import Response
@@ -15,7 +17,7 @@ from crm.permissions import DjangoModelNoGetPermissions
 
 
 class UsersListView(BaseView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView):
-    queryset = User.objects.all().filter(is_archived=False).order_by('id')
+    queryset = User.objects.all().filter(is_active=True).order_by('id')
     permission_classes = [IsAuthenticated, CanDeletePermission, DjangoModelNoGetPermissions]
     serializer_class = UserSerializer
     pagination_class = StandardResultsSetPagination
@@ -43,6 +45,16 @@ class UsersListView(BaseView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView)
             message={MESSAGE_JSON_KEY: f"User {pk} was deleted successfully"},
         )
 
+    is_archived_swagger_param = openapi.Parameter(
+        name='is_active',
+        in_=openapi.IN_QUERY,
+        description='Set this flag in body to false if you want to archive entity',
+        required=False,
+        type=openapi.TYPE_BOOLEAN
+    )
+
+    @swagger_auto_schema(manual_parameters=[is_archived_swagger_param],
+                         responses={200: 'entity will be archived'})
     def put(self, request, *args, **kwargs):
         return super().partial_update(request)
 
