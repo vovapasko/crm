@@ -53,7 +53,16 @@ class UsersListView(BaseView, ListCreateAPIView, UpdateAPIView, RetrieveAPIView)
         type=openapi.TYPE_BOOLEAN
     )
 
-    @swagger_auto_schema(manual_parameters=[is_archived_swagger_param],
+    is_online_swagger_param = openapi.Parameter(
+        name='is_online',
+        in_=openapi.IN_QUERY,
+        description='Set this flag in body to false if you want to make user offline. This flag is set'
+                    'to online automatically after users log in',
+        required=False,
+        type=openapi.TYPE_BOOLEAN
+    )
+
+    @swagger_auto_schema(manual_parameters=[is_archived_swagger_param, is_online_swagger_param],
                          responses={200: 'entity will be archived'})
     def put(self, request, *args, **kwargs):
         return super().partial_update(request)

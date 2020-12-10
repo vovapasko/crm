@@ -42,7 +42,8 @@ class LoginView(BaseView):
         """
         try:
             user = authenticate(username=data[EMAIL], password=data[PASSWORD])
-
+            user.is_online = True
+            user.save()
             return self.json_success_response(user=UserSerializer(user).data, token=generate_token_dict(user))
         except ValueError as e:
             errors = dict()
