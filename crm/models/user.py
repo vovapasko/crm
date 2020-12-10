@@ -1,11 +1,9 @@
 from django.db import models
-from crm.models.abstract_models import AbstractArchivedModel
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from .usermanager import UserManager
 from ..library.constants.media import default_avatar, media_storage
-from typing import List
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -20,6 +18,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     date_updated = models.DateTimeField(_('date updated'), auto_now=True)
 
+    is_online = models.BooleanField(_('online'), default=False)
     is_active = models.BooleanField(_('active'), default=True)
     is_confirmed = models.BooleanField(_('confirmed'), default=False)
     is_staff = models.BooleanField(
@@ -33,7 +32,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS: List = []
+    REQUIRED_FIELDS: []
 
     class Meta:
         verbose_name = _('user')
