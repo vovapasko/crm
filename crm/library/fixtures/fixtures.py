@@ -56,7 +56,7 @@ MOCK_CONTRACTORS_DATA = [
     },
 ]
 
-NEWS_CHARACTER = [{"character": "standard"}, {"character": "negative"}]
+NEWS_CHARACTER = [{"character": "плюс"}, {"character": "минус"}]
 HASHTAGS = [
     {
         "name": "mytag1"
