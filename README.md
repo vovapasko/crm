@@ -23,3 +23,7 @@ Commands to run for <b>crm</b>:
 You are ready to work
 To start server run: 
 `python manage.py runserver`
+
+
+Run test contractors mode: 
+1. `python manage.py contractors`
