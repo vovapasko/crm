@@ -70,7 +70,8 @@ HASHTAGS = [
 ]
 BURST_METHODS = [
     {"method": "на прямую"},
-    {"method": "секретно"}
+    {"method": "на прямую через байера"},
+    {"method": "топ сикрет"}
 ]
 
 MOCK_EMAILS = [
