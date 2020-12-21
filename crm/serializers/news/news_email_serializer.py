@@ -1,8 +1,8 @@
-from drf_writable_nested import WritableNestedModelSerializer
+from drf_writable_nested import WritableNestedModelSerializer, UniqueFieldsMixin
 from crm.models import NewsEmail
 
 
-class NewsEmailSerializer(WritableNestedModelSerializer):
+class NewsEmailSerializer(UniqueFieldsMixin, WritableNestedModelSerializer):
     class Meta:
         model = NewsEmail
         fields = '__all__'
