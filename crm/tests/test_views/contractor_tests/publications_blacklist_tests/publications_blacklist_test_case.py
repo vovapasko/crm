@@ -6,8 +6,6 @@ from crm.tests.base_test_case import BaseTestCase
 
 
 class PublicationsBlacklistTestCase(BaseTestCase):
-    url = reverse('crm:contractor-publications-blacklist')
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
@@ -35,24 +33,27 @@ class PublicationsBlacklistTestCase(BaseTestCase):
         self.__test_request_unauthorised(method=client.delete)
 
     def __test_request_unauthorised(self, method):
+        url = self.__publications_blacklist_url(contractor=self.test_contractor.id)
         self._test_request_method_clients(
             method=method,
-            url=self.url,
+            url=url,
             response_code=status.HTTP_401_UNAUTHORIZED
         )
 
     def test_get_publications_list_authorised(self):
         client = self.get_api_client(user=self.test_user)
+        url = self.__publications_blacklist_url(contractor=self.test_contractor.id)
         response = client.get(
-            path=self.url
+            path=url
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_post_publications_list_authorised(self):
         client = self.get_api_client(user=self.test_user)
+        url = self.__publications_blacklist_url(contractor=self.test_contractor.id)
         self._test_request_method_clients(
             method=client.post,
-            url=self.url,
+            url=url,
             data={
                 "contractor": self.test_contractor.id,
                 "not_publish": "Test Edition"
@@ -79,9 +80,10 @@ class PublicationsBlacklistTestCase(BaseTestCase):
 
     def test_incorrect_post_publications_list_authorised(self):
         client = self.get_api_client(user=self.test_user)
+        url = self.__publications_blacklist_url(contractor=self.test_contractor.id)
         self._test_request_method_clients(
             method=client.post,
-            url=self.url,
+            url=url,
             data={
                 "contractor": self.test_contractor,  # have to be pk, but here goes entity
                 "not_publish": "Test comment"
@@ -90,4 +92,7 @@ class PublicationsBlacklistTestCase(BaseTestCase):
         )
 
     def __get_put_delete_url(self):
-        return self.url + str(ContractorPublicationsBlacklist.objects.last().id)
+        return self.__publications_blacklist_url(contractor=self.test_contractor.id, pk=str(ContractorPublicationsBlacklist.objects.last().id))
+
+    def __publications_blacklist_url(selfs, **kwargs):
+        return reverse('crm:contractor-publications-blacklist', kwargs=kwargs)
