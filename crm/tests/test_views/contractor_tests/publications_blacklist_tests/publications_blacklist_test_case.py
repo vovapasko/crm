@@ -6,13 +6,14 @@ from crm.tests.base_test_case import BaseTestCase
 
 
 class PublicationsBlacklistTestCase(BaseTestCase):
-    url = reverse('crm:contractor-publications-blacklist')
-
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
         cls.test_user = cls.get_admin_user()
         cls.test_contractor = Contractor.objects.first()
+        cls.post_get_url = reverse('crm:contractor-publications-blacklist', kwargs={'contractor': cls.test_contractor.id})
+        cls.put_delete_url = reverse('crm:contractor-publications-blacklist', kwargs={'contractor': cls.test_contractor.id,
+                                                                    'pk': str(ContractorPublicationsBlacklist.objects.last().id)})
 
     @classmethod
     def tearDownClass(cls):
@@ -37,14 +38,14 @@ class PublicationsBlacklistTestCase(BaseTestCase):
     def __test_request_unauthorised(self, method):
         self._test_request_method_clients(
             method=method,
-            url=self.url,
+            url=self.post_get_url,
             response_code=status.HTTP_401_UNAUTHORIZED
         )
 
     def test_get_publications_list_authorised(self):
         client = self.get_api_client(user=self.test_user)
         response = client.get(
-            path=self.url
+            path=self.post_get_url
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -52,7 +53,7 @@ class PublicationsBlacklistTestCase(BaseTestCase):
         client = self.get_api_client(user=self.test_user)
         self._test_request_method_clients(
             method=client.post,
-            url=self.url,
+            url=self.post_get_url,
             data={
                 "contractor": self.test_contractor.id,
                 "not_publish": "Test Edition"
@@ -64,7 +65,7 @@ class PublicationsBlacklistTestCase(BaseTestCase):
         client = self.get_api_client(user=self.test_user)
         self._test_request_method_clients(
             method=client.put,
-            url=self.__get_put_delete_url(),
+            url=self.put_delete_url,
             response_code=status.HTTP_200_OK,
             data={"not_publish": "New Edition"}
         )
@@ -73,7 +74,7 @@ class PublicationsBlacklistTestCase(BaseTestCase):
         client = self.get_api_client(user=self.test_user)
         self._test_request_method_clients(
             method=client.delete,
-            url=self.__get_put_delete_url(),
+            url=self.put_delete_url,
             response_code=status.HTTP_204_NO_CONTENT
         )
 
@@ -81,7 +82,7 @@ class PublicationsBlacklistTestCase(BaseTestCase):
         client = self.get_api_client(user=self.test_user)
         self._test_request_method_clients(
             method=client.post,
-            url=self.url,
+            url=self.post_get_url,
             data={
                 "contractor": self.test_contractor,  # have to be pk, but here goes entity
                 "not_publish": "Test comment"
@@ -89,5 +90,3 @@ class PublicationsBlacklistTestCase(BaseTestCase):
             response_code=status.HTTP_400_BAD_REQUEST
         )
 
-    def __get_put_delete_url(self):
-        return self.url + str(ContractorPublicationsBlacklist.objects.last().id)
