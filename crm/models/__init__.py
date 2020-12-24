@@ -11,3 +11,4 @@ from .client import Client
 from .contractor_comment_list import ContractorCommentList
 from .contractor_publications_list import ContractorPublicationsList
 from .contractor_publications_blacklist import ContractorPublicationsBlacklist
+from .currency import Currency
