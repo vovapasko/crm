@@ -1,1 +1,1 @@
-from currencies_list_view import CurrenciesListView
+from .currencies_list_view import CurrenciesListView

@@ -10,4 +10,4 @@ from .news import *
 from .client_serializer import ClientSerializer
 from .contractors import *
 from .hashtag_serializer import HashtagSerializer
-from currency_serializer import CurrencySerializer
+from .currency_serializer import CurrencySerializer
