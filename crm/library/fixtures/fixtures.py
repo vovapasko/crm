@@ -57,6 +57,16 @@ MOCK_CONTRACTORS_DATA = [
 ]
 
 NEWS_CHARACTER = [{"character": "плюс"}, {"character": "минус"}]
+CURRENCIES = [
+    {
+        "name": "Доллар",
+        "sign": "$"
+    },
+    {
+        "name": "Гривна",
+        "sign": "₴"
+    }
+]
 HASHTAGS = [
     {
         "name": "mytag1"
