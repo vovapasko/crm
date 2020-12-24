@@ -4,7 +4,7 @@ from django.db.models import Model
 from django.db import IntegrityError
 
 from ...models import User, Contractor, Hashtag, NewsCharacter, NewsBurstMethod, NewsEmail, Client, NewsProject, \
-    NewsWave
+    NewsWave, Currency
 from crm.library.fixtures.fixtures import *
 
 
@@ -23,6 +23,7 @@ class Command(BaseCommand):
         self.__create_clients()
         self.__create_news_projects()
         self.__create_news_waves()
+        self.__create_currencies()
 
     def __create_users(self):
 
@@ -74,6 +75,9 @@ class Command(BaseCommand):
 
     def __create_clients(self):
         self.__bulk_create_model(Client, MOCK_CLIENTS)
+
+    def __create_currencies(self):
+        self.__bulk_create_model(Currency, CURRENCIES)
 
     def __create_news_projects(self):
         for project in MOCK_NEWS_PROJECTS:

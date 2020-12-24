@@ -13,3 +13,4 @@ from .base_view import BaseView
 from .clients import *
 from crm.views.contractors.publications import *
 from .forgot_password import *
+from .currency import *

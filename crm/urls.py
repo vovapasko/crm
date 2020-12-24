@@ -46,4 +46,6 @@ urlpatterns = [
     path('news-waves/<int:pk>', NewsWaveView.as_view(), name="newswaves"),
     path('clients/', ClientView.as_view(), name='clients'),
     path('clients/<int:pk>', ClientView.as_view(), name='update-clients'),
+    path('currencies/', CurrenciesListView.as_view(), name='currencies'),
+    path('currencies/<int:pk>', CurrenciesListView.as_view(), name='currencies'),
 ]
